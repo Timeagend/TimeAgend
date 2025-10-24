@@ -1,4 +1,3 @@
-
 <?php  
 
   include_once('../config/url.php');
@@ -38,6 +37,13 @@
     <button class="button-1" onclick="window.location.href='<?= BASE_URL?>/public/perfil.php' " >Voltar</button>
     <h1>Olá, Cliente</h1>
     <div class="separator"></div>
+         <?php if(isset($_SESSION['feedback'])): ?>
+            <script>
+                alert("<?= addslashes($_SESSION['feedback']) ?>");
+            </script>
+            <?php unset($_SESSION['feedback']); ?>
+        <?php endif; ?>
+
     
     
         <?php if (empty($agendamentos)) : ?>
@@ -63,8 +69,17 @@
                     <span class="price">R$ <?= number_format($servico['preco'] ?? 0, 2, ',', '.') ?></span>
                 </p>
                 <h2>LOCALIZAÇÃO</h2>
-                <p><?= htmlspecialchars($dados[0]['local'] ?? 'Não informado')?><br>St., Any City, ST 12345</p>
-                <button class="cancel-button">CANCELAR</button>
+                <p><?= htmlspecialchars($dados[0]['local'] ?? 'Não informado')?><br><?= htmlspecialchars($dados[0]['cidade']) ?></p>
+                
+                <form method="POST" action="<?= BASE_URL?>/models/agenda/perfil.php">
+                    <input type="hidden" name="idservico" value="<?= $agendamento['idservico'] ?>">
+                    <input type="hidden" name="idbarbeiro" value="<?= $agendamento['idbarbeiro'] ?>">
+                    <input type="hidden" name="data" value="<?= $agendamento['data'] ?>">
+                    <input type="hidden" name="horario" value="<?= $agendamento['horario'] ?>">
+                    <input type="hidden" name="idagendamento" value="<?= $agendamento['idagendamento'] ?>">
+                    <button class="cancel-button" type="submit" name="cancelar">CANCELAR</button>
+                </form>
+               
                 
             </div>
             
@@ -90,6 +105,7 @@
     -->
 </main>
  <script src="<?= BASE_URL?>/public/assets/script/menu.js"></script>
+
  
 </body>
 </html>

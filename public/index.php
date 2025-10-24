@@ -1,6 +1,6 @@
 <?php 
   include_once('../config/url.php');
-  
+  include_once(__DIR__ . '/../models/agenda/perfil.php');
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@
                     <a href="#services" class="nav-link font-medium hover:text-accent transition-colors">Serviços</a>
                     <a href="#gallery" class="nav-link font-medium hover:text-accent transition-colors">Galeria</a>
                     <a href="#about" class="nav-link font-medium hover:text-accent transition-colors">Sobre</a>
-                    <a href="#contact" class="nav-link font-medium hover:text-accent transition-colors">Contato</a>
+                    <a href="<?= BASE_URL ?>/public/contato.php" class="nav-link font-medium hover:text-accent transition-colors">Contato</a>
                 </div>
                 
                 <a href="<?= BASE_URL?>/public/agendamento.php" class="btn-primary px-6 py-2.5 rounded-lg inline-block text-center">
@@ -472,9 +472,9 @@
                 <div>
                     <h3 class="font-semibold text-lg mb-6 text-accent">Contato</h3>
                     <ul class="space-y-3 text-gray-500">
-                        <li>(11) 99999-8888</li>
-                        <li>contato@timeagend.com</li>
-                        <li>Rua das Palmeiras, 123<br>São Paulo, SP</li>
+                        <li><?= htmlspecialchars($dados[0]['telefone']) ?></li>
+                        <li><?= htmlspecialchars($dados[0]['email']) ?></li>
+                        <li><?= htmlspecialchars($dados[0]['local']) ?><br><?= htmlspecialchars($dados[0]['cidade']) ?></li>
                         <li class="text-accent">Segunda - Domingo<br>8h às 20h</li>
                     </ul>
                 </div>

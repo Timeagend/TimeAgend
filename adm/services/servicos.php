@@ -152,13 +152,13 @@ class Empresa{
 
     }
 
-    public function setEmpresa($local,$telefone,$email,$site){
-        $sql = "UPDATE barbearia SET local = ?, telefone = ?, email = ?, site = ? WHERE id = 1";
+    public function setEmpresa($local,$telefone,$email,$cidade){
+        $sql = "UPDATE barbearia SET local = ?, telefone = ?, email = ?, cidade = ? WHERE id = 1";
         $stmt = $this->con->prepare($sql);
         if(!$stmt){
             die("Erro ao preparar: " . $this->con->error);
         }
-        $stmt->bind_param("ssss", $local, $telefone, $email, $site);
+        $stmt->bind_param("ssss", $local, $telefone, $email, $cidade);
         return $stmt->execute();
         
     }

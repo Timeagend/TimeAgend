@@ -5,11 +5,12 @@ include_once '../config/conection.php';
 
 $user_id = $_SESSION['user_id']; 
 
-
-if (!isAuthenticated()) {
+$validAuth = new Auth($con);
+if (!$validAuth->isAuthenticated()) {
     header("Location: " . BASE_URL . "user/login.php");
     exit();
 }
+
 $sql = "SELECT foto_perfil FROM user WHERE iduser = ?";
 $stmt = $con->prepare($sql);
 $stmt->bind_param("i", $user_id);  

@@ -1,3 +1,6 @@
-[submodule "models/plans/vendor/mercadopago/dx-php"]
-    path = models/plans/vendor/mercadopago/dx-php
-    url = https://github.com/mercadopago/dx-php.git
+# [submodule "models/plans/vendor/mercadopago/dx-php"]
+#     path = models/plans/vendor/mercadopago/dx-php
+#     url = https://github.com/mercadopago/dx-php.git
+
+#     git submodule sync
+# git submodule update --init --recursive

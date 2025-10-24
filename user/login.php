@@ -99,8 +99,8 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
                 <div class="item-3">
                     <div class="info-item">
                         <div class="icon-3"><i class="bi bi-globe2"></i></div>
-                        <p class="web1">Website</p>
-                        <p class="web2" ><?= htmlspecialchars($dados[0]['site'] ?? 'Não informado')?></p>
+                        <p class="web1">Cidade</p>
+                        <p class="web2" ><?= htmlspecialchars($dados[0]['cidade'] ?? 'Não informado')?></p>
                     </div>
                 </div>
 
@@ -153,5 +153,3 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
    
 </body>
 </html>
-
-

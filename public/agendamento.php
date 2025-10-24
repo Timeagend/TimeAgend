@@ -3,11 +3,11 @@ include_once('../config/url.php');
 require_once('../models/auth/authFunctions.php');
 
 session_start();
- if(!isAuthenticated()){
-    header("Location:" . BASE_URL . "user/login.php");
+$validAuth = new Auth($con);
+if (!$validAuth->isAuthenticated()) {
+    header("Location: " . BASE_URL . "user/login.php");
     exit();
-                                       
- }
+}
 
 
 $successMessage = '';

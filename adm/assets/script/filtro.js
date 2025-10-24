@@ -41,3 +41,4 @@ document.getElementById('apply-filter').addEventListener('click', function () {
     // Fecha o modal após aplicar o filtro
     document.getElementById('filter-modal').style.display = 'none';
 });
+
