@@ -8,13 +8,15 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once "../../../config/conection.php"; 
 include_once "../../../models/auth/authFunctions.php";
+include_once "../../../models/emails/email.php";
 
-if (!isset($_SESSION['user_id'])) {
+$validAuth = new Auth($con);
+if (!$validAuth->isAuthenticated()) {
     echo json_encode(["status" => "error", "mensagem" => "Usuário não autenticado"]);
     exit;
 }
 
-$id_user = $_SESSION['user_id'];
+$id_user = $_SESSION['iduser'];
 
 $input = file_get_contents("php://input");
 $dados = json_decode($input, true);
@@ -23,6 +25,9 @@ $nomeServico = $dados['tipoServico'] ?? null;
 $nomeBarbeiro = $dados['profissional'] ?? null;
 $data = $dados['data'] ?? null;       
 $horario = $dados['horario'] ?? null; 
+
+$email = $_SESSION['email_user'];
+$nameCliente = $_SESSION['nome_user'];
 
 if (!$nomeServico || !$nomeBarbeiro || !$data || !$horario) {
     echo json_encode(["status" => "error", "mensagem" => "Campos obrigatórios não preenchidos"]);
@@ -90,9 +95,24 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-    echo json_encode(["status" => "success", "mensagem" => "Agendamento salvo com sucesso!"]);
+   $emailEnviado = enviarConfirmacaoAgendamento(
+             // e-mail do cliente
+        $nameCliente,
+        $email,   // nome do cliente
+        $nomeServico, // nome do serviço
+        $nomeBarbeiro, // barbeiro         // data
+        $data,
+        $horario      // horário
+    );
+
+    if ($emailEnviado) {
+        echo json_encode(["status" => "success", "mensagem" => "Agendamento salvo e e-mail enviado!"]);
+    } else {
+        echo json_encode(["status" => "success", "mensagem" => "Agendamento salvo, mas o e-mail falhou."]);
+    }
 } else {
     echo json_encode(["status" => "error", "mensagem" => "Erro ao salvar agendamento: " . $stmt->error]);
+
 }
 
 $stmt->close();

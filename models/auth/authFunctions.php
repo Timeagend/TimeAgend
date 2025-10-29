@@ -45,6 +45,24 @@ class User{
     }
     }
 
+    public function getUserByEmail($email) {
+        $stmt = $this->con->prepare("SELECT * FROM user WHERE email_user = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+    
+    public function alterPassword($email, $newPassword) {
+        $stmt = $this->con->prepare("UPDATE user SET password = ? WHERE email_user = ?");
+        $stmt->bind_param("ss", $newPassword, $email);
+        return $stmt->execute();
+    }
     
 }
 // ===================================================
@@ -92,6 +110,7 @@ class UserAuth extends Auth {
                 $_SESSION['iduser'] = $user['iduser'];
                 $_SESSION['nome_user'] = $user['nome_user'];
                 $_SESSION['tipo'] = "cliente";
+                $_SESSION['email_user'] = $user['email_user'];
 
                 header("Location: " . BASE_URL . "/public/index.php");
                 exit();

@@ -5,7 +5,7 @@ include_once(__DIR__ . '/../../config/url.php');
 
 session_start();
 
-$user = $_SESSION['user_id'] ?? null;
+$user = $_SESSION['iduser'] ?? null;
 
 // === FUNÇÃO: Atualiza status dos agendamentos ===
 function atualizarStatusAgendamentos() {

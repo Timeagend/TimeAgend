@@ -1,5 +1,8 @@
 {
     "require": {
-        "mercadopago/dx-php": "^3.7"
+        "mercadopago/dx-php": "^3.7",
+        "phpmailer/phpmailer": "^7.0",
+        "sendinblue/api-v3-sdk": "^8.4",
+        "sendgrid/sendgrid": "^8.1"
     }
 }

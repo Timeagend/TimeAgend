@@ -15,8 +15,8 @@
 <body>
     <div class="container">
         <h1>Recuperar senha</h1>
-        <form>
-            <input type="email" id="email" placeholder="Digite seu email">
+        <form action="<?= BASE_URL ?>models/auth/newpass.php" method="POST">
+            <input type="email" id="email" name="email" placeholder="Digite seu email">
             <button type="submit">Enviar e-mail</button>
         </form>
     </div>
