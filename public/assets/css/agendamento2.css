@@ -1,238 +1,5 @@
-/* ---------------------------------------------- */
-.seleciona-data {
-    text-align: center; /* Centraliza o conteúdo */
-    padding: 20px; /* Adiciona espaçamento interno */
-    
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
-}
-
-input[type="date"] {
-    padding: 10px; /* Espaçamento interno */
-    border: 2px solid #b0c43a; /* Borda verde */
-    border-radius: 5px; /* Bordas arredondadas */
-    width: 200px; /* Largura do campo */
-    font-size: 16px; /* Tamanho da fonte */
-    margin-top: 10px; /* Espaçamento acima do campo */
-    transition: border-color 0.3s; /* Transição suave para a borda */
-}
-
-input[type="date"]:focus {
-    border-color: #8a9e3b; /* Cor da borda ao focar */
-    outline: none; /* Remove o contorno padrão */
-}
-
-.button-confirma {
-    background-color: #b0c43a; /* Cor de fundo do botão */
-    color: white; /* Cor do texto */
-    border: none; /* Remove a borda padrão */
-    padding: 10px 20px; /* Espaçamento interno do botão */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    font-size: 16px; /* Tamanho da fonte */
-    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
-}
-
-.button-confirma:hover {
-    background-color: #8a9e3b; /* Cor do botão ao passar o mouse */
-}
-/* ------------------------------------------------- */
-.datas{
-    margin-top: 5px;
-    border: none;
-}
-h2{
-    margin-top: 100px;
-}
-.horas{
-    display: block;
-}
-.icone-left1{
-position: relative;
-right: 500px;
-cursor: pointer;
-}
-.seleciona-data {
-    
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    margin: auto;
-   
-}
-
-.horarios-grid {
-    display: flex;
-    justify-content: center;
-    
-    gap: 10px;
-    margin-top: 20px;
-    
-}
-
-.horario-btn {
-    padding: 10px 15px;
-    background-color: transparent;
-    border: 2px solid #D4AF37;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: 0.3s;
-    margin-top: 20px;
-    margin-bottom: 35px;
-}
-
-.horario-btn:hover, .horario-btn.selected {
-    background-color: #D4AF37;
-    color: black;
-}
-
-.button-confirma-agenda{
-    background-color: #b0c43a;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-    
-    
-}
-
-.button-confirma:hover {
-    background-color: #8a9e3b;
-}
 
 
-
-
-.profissional-card.selected1 {
-    height: 155px;
-    
-    transform: scale(1.05);
-    transition: 0.3s;
-    border-radius: 15px;
-    background-color: #D4AF37;
-}
-.estiliza-cortes{
-    margin-bottom: 50px;
-    margin-top: -30px;
-}
-/* ---------------------------------------------------------------------- */
-/* CSS da data e hora */
-/* Ajustes para corresponder à screenshot */
-/* Reset geral */
-
-  
-.agendar-horario-form {
-    background-color: #1f1f1f;
-    padding: 2rem;
-    border-radius: 1rem;
-    max-width: 600px;
-    margin: 1rem auto;
-    font-family: Arial, sans-serif;
-  }
-  
-  .titulos-form {
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  
-  .agendar-horario-form input[type="text"],
-  .agendar-horario-form input[type="date"] {
-    width: 95%;
-    padding: 0.75rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0.5rem;
-    border: none;
-    outline: none;
-    background-color: #ffffff;
-    color: #000;
-    font-size: 1rem;
-  }
-  
-  .agendar-horario-form input::placeholder {
-    color: #888;
-  }
-  
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-  
-  .agendar-horario-form p {
-    margin-bottom: 0.8rem;
-    color: white;
-    font-size: 1rem;
-  }
-  
-  /* Horários com SCROLL LATERAL */
-  .horarios-grid {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 18px 0px;
-    scroll-behavior: smooth;
-    justify-content: flex-start;
-  }
-  
-  .horarios-grid::-webkit-scrollbar {
-    display: none;
-  }
-  .horarios-grid {
-    -ms-overflow-style: none;  /* IE e Edge */
-    scrollbar-width: none;     /* Firefox */
-  }
-  
-  /* Botões de horário */
-  .horarios-grid button {
-    flex: 0 0 auto;
-    min-width: 50px;
-    width: 25%;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #444;
-    background: #2a2a2a;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    opacity: 0.9;
-  }
-  
-  .horarios-grid button:hover {
-    background: #fbbf24;
-    color: #000;
-  }
-  
-  .horarios-grid button.selecionado {
-    background: #fbbf24 !important;
-    color: #000 !important;
-  }
-  
-  /* Botão de confirmação */
-  .button-confirma-agenda {
-    
-    color: #000;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    width: 100%;
-    margin-top: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .button-confirma-agenda:hover {
-    background-color: #8da32e;
-  }
   
   .menu-container {
     text-align: center;
@@ -242,117 +9,13 @@ cursor: pointer;
 
 
 
-.h1-titulos {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: left;
-    padding-left: 240px;
-}
-
-
-table {
-    margin: 0 auto;
-    border-collapse: collapse;
-    width: 70%;
-    
-}
 
 
 
-tr {
-    border-bottom: 1px solid #fff;
-    color: #fff;
-    /* border: 1px solid #fff; */
-    transition: background-color 0.3s;
-/* quero colocar as bordas arredondadas */
-    border-radius: 10px;
-    
-}
-
-td {
-    padding: 10px 200px;
-    text-align: left;
-    cursor: pointer;
-    
-}
-
-.left {
-    text-align: left;
-    padding-left: 20px;
-    
-}
-
-.right {
-    text-align: right;
-   padding-right: 10px;            /* Opcional: Adiciona espaçamento à direita, se necessário */
-   
-   
-
-}
-input[type="checkbox"] {
-    margin-right: 10px; /* Ajuste o valor conforme necessário */
-}
-
-.icone-left {
-    margin-right: 1200px;
-    cursor: pointer;
-}
-
-.confirm-button {
-    background-color: #a6c137;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 20px;
-    margin-top: 20px;
-}
-
-.confirm-button:hover {
-    background-color: #8da32e;
-    
-}
 
 /* Estilo para os serviços */
 
 
-
-.seleciona-servicos h3 {
-    padding: 15px 25px;
-    font-size: 18px;
-    line-height: 1.2;
-    transition: all 0.2s ease-in-out;
-    
-}
-
-
-.selected {
-    background-color: #D4AF37; /* Cor da aba ativa */
-    color: white;
-/* #00b894 */
-
-}
-.selected-servicos {
-    background-color: #fff532e1; /* Cor da aba ativa */
-   border: none;
-    color: white;
-    box-shadow:  0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-
-img.horarios-icon-setas{
-    position: relative;
-    right: 180px;
-    top: 13px;
-    z-index: 1;
-   margin: 0;
-   margin-bottom: 0;
-   
-}
-p.titulo-seleciona-um-horario{
-margin-top: -20px;
-}
 button {
     background-color: #b0c43a;
     color: white;
@@ -364,57 +27,21 @@ button {
     border: none;
     font-weight: bold;
     display: block; /* Faz o botão se comportar como um bloco */
-    margin: 0 auto; /* Centraliza horizontalmente */
+    margin: 0 8px; /* Centraliza horizontalmente */
     text-align: center; /* Alinha o texto dentro do botão */
     margin-top: -18px;
     
 }
 
-#conteudo {
-    margin-top: 20px;
-    text-align: center;
-}
 
-.hidden {
-    display: none; /* Classe para ocultar elementos */
-}
-
-#voltar {
-    cursor: pointer;
-    width: 280px; /* Ajuste o tamanho conforme necessário */
-    margin-top: 20px;
-    display: none; /* Oculte o botão de voltar inicialmente */
-}
 
 /* --------------------------------------------------------------------------- */
 
-.seleciona-servicos {
-    margin: 20px; /* Margem ao redor da seção */
-    display: flex; /* Usar flexbox para layout */
-    flex-direction: column; /* Organiza os itens em coluna */
-    align-items: center; /* Centraliza os itens horizontalmente */
-    gap: 20px; /* Espaçamento entre os itens */
-    padding: 20px; /* Adiciona um pouco de preenchimento interno */
-    
-    border-radius: 10px; /* Bordas arredondadas */
-    
-}
 
-.servicos-1, .servicos-2 {
-    display: flex; /* Usar flexbox para os serviços */
-    justify-content: center; /* Centraliza os serviços horizontalmente */
-    gap: 50px; /* Espaçamento entre os serviços */
-}
 
-h3 {
-    border: #D4AF37 solid 2px;
-    border-radius: 50px;
-    padding: 15px;
-    width: 280px;
-    margin-bottom: 40px;
-    text-align: center;
-    cursor: pointer;
-}
+
+
+
 
 
 
@@ -438,12 +65,3 @@ h3 {
 
 
 
-.combo-item.selected {
-    background-color: #D4AF37; /* Cor de fundo quando selecionado */
-    color: white; /* Cor do texto */
-    font-weight: bold;
-}
-.data-form{
-    color: black;
-    background-color: black;
-}
