@@ -43,13 +43,24 @@ class Horario {
 }
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $horario = new Horario($con);
+    if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
+    $horario = new Horario($con);
     $idbarbeiro = isset($_GET['idbarbeiro']) ? intval($_GET['idbarbeiro']) : 0;
     $data = isset($_GET['data']) ? $_GET['data'] : '';
 
-    if($idbarbeiro && $data){
+    $hoje = date('Y-m-d'); // <--- pega a data atual
+
+    // 🚫 Bloqueia datas anteriores
+    if ($data < $hoje) {
+        echo json_encode([
+            'disponiveis' => [],
+            'erro' => 'Datas passadas não podem ser agendadas.'
+        ]);
+        exit;
+    }
+
+    if ($idbarbeiro && $data) {
         $disponiveis = $horario->getHorariosDisponiveis($idbarbeiro, $data);
         echo json_encode(['disponiveis' => array_values($disponiveis)]);
         exit;

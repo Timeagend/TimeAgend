@@ -82,6 +82,7 @@ class Servicos {
         JOIN user u ON a.iduser = u.iduser
         JOIN servico s ON a.idservico = s.idservico
         ORDER BY a.data, a.horario
+        LIMIT 10
         
         ");
         $stmt->execute();

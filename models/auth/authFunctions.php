@@ -63,7 +63,26 @@ class User{
         $stmt->bind_param("ss", $newPassword, $email);
         return $stmt->execute();
     }
+
+    public function getPhoneById($iduser) {
+        $stmt = $this->con->prepare("SELECT phone FROM user WHERE iduser = ?");
+        $stmt->bind_param("i", $iduser);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            return $user['phone'];
+        } else {
+            return null;
+        }
+    }
     
+    public function updateProfile($iduser, $nome_user, $phone, $foto_perfil) {
+        $stmt = $this->con->prepare("UPDATE user SET nome_user = ?, phone = ?, foto_perfil = ? WHERE iduser = ?");
+        $stmt->bind_param("sssi", $nome_user, $phone, $foto_perfil, $iduser);
+        return $stmt->execute();
+    }
 }
 // ===================================================
 // 🔐 Classe base de AUTENTICAÇÃO
@@ -109,8 +128,10 @@ class UserAuth extends Auth {
             if ($this->verifyPassword($senha, $user['password'])) {
                 $_SESSION['iduser'] = $user['iduser'];
                 $_SESSION['nome_user'] = $user['nome_user'];
+                $_SESSION['phone'] = $user['phone'];
                 $_SESSION['tipo'] = "cliente";
                 $_SESSION['email_user'] = $user['email_user'];
+                
 
                 header("Location: " . BASE_URL . "/public/index.php");
                 exit();

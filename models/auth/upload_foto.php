@@ -3,7 +3,7 @@ session_start();
 include_once '../../config/url.php';
 include_once '../../config/conection.php';  
 
-$user_id = $_SESSION['user_id'];  
+$user_id = $_SESSION['iduser'];  
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["imagem"])) {
     $imagem = $_FILES["imagem"];

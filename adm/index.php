@@ -237,8 +237,9 @@
                 <h2>Serviços & preços:</h2>
                 <div class="categories">
                     <?php foreach ($servicos as $s): ?>
-                    <div class="category">
-                        <div class="barber-card">
+                    <div class="category" style="display: inline-block; border: 10px 10px;margin: 10px;margin-top: 30px;align-items: center; text-align: center;">
+                        <div class="barber-card" style="display: inline-block; width: 160px; height: 160px; border: 40px 20px;
+                        padding: 10px auto; text-align: center;" >
                             <div class="edit-icon"><i class="fas fa-edit"></i></div>
                             <strong><?= htmlspecialchars($s['nome_servico']); ?></strong><br>
                             Tipo: <?= htmlspecialchars($s['tipo']); ?><br>

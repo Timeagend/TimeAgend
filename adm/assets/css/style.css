@@ -816,19 +816,6 @@ body.dark .todo .todo-list li i:hover {
 }
 
 /* Botão Salvar */
-.button-barber {
-    margin-top: 50px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-	position: relative;
-	left: 46%;
-}
 
 .button-barber:hover {
     background-color: #0056b3;
@@ -928,8 +915,10 @@ body.dark .todo .todo-list li i:hover {
 			/* Botões principais */
 			.site-data-button, .save-button, .save-button-1 {
 				background-color: #4CAF50;
-				color: white;
+				display: block;       /* torna o botão um bloco */
+               color: white;
 				margin-bottom: 20px;
+				margin: 15px auto 0 auto; /* centraliza e adiciona espaçamento superior */
 			}
 			
 			button:hover {
@@ -1078,4 +1067,403 @@ form input, form textarea {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+ .services-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.services-table th, .services-table td {
+    border: 1px solid var(--grey);
+    padding: 10px;
+    text-align: left;
+}
+
+.services-table th {
+    background-color: var(--blue);
+    color: var(--light);
+}
+
+.services-table tr:nth-child(even) {
+    background-color: var(--light);
+}
+
+.services-table tr:hover {
+    background-color: var(--light-blue);
+}
+
+#meu-site-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 25px;
+  background: var(--light);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  font-family: var(--lato);
+}
+
+#meu-site-content h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#meu-site-content .info {
+  color: var(--dark-grey);
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+/* Formulário de contato */
+.meios {
+  font-weight: bold;
+  
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.contact-info input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--dark-grey);
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.contact-info input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 5px rgba(60,145,230,0.3);
+}
+
+/* Botões (mantidos verdes, sem alteração) */
+
+/* Serviços */
+.services-prices h2 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.barber-card {
+  background-color: var(--light);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.barber-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.barber-card strong {
+  font-size: 1.1rem;
+  color: var(--dark);
+}
+
+.barber-card .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--blue);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.barber-card .edit-icon:hover {
+  color: var(--dark);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: var(--light);
+  margin: 100px auto;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 500px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--blue);
+}
+
+.close-modal:hover {
+  color: var(--dark);
+}
+
+.services-prices form {
+  display: grid;
+  gap: 10px;
+}
+
+.services-prices input {
+  padding: 8px;
+  border: 1px solid var(--dark-grey);
+  border-radius: 6px;
+}
+
+.services-prices input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 5px rgba(60,145,230,0.3);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  #meu-site-content { padding: 15px; }
+  #meu-site-content h1 { font-size: 1.6rem; }
+  .categories { grid-template-columns: 1fr; }
+}
+/* ===== Seção Equipe ===== */
+#equipe-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+#equipe-content h1 {
+  text-align: center;
+  
+  margin-bottom: 10px;
+}
+
+#equipe-content .info {
+  text-align: center;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.barber-section h2 {
+  color: #0c0c1e;
+  margin-bottom: 15px;
+  border-left: 4px solid #0c0c1e;
+  padding-left: 10px;
+}
+
+/* Container dos profissionais */
+.professional-cards {
+ display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 250px)); /* largura fixa máxima */
+  gap: 20px;
+  justify-content: center; /* centraliza os cards se sobrar espaço */
+  margin: 20px;
+}
+
+.professional-card {
+    background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.3s;
+
+}
+
+.professional-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* Foto do profissional */
+.professional-card .card-img img {
+  border-radius: 12px;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* Informações do card */
+.professional-card .card-info strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.professional-card .feedback {
+  color: #f5a623;
+  font-size: 1rem;
+}
+
+/* Ícone de edição */
+.professional-card .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #4b0082;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.professional-card .edit-icon:hover { color: #5e12a8; }
+
+/* Botão salvar */
+.button-barber {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+  margin: 0 auto;
+  transition: background 0.3s;
+  
+}
+
+.button-barber:hover { background-color: #5e12a8; }
+
+/* Formulário adicionar barbeiro */
+.add-barber-form div {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-barber-form label {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 3px;
+}
+
+.add-barber-form input,
+.add-barber-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.add-barber-form input:focus,
+.add-barber-form textarea:focus {
+  border-color: #4b0082;
+  outline: none;
+  box-shadow: 0 0 5px rgba(75,0,130,0.3);
+}
+
+/* Responsividade */
+@media(max-width:600px){
+  .professional-cards { grid-template-columns: 1fr; }
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    justify-content: center;
+}
+
+.category-card {
+    width: 180px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.10);
+    position: relative;
+    transition: .3s;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.20);
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+/* CARD */
+.service-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,.15);
+    text-align: center;
+    position: relative;
+    transition: .25s ease;
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 18px rgba(0,0,0,.25);
+}
+
+/* BOTÃO DE EDITAR */
+.edit-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #007bff;
+    border: none;
+    color: white;
+    font-size: 13px;
+    padding: 4px 7px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.edit-btn:hover { background: #0056d2; }
+
+/* TÍTULO */
+.service-box h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
 }

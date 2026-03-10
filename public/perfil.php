@@ -1,30 +1,63 @@
-<?php  
+<?php
 session_start();
-include_once '../models/auth/authFunctions.php';  
-include_once '../config/conection.php';     
 
-$user_id = $_SESSION['user_id']; 
+include_once '../models/auth/authFunctions.php';
+include_once '../config/conection.php'; // deve definir $con e BASE_URL
 
+// --- validações básicas ---
+if (!isset($_SESSION['iduser'])) {
+    // se preferir, redireciona ao invés de die
+    die("Usuário não logado — sessão vazia.");
+}
+if (!isset($con) || !$con) {
+    die("Conexão com BD não encontrada. Verifique '../config/conection.php'.");
+}
+
+// id do usuário logado
+$user_id = (int) $_SESSION['iduser'];
+
+// valida autenticação pela sua classe Auth
 $validAuth = new Auth($con);
 if (!$validAuth->isAuthenticated()) {
-    header("Location: " . BASE_URL . "user/login.php");
+    header("Location: " . (defined('BASE_URL') ? BASE_URL : '/') . "user/login.php");
     exit();
 }
 
+// --- busca foto no banco com checagem de erros ---
+$foto_perfil = null;
 $sql = "SELECT foto_perfil FROM user WHERE iduser = ?";
 $stmt = $con->prepare($sql);
-$stmt->bind_param("i", $user_id);  
-$stmt->execute();
-
-$result = $stmt->get_result(); 
-$usuario = $result->fetch_assoc(); 
-
-if ($usuario) {
-    $foto_perfil = $usuario['foto_perfil'] ? $usuario['foto_perfil'] : 'uploads/default.png';
-    $foto_perfil = "../" . $foto_perfil;
+if (!$stmt) {
+    // debug útil: mostre o erro do prepare
+    error_log("Prepare failed: " . $con->error);
+    // fallback para imagem padrão
+    $foto_perfil = (defined('BASE_URL') ? BASE_URL : '') . "uploads/default.png";
 } else {
-    $foto_perfil = 'uploads/default.png';
+    $stmt->bind_param("i", $user_id);
+    if (!$stmt->execute()) {
+        error_log("Execute failed: " . $stmt->error);
+        $foto_perfil = (defined('BASE_URL') ? BASE_URL : '') . "uploads/default.png";
+    } else {
+        $result = $stmt->get_result();
+        if ($result && $usuario = $result->fetch_assoc()) {
+            // espera-se que no banco esteja armazenado algo como: uploads/nome.jpg
+            if (!empty($usuario['foto_perfil'])) {
+                // garante URL absoluta para funcionar dentro de /public/
+                $foto_perfil = (defined('BASE_URL') ? BASE_URL : '') . $usuario['foto_perfil'];
+            } else {
+                $foto_perfil = (defined('BASE_URL') ? BASE_URL : '') . "uploads/default.png";
+            }
+        } else {
+            // sem resultado para esse id
+            $foto_perfil = (defined('BASE_URL') ? BASE_URL : '') . "uploads/default.png";
+        }
+    }
+    $stmt->close();
 }
+
+// DEBUG — remova depois de testar
+// echo "<!-- foto_perfil gerada: " . htmlspecialchars($foto_perfil) . " -->";
+
 ?>
 
 
@@ -142,7 +175,7 @@ if ($usuario) {
             <label>Nome:</label>
             <input type="text" value="<?= $_SESSION['nome_user']?>" />
             <label>Telefone:</label>
-            <input type="tel" value="<?= $_SESSION['user_phone']?>" />
+            <input type="tel" value="<?= $_SESSION['phone'];?>" />
             <label>Email:</label>
             <input type="email" value="<?= $_SESSION['email_user']?>" />
         </div>

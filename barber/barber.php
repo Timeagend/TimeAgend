@@ -1,9 +1,60 @@
 <?php 
+// session_start();
 
+include_once 'metricas.php';
 include_once '../config/url.php';
-include_once '../config/conection.php';
+require_once '../config/conection.php';
 
+
+// Barbeiro logado
+$idBarbeiro = $_SESSION['idbarbeiro'] ?? null;
+if (!$idBarbeiro) {
+    die("Barbeiro não logado");
+}
+
+// 1. Agendamentos de hoje
+$sqlHoje = "SELECT COUNT(*) AS total 
+FROM agendamento 
+WHERE DATE(data) = CURDATE() 
+AND idbarbeiro = ?";
+$stmt = $con->prepare($sqlHoje);
+$stmt->bind_param("i", $idBarbeiro);
+$stmt->execute();
+$resHoje = $stmt->get_result()->fetch_assoc()['total'];
+
+// 2. Agendamentos da semana
+$sqlSemana = "SELECT COUNT(*) AS total 
+FROM agendamento 
+WHERE YEARWEEK(data, 1) = YEARWEEK(CURDATE(), 1)
+AND idbarbeiro = ?";
+$stmt = $con->prepare($sqlSemana);
+$stmt->bind_param("i", $idBarbeiro);
+$stmt->execute();
+$resSemana = $stmt->get_result()->fetch_assoc()['total'];
+
+// 3. Clientes totais (distintos que agendaram com esse barbeiro)
+$sqlClientes = "SELECT COUNT(DISTINCT iduser) AS total 
+FROM agendamento 
+WHERE idbarbeiro = ?";
+$stmt = $con->prepare($sqlClientes);
+$stmt->bind_param("i", $idBarbeiro);
+$stmt->execute();
+$resClientes = $stmt->get_result()->fetch_assoc()['total'];
+
+// 4. Faturamento do mês (somente agendamentos confirmados)
+$sqlFaturamento = "SELECT SUM(valor_final) AS total 
+FROM agendamento 
+WHERE MONTH(data) = MONTH(CURDATE()) 
+AND YEAR(data) = YEAR(CURDATE())
+AND idbarbeiro = ?
+AND status = 'confirmado'";
+$stmt = $con->prepare($sqlFaturamento);
+$stmt->bind_param("i", $idBarbeiro);
+$stmt->execute();
+$resFaturamento = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -300,6 +351,60 @@ include_once '../config/conection.php';
             color: white;
             border-color: #4f46e5;
         }
+        
+        /* Calendar styles */
+        .calendar-day {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .calendar-day.other-month {
+            color: #d1d5db;
+        }
+        
+        .calendar-day.today {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .calendar-day.selected {
+            background-color: #6366f1;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .calendar-day.has-appointments {
+            position: relative;
+        }
+        
+        .calendar-day.has-appointments::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #10b981;
+            border-radius: 50%;
+        }
+        
+        .calendar-day.today.has-appointments::after {
+            background-color: #fbbf24;
+        }
     </style>
 </head>
 <body>
@@ -311,16 +416,16 @@ include_once '../config/conection.php';
                     <div class="flex items-center">
                         <div class="flex-shrink-0 flex items-center">
                             <i class="fas fa-cut text-indigo-600 text-2xl mr-2"></i>
-                            <span class="font-bold text-xl text-gray-800">TimeAgend</span>
+                            <span class="font-bold text-xl text-gray-800">BarberPro</span>
                         </div>
                     </div>
                     <div class="flex items-center">
                         <div class="relative">
                             <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
                                 <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
-                                    <span>MB</span>
+                                    <span>a</span>
                                 </div>
-                                <span class="hidden md:block font-medium text-gray-700">Miguel Barbeiro</span>
+                                <span class="hidden md:block font-medium text-gray-700"><?= htmlspecialchars($_SESSION['nome_barbeiro'] ?? 'Barbeiro') ?></span>
                                 <i class="fas fa-chevron-down text-xs text-gray-500"></i>
                             </button>
                         </div>
@@ -333,8 +438,8 @@ include_once '../config/conection.php';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Welcome Section -->
             <div class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Olá, Miguel!</h1>
-                <p class="text-gray-600">Bem-vindo ao seu dashboard. Você tem <span class="font-semibold text-indigo-600">8 agendamentos</span> para hoje.</p>
+                <h1 class="text-2xl font-bold text-gray-800"><?= htmlspecialchars($_SESSION['nome_barbeiro'] ?? 'Barbeiro') ?></h1>
+                <p class="text-gray-600">Bem-vindo ao seu dashboard. Você tem <span class="font-semibold text-indigo-600"><?= $resHoje ?> agendamentos</span> para hoje.</p>
             </div>
 
             <!-- Stats Cards -->
@@ -343,7 +448,7 @@ include_once '../config/conection.php';
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Agendamentos Hoje</p>
-                            <p class="text-2xl font-bold text-gray-800">8</p>
+                            <p class="text-2xl font-bold text-gray-800"><?= $resHoje ?></p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
                             <i class="fas fa-calendar-day text-indigo-600"></i>
@@ -351,7 +456,7 @@ include_once '../config/conection.php';
                     </div>
                     <div class="mt-4">
                         <span class="text-green-500 text-sm font-medium">
-                            <i class="fas fa-arrow-up mr-1"></i> 12%
+                            <i class="fas fa-arrow-up mr-1"></i> <?= number_format($percHoje, 1) ?>%
                         </span>
                         <span class="text-gray-500 text-sm ml-2">desde ontem</span>
                     </div>
@@ -361,7 +466,7 @@ include_once '../config/conection.php';
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Agendamentos Semana</p>
-                            <p class="text-2xl font-bold text-gray-800">42</p>
+                            <p class="text-2xl font-bold text-gray-800"><?= $resSemana ?></p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
                             <i class="fas fa-calendar-week text-amber-600"></i>
@@ -369,7 +474,7 @@ include_once '../config/conection.php';
                     </div>
                     <div class="mt-4">
                         <span class="text-green-500 text-sm font-medium">
-                            <i class="fas fa-arrow-up mr-1"></i> 8%
+                            <i class="fas fa-arrow-up mr-1"></i> <?= number_format($percSemana, 1) ?>%
                         </span>
                         <span class="text-gray-500 text-sm ml-2">desde semana passada</span>
                     </div>
@@ -379,7 +484,7 @@ include_once '../config/conection.php';
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Clientes Totais</p>
-                            <p class="text-2xl font-bold text-gray-800">187</p>
+                            <p class="text-2xl font-bold text-gray-800"><?= $resClientes ?></p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
                             <i class="fas fa-users text-emerald-600"></i>
@@ -387,7 +492,7 @@ include_once '../config/conection.php';
                     </div>
                     <div class="mt-4">
                         <span class="text-green-500 text-sm font-medium">
-                            <i class="fas fa-arrow-up mr-1"></i> 5%
+                            <i class="fas fa-arrow-up mr-1"></i> <?= number_format($percClientes, 1) ?>%
                         </span>
                         <span class="text-gray-500 text-sm ml-2">desde mês passado</span>
                     </div>
@@ -397,7 +502,7 @@ include_once '../config/conection.php';
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Faturamento Mensal</p>
-                            <p class="text-2xl font-bold text-gray-800">R$ 4.250</p>
+                            <p class="text-2xl font-bold text-gray-800">R$ <?= number_format($resFaturamento ?? 0, 2, ',', '.') ?></p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center">
                             <i class="fas fa-wallet text-rose-600"></i>
@@ -405,7 +510,7 @@ include_once '../config/conection.php';
                     </div>
                     <div class="mt-4">
                         <span class="text-green-500 text-sm font-medium">
-                            <i class="fas fa-arrow-up mr-1"></i> 10%
+                            <i class="fas fa-arrow-up mr-1"></i> <?= number_format($percFaturamento, 1) ?>%
                         </span>
                         <span class="text-gray-500 text-sm ml-2">desde mês passado</span>
                     </div>
@@ -419,11 +524,16 @@ include_once '../config/conection.php';
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-lg font-bold text-gray-800">Agendamentos de Hoje</h2>
+                            <div id="listaAgendamentos" class="mt-4"></div>
+
                             <div class="flex space-x-2">
                                 <button id="prevDay" class="p-2 rounded-full hover:bg-gray-100">
                                     <i class="fas fa-chevron-left text-gray-600"></i>
                                 </button>
-                                <span class="flex items-center font-medium">15 de Maio, 2023</span>
+                                <button id="currentDate" class="flex items-center font-medium px-3 py-1 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                    <span id="dateDisplay"></span>
+                                    <i class="fas fa-calendar-alt ml-2 text-gray-500"></i>
+                                </button>
                                 <button id="nextDay" class="p-2 rounded-full hover:bg-gray-100">
                                     <i class="fas fa-chevron-right text-gray-600"></i>
                                 </button>
@@ -431,48 +541,49 @@ include_once '../config/conection.php';
                         </div>
 
                         <div class="space-y-4" id="appointments-container">
-                            <div class="appointment-card appointment-confirmed bg-white rounded-lg p-4 shadow-sm" data-id="1" data-status="confirmed">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                                            <span class="font-medium text-blue-600">JC</span>
+                            <?php foreach ($agendamentos as $a): ?>
+                                <div class="appointment-card appointment-confirmed bg-white rounded-lg p-4 shadow-sm" data-id="1" data-status="confirmed">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <span class="font-medium text-blue-600"><?= $a['iniciais'] ?></span>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800"><?= $a['cliente']?></h3>
+                                                <p class="text-sm text-gray-500"><?= $a['servico']?></p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h3 class="font-medium text-gray-800">João Costa</h3>
-                                            <p class="text-sm text-gray-500">Corte + Barba</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right flex items-center">
-                                        <p class="font-medium text-gray-800 mr-4">09:00 - 09:45</p>
-                                        <div class="status-dropdown">
-                                            <button class="status-toggle inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                <span class="status-text">Confirmado</span>
-                                                <i class="fas fa-chevron-down ml-1"></i>
-                                            </button>
-                                            <div class="status-dropdown-content">
-                                                <div class="status-option" data-status="pending">
-                                                    <span class="status-dot bg-amber-500"></span>
-                                                    <span>Pendente</span>
-                                                </div>
-                                                <div class="status-option" data-status="confirmed">
-                                                    <span class="status-dot bg-green-500"></span>
-                                                    <span>Confirmado</span>
-                                                </div>
-                                                <div class="status-option" data-status="completed">
-                                                    <span class="status-dot bg-indigo-500"></span>
-                                                    <span>Concluído</span>
-                                                </div>
-                                                <div class="status-option" data-status="cancelled">
-                                                    <span class="status-dot bg-red-500"></span>
-                                                    <span>Cancelado</span>
+                                        <div class="text-right flex items-center">
+                                            <p class="font-medium text-gray-800 mr-4"><?= $a['horario'] ?></p>
+                                            <div class="status-dropdown">
+                                                <button class="status-toggle inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <span class="status-text">Confirmado</span>
+                                                    <i class="fas fa-chevron-down ml-1"></i>
+                                                </button>
+                                                <div class="status-dropdown-content">
+                                                    <div class="status-option" data-status="pending">
+                                                        <span class="status-dot bg-amber-500"></span>
+                                                        <span>Pendente</span>
+                                                    </div>
+                                                    <div class="status-option" data-status="confirmed">
+                                                        <span class="status-dot bg-green-500"></span>
+                                                        <span>Confirmado</span>
+                                                    </div>
+                                                    <div class="status-option" data-status="completed">
+                                                        <span class="status-dot bg-indigo-500"></span>
+                                                        <span>Concluído</span>
+                                                    </div>
+                                                    <div class="status-option" data-status="cancelled">
+                                                        <span class="status-dot bg-red-500"></span>
+                                                        <span>Cancelado</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="appointment-card appointment-pending bg-white rounded-lg p-4 shadow-sm" data-id="2" data-status="pending">
+                            <?php endforeach; ?>
+                            <!-- <div class="appointment-card appointment-pending bg-white rounded-lg p-4 shadow-sm" data-id="2" data-status="pending">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
@@ -511,9 +622,9 @@ include_once '../config/conection.php';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="appointment-card appointment-confirmed bg-white rounded-lg p-4 shadow-sm" data-id="3" data-status="confirmed">
+                            </div> -->
+                            
+                            <!-- <div class="appointment-card appointment-confirmed bg-white rounded-lg p-4 shadow-sm" data-id="3" data-status="confirmed">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
@@ -552,9 +663,9 @@ include_once '../config/conection.php';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="appointment-card appointment-completed bg-white rounded-lg p-4 shadow-sm" data-id="4" data-status="completed">
+                            <!-- <div class="appointment-card appointment-completed bg-white rounded-lg p-4 shadow-sm" data-id="4" data-status="completed">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
@@ -593,9 +704,9 @@ include_once '../config/conection.php';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="appointment-card appointment-cancelled bg-white rounded-lg p-4 shadow-sm" data-id="5" data-status="cancelled">
+                            <!-- <div class="appointment-card appointment-cancelled bg-white rounded-lg p-4 shadow-sm" data-id="5" data-status="cancelled">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-3">
@@ -634,7 +745,7 @@ include_once '../config/conection.php';
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="mt-6 text-center">
@@ -646,7 +757,7 @@ include_once '../config/conection.php';
                     </div>
 
                     <!-- Weekly Performance -->
-                    <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div id="desempenho-semanal" class="bg-white rounded-lg shadow-sm p-6">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-lg font-bold text-gray-800">Desempenho Semanal</h2>
                             <select class="text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
@@ -656,46 +767,114 @@ include_once '../config/conection.php';
                             </select>
                         </div>
 
-                        <div class="chart-container mb-4">
-                            <div class="bar" style="left: 5%; height: 65%;" data-value="13"></div>
-                            <div class="bar" style="left: 15%; height: 80%;" data-value="16"></div>
-                            <div class="bar" style="left: 25%; height: 45%;" data-value="9"></div>
-                            <div class="bar" style="left: 35%; height: 90%;" data-value="18"></div>
-                            <div class="bar" style="left: 45%; height: 75%;" data-value="15"></div>
-                            <div class="bar" style="left: 55%; height: 60%;" data-value="12"></div>
-                            <div class="bar" style="left: 65%; height: 85%;" data-value="17"></div>
-                            <div class="bar" style="left: 75%; height: 40%;" data-value="8"></div>
-                            <div class="bar" style="left: 85%; height: 70%;" data-value="14"></div>
-                        </div>
+                       <!-- GRÁFICO DE DESEMPENHO SEMANAL -->
+<div id="barras-semana" class="chart-container mb-4"></div>
+
+<style>
+.chart-container {
+    display: flex;               /* barras lado a lado */
+    align-items: flex-end;       /* barras crescem de baixo para cima */
+    justify-content: space-between;
+    height: 160px;               /* altura total do gráfico */
+    padding: 10px 20px;
+    gap: 8px;                    /* espaçamento entre as barras */
+    background-color: #f9fafb;   /* leve contraste de fundo */
+    border-radius: 8px;
+}
+
+/* estilo das barras */
+.bar {
+    flex: 1;                     /* todas as barras têm o mesmo tamanho base */
+    max-width: 60px;             /* limite opcional */
+    background-color: #6366f1;   /* Indigo-500 */
+    border-radius: 6px;
+    transition: height 0.8s ease;
+}
+
+/* impede qualquer CSS antigo de interferir */
+.bar, .chart-container .bar {
+    position: relative !important;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dadosSemana = <?= json_encode(array_values($porcentagens)) ?>;
+    console.log("Dados recebidos:", dadosSemana);
+
+    const container = document.getElementById('barras-semana');
+    container.innerHTML = ''; // limpa antes de criar
+
+    dadosSemana.forEach((valor, i) => {
+        const altura = Number(valor) || 0;
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+        bar.style.height = altura + '%';
+        bar.title = altura + '%';
+        container.appendChild(bar);
+    });
+});
+</script>
+
 
                         <div class="flex justify-between text-xs text-gray-500 px-4">
+                            <span>Dom</span>
                             <span>Seg</span>
                             <span>Ter</span>
                             <span>Qua</span>
                             <span>Qui</span>
                             <span>Sex</span>
                             <span>Sáb</span>
-                            <span>Dom</span>
                         </div>
 
                         <div class="mt-6 grid grid-cols-2 gap-4">
                             <div class="bg-indigo-50 rounded-lg p-4">
                                 <p class="text-sm font-medium text-indigo-800">Total de Agendamentos</p>
-                                <p class="text-2xl font-bold text-indigo-900">42</p>
+                                <p class="text-2xl font-bold text-indigo-900"><?= number_format($resSemana) ?></p>
                                 <p class="text-xs text-indigo-700 mt-1">
-                                    <i class="fas fa-arrow-up mr-1"></i> 8% desde semana passada
+                                    <i class="fas fa-arrow-up mr-1"></i> <?= number_format($percSemana, 1) ?>% desde semana passada
                                 </p>
                             </div>
                             <div class="bg-emerald-50 rounded-lg p-4">
                                 <p class="text-sm font-medium text-emerald-800">Taxa de Conclusão</p>
-                                <p class="text-2xl font-bold text-emerald-900">92%</p>
+                                <p class="text-2xl font-bold text-emerald-900"><?= number_format($taxaConclusao, 1) ?>%</p>
                                 <p class="text-xs text-emerald-700 mt-1">
-                                    <i class="fas fa-arrow-up mr-1"></i> 3% desde semana passada
+                                    <i class="fas fa-arrow-up mr-1"></i> <?= number_format($taxaConclusaoSemana, 1) ?>% desde semana passada
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <script>
+         const dadosSemana = <?= json_encode(array_values($porcentagens)) ?>;
+// Retorna um array como [20, 35, 15, 10, 8, 7, 5] por exemplo
+</script>
+<!-- <script>
+const container = document.getElementById('barras-semana');
+container.innerHTML = '';
+
+dadosSemana.forEach((valor, i) => {
+    const bar = document.createElement('div');
+    bar.classList.add('bar', 'bg-indigo-500', 'rounded-md');
+    bar.style.height = valor + '%';
+    bar.style.width = '8%';
+    bar.style.transition = 'height 0.8s ease';
+    bar.setAttribute('title', valor + '%');
+    container.appendChild(bar);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dadosSemana = <?= json_encode(array_values($porcentagens)) ?>;
+    console.log("Dados recebidos:", dadosSemana);
+});
+</script> -->
+
+<style>
+    
+</style>
+
+
+
 
                 <!-- Right Column - Clients & Services -->
                 <div>
@@ -705,74 +884,24 @@ include_once '../config/conection.php';
                             <h2 class="text-lg font-bold text-gray-800">Clientes Recentes</h2>
                             <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Ver Todos</button>
                         </div>
+                        <?php foreach($firstTree as $a): ?>
+                            <div class="space-y-4" id="clients-list">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                        <span class="font-medium text-blue-600"><?= $a['iniciais'] ?></span>
 
-                        <div class="space-y-4" id="clients-list">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                                    <span class="font-medium text-blue-600">JC</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-800">João Costa</h3>
-                                    <p class="text-xs text-gray-500">Último serviço: Corte + Barba</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-500">15/05/23</span>
-                                </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <h3 class="font-medium text-gray-800"><?= $a['cliente']?></h3>
+                                            <p class="text-sm text-gray-500"><?= $a['servico']?></p>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
                             </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                                    <span class="font-medium text-amber-600">MS</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-800">Marcos Silva</h3>
-                                    <p class="text-xs text-gray-500">Último serviço: Corte Degradê</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-500">15/05/23</span>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
-                                    <span class="font-medium text-indigo-600">RL</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-800">Ricardo Lima</h3>
-                                    <p class="text-xs text-gray-500">Último serviço: Corte + Barba + Sobrancelha</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-500">15/05/23</span>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                                    <span class="font-medium text-purple-600">AF</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-800">André Ferreira</h3>
-                                    <p class="text-xs text-gray-500">Último serviço: Corte Simples</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-500">15/05/23</span>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                                    <span class="font-medium text-green-600">LM</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-medium text-gray-800">Lucas Mendes</h3>
-                                    <p class="text-xs text-gray-500">Último serviço: Barba</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-500">14/05/23</span>
-                                </div>
-                            </div>
-                        </div>
-
+                        <?php endforeach;?>
                         <div class="mt-6">
                             <button id="addClientBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">
                                 Adicionar Novo Cliente
@@ -781,7 +910,7 @@ include_once '../config/conection.php';
                     </div>
 
                     <!-- Popular Services -->
-                    <div class="bg-white rounded-lg shadow-sm p-6">
+                    <!-- <div class="bg-white rounded-lg shadow-sm p-6">
                         <h2 class="text-lg font-bold text-gray-800 mb-6">Serviços Populares</h2>
 
                         <div class="space-y-4">
@@ -841,12 +970,61 @@ include_once '../config/conection.php';
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Toast Notification -->
     <div id="toast" class="toast flex items-center">
         <i class="fas fa-check-circle mr-2"></i>
         <span id="toast-message">Status atualizado com sucesso!</span>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendarModal" class="modal-overlay">
+        <div class="modal">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-gray-800">Selecionar Data</h3>
+                    <button id="closeCalendarBtn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="calendar-container">
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="prevMonth" class="p-2 rounded-full hover:bg-gray-100">
+                            <i class="fas fa-chevron-left text-gray-600"></i>
+                        </button>
+                        <h4 id="monthYear" class="text-lg font-semibold text-gray-800"></h4>
+                        <button id="nextMonth" class="p-2 rounded-full hover:bg-gray-100">
+                            <i class="fas fa-chevron-right text-gray-600"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1 mb-2">
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Dom</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Seg</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Ter</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Qua</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Qui</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Sex</div>
+                        <div class="text-center text-sm font-medium text-gray-500 py-2">Sáb</div>
+                    </div>
+                    
+                    <div id="calendarDays" class="grid grid-cols-7 gap-1">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button id="todayBtn" class="px-4 py-2 text-indigo-600 hover:text-indigo-800 font-medium">
+                        Hoje
+                    </button>
+                    <button id="cancelCalendarBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 font-medium">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Add Client Modal -->
@@ -877,7 +1055,27 @@ include_once '../config/conection.php';
                             <label for="clientEmail">Email (opcional)</label>
                         </div>
                         
-                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Serviços Preferidos</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service1" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="service1" class="ml-2 text-sm text-gray-700">Corte Simples</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service2" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="service2" class="ml-2 text-sm text-gray-700">Corte Degradê</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service3" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="service3" class="ml-2 text-sm text-gray-700">Barba</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service4" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="service4" class="ml-2 text-sm text-gray-700">Sobrancelha</label>
+                                </div>
+                            </div>
+                        </div>
                         
                         <!-- Appointment Section -->
                         <div class="appointment-section">
@@ -954,6 +1152,122 @@ include_once '../config/conection.php';
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Current date management
+            let currentDate = new Date();
+            let selectedDate = new Date();
+            
+            // Sample appointments data for different dates
+            const appointmentsData = {
+                '2025-10-20': [
+                    { id: 1, name: 'João Costa', initials: 'JC', service: 'Corte + Barba', time: '09:00', endTime: '09:45', status: 'confirmed', color: 'blue' },
+                    { id: 2, name: 'Marcos Silva', initials: 'MS', service: 'Corte Degradê', time: '10:00', endTime: '10:30', status: 'pending', color: 'amber' },
+                    { id: 3, name: 'Ricardo Lima', initials: 'RL', service: 'Corte + Barba + Sobrancelha', time: '11:00', endTime: '12:00', status: 'confirmed', color: 'indigo' },
+                    { id: 4, name: 'André Ferreira', initials: 'AF', service: 'Corte Simples', time: '13:30', endTime: '14:00', status: 'completed', color: 'purple' },
+                    { id: 5, name: 'Paulo Oliveira', initials: 'PO', service: 'Barba', time: '15:00', endTime: '15:30', status: 'cancelled', color: 'red' }
+                ],
+                '2025-10-21': [
+                    { id: 6, name: 'Carlos Santos', initials: 'CS', service: 'Corte + Barba', time: '09:30', endTime: '10:15', status: 'confirmed', color: 'green' },
+                    { id: 7, name: 'Fernando Lima', initials: 'FL', service: 'Corte Degradê', time: '14:00', endTime: '14:30', status: 'pending', color: 'blue' }
+                ],
+                '2025-10-22': [
+                    { id: 11, name: 'Gabriel Silva', initials: 'GS', service: 'Corte + Barba', time: '08:30', endTime: '09:15', status: 'confirmed', color: 'violet' },
+                    { id: 12, name: 'Mateus Rocha', initials: 'MR', service: 'Corte Degradê', time: '09:30', endTime: '10:00', status: 'confirmed', color: 'emerald' },
+                    { id: 13, name: 'Vinicius Nunes', initials: 'VN', service: 'Barba', time: '10:30', endTime: '10:50', status: 'pending', color: 'sky' },
+                    { id: 14, name: 'Bruno Fernandes', initials: 'BF', service: 'Corte + Barba + Sobrancelha', time: '14:00', endTime: '15:00', status: 'confirmed', color: 'red' },
+                    { id: 15, name: 'Lucas Mendes', initials: 'LM', service: 'Corte Simples', time: '15:30', endTime: '16:00', status: 'pending', color: 'green' },
+                    { id: 16, name: 'Rafael Santos', initials: 'RS', service: 'Barba', time: '16:30', endTime: '16:50', status: 'confirmed', color: 'orange' }
+                ],
+                '2025-10-23': [
+                    { id: 17, name: 'Pedro Oliveira', initials: 'PO', service: 'Corte + Barba', time: '09:00', endTime: '09:45', status: 'confirmed', color: 'pink' },
+                    { id: 18, name: 'Henrique Lima', initials: 'HL', service: 'Corte Degradê', time: '10:00', endTime: '10:30', status: 'confirmed', color: 'teal' },
+                    { id: 19, name: 'Gustavo Costa', initials: 'GC', service: 'Corte Simples', time: '11:00', endTime: '11:30', status: 'pending', color: 'lime' },
+                    { id: 20, name: 'Felipe Alves', initials: 'FA', service: 'Barba', time: '13:30', endTime: '13:50', status: 'confirmed', color: 'cyan' },
+                    { id: 21, name: 'Eduardo Silva', initials: 'ES', service: 'Corte + Barba', time: '15:00', endTime: '15:45', status: 'pending', color: 'indigo' }
+                ],
+                '2025-10-24': [
+                    { id: 22, name: 'Rodrigo Mendes', initials: 'RM', service: 'Corte Degradê', time: '08:00', endTime: '08:30', status: 'confirmed', color: 'purple' },
+                    { id: 23, name: 'Leandro Rocha', initials: 'LR', service: 'Corte + Barba + Sobrancelha', time: '09:00', endTime: '10:00', status: 'confirmed', color: 'amber' },
+                    { id: 24, name: 'Marcelo Nunes', initials: 'MN', service: 'Barba', time: '10:30', endTime: '10:50', status: 'pending', color: 'blue' },
+                    { id: 25, name: 'Juliano Fernandes', initials: 'JF', service: 'Corte Simples', time: '14:00', endTime: '14:30', status: 'confirmed', color: 'emerald' },
+                    { id: 26, name: 'Alexandre Santos', initials: 'AS', service: 'Corte + Barba', time: '16:00', endTime: '16:45', status: 'confirmed', color: 'rose' }
+                ],
+                '2025-10-25': [
+                    { id: 27, name: 'Daniel Lima', initials: 'DL', service: 'Corte Degradê', time: '09:30', endTime: '10:00', status: 'confirmed', color: 'violet' },
+                    { id: 28, name: 'Fabio Costa', initials: 'FC', service: 'Barba', time: '10:30', endTime: '10:50', status: 'pending', color: 'orange' },
+                    { id: 29, name: 'Renato Alves', initials: 'RA', service: 'Corte + Barba', time: '11:30', endTime: '12:15', status: 'confirmed', color: 'sky' },
+                    { id: 30, name: 'Sergio Silva', initials: 'SS', service: 'Corte Simples', time: '15:00', endTime: '15:30', status: 'confirmed', color: 'green' },
+                    { id: 31, name: 'Antonio Mendes', initials: 'AM', service: 'Corte + Barba + Sobrancelha', time: '16:30', endTime: '17:30', status: 'pending', color: 'red' }
+                ]
+            };
+            const container = document.getElementById('appointments-container');
+            const dateDisplay = document.getElementById('dateDisplay');
+            const prevDay = document.getElementById('prevDay');
+            const nextDay = document.getElementById('nextDay');
+
+            let selectedDate = new Date(); // hoje por padrão
+
+            function formatDate(d){
+                return d.toISOString().split('T')[0]; // yyyy-mm-dd
+            }
+
+            function updateDateDisplay(){
+                dateDisplay.textContent = selectedDate.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+
+            async function carregarAgendamentos(){
+                const res = await fetch(`controlBarber.php?data=${formatDate(selectedDate)}`);
+                const agendamentos = await res.json();
+                container.innerHTML = '';
+
+                agendamentos.forEach(a => {
+                    const iniciais = a.nome_cliente.split(' ').map(n => n[0]).join('').toUpperCase();
+                    let cores = ['blue','amber','indigo','purple','green','rose','teal','orange','cyan','lime','pink','violet','emerald','sky','red'];
+                    let cor = cores[Math.floor(Math.random() * cores.length)];
+
+                    const card = document.createElement('div');
+                    card.classList.add('appointment-card', 'bg-white', 'rounded-lg', 'p-4', 'shadow-sm');
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-${cor}-100 flex items-center justify-center mr-3">
+                                    <span class="font-medium text-${cor}-600">${iniciais}</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">${a.nome_cliente}</h3>
+                                    <p class="text-sm text-gray-500">${a.nome_servico}</p>
+                                </div>
+                            </div>
+                            <div class="text-right flex flex-col items-end">
+                                <p class="font-medium text-gray-800">${a.horario}</p>
+                                <span class="status-text text-xs text-gray-500">${a.status.charAt(0).toUpperCase() + a.status.slice(1)}</span>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            prevDay.addEventListener('click', () => {
+                selectedDate.setDate(selectedDate.getDate() - 1);
+                updateDateDisplay();
+                carregarAgendamentos();
+            });
+
+            nextDay.addEventListener('click', () => {
+                selectedDate.setDate(selectedDate.getDate() + 1);
+                updateDateDisplay();
+                carregarAgendamentos();
+            });
+
+            // Inicializa
+            updateDateDisplay();
+            carregarAgendamentos();
+
+            // Initialize with today's date (October 22, 2025)
+            selectedDate = new Date(2025, 9, 22); // Month is 0-indexed, so 9 = October
+            updateDateDisplay();
+            loadAppointments();
+            
             // Set min date for appointment to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('appointmentDate').min = today;
@@ -971,16 +1285,164 @@ include_once '../config/conection.php';
                 });
             }, 300);
 
+            // Date display and navigation functions
+            function updateDateDisplay() {
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                const dateString = selectedDate.toLocaleDateString('pt-BR', options);
+                const formattedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+                document.getElementById('dateDisplay').textContent = formattedDate;
+            }
+            
+            function loadAppointments() {
+                const dateKey = selectedDate.toISOString().split('T')[0]; // Data selecionada (ex: 2025-11-09)
+    const container = document.getElementById('appointments-container');
+
+    // Requisição ao servidor (AJAX) para buscar os agendamentos dessa data
+    fetch(`buscar_agendamentos.php?data=${dateKey}`)
+        .then(response => response.json())
+        .then(appointments => {
+            if (!appointments || appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-calendar-times text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Nenhum agendamento para esta data</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Montar HTML dos agendamentos
+            container.innerHTML = appointments.map(a => `
+                <div class="appointment-card bg-white rounded-lg p-4 shadow-sm" data-id="${a.id}" data-status="${a.status}">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <span class="font-medium text-blue-600">${a.cliente_iniciais}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">${a.cliente_nome}</h3>
+                                <p class="text-sm text-gray-500">${a.servico}</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex items-center">
+                            <p class="font-medium text-gray-800 mr-4">${a.horario_inicio} - ${a.horario_fim}</p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(a.status)}">
+                                ${a.status.charAt(0).toUpperCase() + a.status.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(err => {
+            console.error('Erro ao carregar agendamentos:', err);
+            container.innerHTML = `
+                <div class="text-center py-8">
+                    <p class="text-red-500">Erro ao carregar agendamentos.</p>
+                </div>
+            `;
+        });
+}
+
+// Função auxiliar para classes de status
+function getStatusClass(status) {
+    switch (status) {
+        case 'confirmado': return 'bg-green-100 text-green-800';
+        case 'pendente': return 'bg-amber-100 text-amber-800';
+        case 'concluido': return 'bg-indigo-100 text-indigo-800';
+        case 'cancelado': return 'bg-red-100 text-red-800';
+        default: return 'bg-gray-100 text-gray-800';
+    }
+                
+                container.innerHTML = appointments.map(a => {
+    // Cores padrão (pode personalizar se quiser aleatórias)
+    const color = { bg: 'bg-blue-100', text: 'text-blue-600' };
+
+    // Classes de status (batendo com o banco)
+    const statusClasses = {
+        pendente: { bg: 'bg-amber-100', text: 'text-amber-800', label: 'Pendente' },
+        confirmado: { bg: 'bg-green-100', text: 'text-green-800', label: 'Confirmado' },
+        concluido: { bg: 'bg-indigo-100', text: 'text-indigo-800', label: 'Concluído' },
+        cancelado: { bg: 'bg-red-100', text: 'text-red-800', label: 'Cancelado' }
+    };
+
+    const status = statusClasses[a.status] || statusClasses['pendente'];
+    const initials = a.tipo_servico ? a.tipo_servico.charAt(0).toUpperCase() : '?';
+
+    return `
+        <div class="appointment-card appointment-${a.status} bg-white rounded-lg p-4 shadow-sm mb-3" 
+             data-id="${a.id}" data-status="${a.status}">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full ${color.bg} flex items-center justify-center mr-3">
+                        <span class="font-medium ${color.text}">${initials}</span>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">${a.tipo_servico}</h3>
+                        <p class="text-sm text-gray-500">${a.profissional}</p>
+                    </div>
+                </div>
+                <div class="text-right flex items-center">
+                    <p class="font-medium text-gray-800 mr-4">${a.horario}</p>
+                    <div class="status-dropdown">
+                        <button class="status-toggle inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.bg} ${status.text}">
+                            <span class="status-text">${status.label}</span>
+                            <i class="fas fa-chevron-down ml-1"></i>
+                        </button>
+                        <div class="status-dropdown-content">
+                            <div class="status-option" data-status="pendente">
+                                <span class="status-dot bg-amber-500"></span>
+                                <span>Pendente</span>
+                            </div>
+                            <div class="status-option" data-status="confirmado">
+                                <span class="status-dot bg-green-500"></span>
+                                <span>Confirmado</span>
+                            </div>
+                            <div class="status-option" data-status="concluido">
+                                <span class="status-dot bg-indigo-500"></span>
+                                <span>Concluído</span>
+                            </div>
+                            <div class="status-option" data-status="cancelado">
+                                <span class="status-dot bg-red-500"></span>
+                                <span>Cancelado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}).join('');
+
+// Reanexa os eventos de dropdown, se existir essa função
+attachStatusDropdownListeners();
+            }
+            
             // Date navigation
             const prevDayBtn = document.getElementById('prevDay');
             const nextDayBtn = document.getElementById('nextDay');
+            const currentDateBtn = document.getElementById('currentDate');
             
             prevDayBtn.addEventListener('click', function() {
-                alert('Navegando para o dia anterior');
+                selectedDate.setDate(selectedDate.getDate() - 1);
+                updateDateDisplay();
+                loadAppointments();
             });
             
             nextDayBtn.addEventListener('click', function() {
-                alert('Navegando para o próximo dia');
+                selectedDate.setDate(selectedDate.getDate() + 1);
+                updateDateDisplay();
+                loadAppointments();
+            });
+            
+            currentDateBtn.addEventListener('click', function() {
+                document.getElementById('calendarModal').classList.add('active');
+                generateCalendar();
             });
 
             // Profile dropdown
@@ -989,37 +1451,138 @@ include_once '../config/conection.php';
                 alert('Menu de perfil');
             });
 
-            // Status dropdown functionality
-            const statusToggles = document.querySelectorAll('.status-toggle');
+            // Calendar modal functionality
+            let calendarDate = new Date();
             
-            // Close all dropdowns when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.status-dropdown')) {
-                    document.querySelectorAll('.status-dropdown-content').forEach(dropdown => {
-                        dropdown.classList.remove('show');
+            function generateCalendar() {
+                const monthNames = [
+                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                ];
+                
+                document.getElementById('monthYear').textContent = 
+                    `${monthNames[calendarDate.getMonth()]} ${calendarDate.getFullYear()}`;
+                
+                const firstDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+                const lastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 0);
+                const startDate = new Date(firstDay);
+                startDate.setDate(startDate.getDate() - firstDay.getDay());
+                
+                const calendarDays = document.getElementById('calendarDays');
+                calendarDays.innerHTML = '';
+                
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                for (let i = 0; i < 42; i++) {
+                    const currentDay = new Date(startDate);
+                    currentDay.setDate(startDate.getDate() + i);
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    dayElement.textContent = currentDay.getDate();
+                    
+                    // Check if day is in current month
+                    if (currentDay.getMonth() !== calendarDate.getMonth()) {
+                        dayElement.classList.add('other-month');
+                    }
+                    
+                    // Check if day is today
+                    if (currentDay.getTime() === today.getTime()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // Check if day is selected
+                    const selectedDateCopy = new Date(selectedDate);
+                    selectedDateCopy.setHours(0, 0, 0, 0);
+                    if (currentDay.getTime() === selectedDateCopy.getTime()) {
+                        dayElement.classList.add('selected');
+                    }
+                    
+                    // Check if day has appointments
+                    const dateKey = currentDay.toISOString().split('T')[0];
+                    if (appointmentsData[dateKey] && appointmentsData[dateKey].length > 0) {
+                        dayElement.classList.add('has-appointments');
+                    }
+                    
+                    // Add click event
+                    dayElement.addEventListener('click', function() {
+                        selectedDate = new Date(currentDay);
+                        updateDateDisplay();
+                        loadAppointments();
+                        document.getElementById('calendarModal').classList.remove('active');
                     });
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+            }
+            
+            // Calendar modal controls
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                calendarDate.setMonth(calendarDate.getMonth() - 1);
+                generateCalendar();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                calendarDate.setMonth(calendarDate.getMonth() + 1);
+                generateCalendar();
+            });
+            
+            document.getElementById('todayBtn').addEventListener('click', function() {
+                selectedDate = new Date();
+                calendarDate = new Date();
+                updateDateDisplay();
+                loadAppointments();
+                document.getElementById('calendarModal').classList.remove('active');
+            });
+            
+            document.getElementById('closeCalendarBtn').addEventListener('click', function() {
+                document.getElementById('calendarModal').classList.remove('active');
+            });
+            
+            document.getElementById('cancelCalendarBtn').addEventListener('click', function() {
+                document.getElementById('calendarModal').classList.remove('active');
+            });
+            
+            // Close calendar modal when clicking outside
+            document.getElementById('calendarModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
                 }
             });
+
+            // Status dropdown functionality - moved to separate function for reuse
+            function attachStatusDropdownListeners() {
+                const statusToggles = document.querySelectorAll('.status-toggle');
             
-            // Toggle dropdown on click
-            statusToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const dropdown = this.nextElementSibling;
-                    
-                    // Close all other dropdowns
-                    document.querySelectorAll('.status-dropdown-content').forEach(d => {
-                        if (d !== dropdown) d.classList.remove('show');
-                    });
-                    
-                    // Toggle this dropdown
-                    dropdown.classList.toggle('show');
+                // Close all dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.status-dropdown')) {
+                        document.querySelectorAll('.status-dropdown-content').forEach(dropdown => {
+                            dropdown.classList.remove('show');
+                        });
+                    }
                 });
-            });
-            
-            // Status change functionality
-            const statusOptions = document.querySelectorAll('.status-option');
-            statusOptions.forEach(option => {
+                
+                // Toggle dropdown on click
+                statusToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const dropdown = this.nextElementSibling;
+                        
+                        // Close all other dropdowns
+                        document.querySelectorAll('.status-dropdown-content').forEach(d => {
+                            if (d !== dropdown) d.classList.remove('show');
+                        });
+                        
+                        // Toggle this dropdown
+                        dropdown.classList.toggle('show');
+                    });
+                });
+                
+                // Status change functionality
+                const statusOptions = document.querySelectorAll('.status-option');
+                statusOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     const status = this.getAttribute('data-status');
                     const dropdown = this.closest('.status-dropdown');
@@ -1078,6 +1641,10 @@ include_once '../config/conection.php';
                     console.log(`Appointment ${appointmentId} status changed to ${status}`);
                 });
             });
+            }
+            
+            // Initial call to attach listeners
+            attachStatusDropdownListeners();
             
             // Add Client Modal functionality
             const addClientBtn = document.getElementById('addClientBtn');
@@ -1460,5 +2027,8 @@ include_once '../config/conection.php';
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'942038f976f38cdf',t:'MTc0NzYyMjM1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99c0325553a08dd8',t:'MTc2MjcyMTU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+
+</body>
 </html>

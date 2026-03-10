@@ -70,9 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancelar'], $_POST['i
     }
 
     // Junta data e hora do agendamento
-    $dataHoraAgendamento = new DateTime($agendamento['data'] . ' ' . $agendamento['horario']);
-    $agora = new DateTime();
+    // Cria DateTime corretamente
+    $dataHoraAgendamento = new DateTime(date('Y-m-d', strtotime($agendamento['data'])));
+    $dataHoraAgendamento->setTime(
+        (int)substr($agendamento['horario'], 0, 2),
+        (int)substr($agendamento['horario'], 3, 2),
+        (int)substr($agendamento['horario'], 6, 2) ?? 0
+    );
 
+    $agora = new DateTime();
+    
     // Define o limite de cancelamento (2h antes)
     $limiteCancelamento = clone $dataHoraAgendamento;
     $limiteCancelamento->sub(new DateInterval('PT2H'));
