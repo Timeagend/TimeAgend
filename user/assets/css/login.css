@@ -1,0 +1,470 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url(../../../img/Captura\ de\ tela\ 2024-10-12\ 153126.png);
+    background-repeat: no-repeat;
+    background-size: 1540px 750px;
+    background-position: center; /* Centraliza a imagem de fundo */
+    
+}
+
+main {
+    position: relative; /* Necessário para o uso de ::before */
+    width: 100vw; /* Largura total da tela */
+    height: 100vh; /* Altura total da tela */
+    
+}
+
+main::before {
+    content: ''; /* Necessário para gerar o pseudo-elemento */
+    position: absolute;
+    top: -16px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
+    z-index: -1;
+}
+ul {
+    list-style-type: none; /* Remove os marcadores da lista */
+    padding: 0;
+    margin: 0;
+}
+
+
+li{
+    text-decoration: none !important; /* Força a remoção do sublinhado */
+    color: inherit; /* Mantém a cor do link igual ao texto ao redor, opcional */
+    display: inline-block;
+    color: white;
+    padding: 40px;
+    position: relative;
+    left: 50px;
+    top: 20px;
+}
+
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 1000px;
+    top: 160px;
+}
+
+.login-box {
+    background-color: #ffffff; /* Fundo branco */
+    border-radius: 20px; /* Bordas arredondadas */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra da caixa */
+    padding: 50px; /* Espaçamento interno */
+    width: 320px; /* Largura da caixa de login */
+    height: 300PX;
+    padding-left: 30px;
+}
+
+.forgot-password {
+    color: #1c1c3b; /* Mudança para uma cor mais harmoniosa */
+    font-size: 14px;
+    display: block; /* Mantém a formatação de bloco para melhor controle */
+    text-align: right; /* Alinhamento à direita */
+    margin-top: -6px; /* Ajuste para aproximar do campo de senha */
+   
+    text-decoration: none; /* Remove sublinhado por padrão */
+}
+
+.forgot-password:hover {
+    text-decoration: underline; /* Adiciona sublinhado no hover */
+    color: #b0c43a; /* Muda a cor ao passar o mouse */
+}
+
+h2 {
+    text-align: center; /* Centraliza o título */
+    color: #1c1c3b; /* Cor do título */
+    margin-bottom: 20px; /* Espaçamento inferior */
+    position: relative;
+    top: -25px;
+    font-size: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px; /* Espaçamento entre os grupos de entrada */
+    
+}
+
+label {
+    display: block; /* Cada label ocupa uma linha */
+    margin-bottom: 10px; /* Espaçamento inferior */
+    color: #1c1c3b; /* Cor das labels */
+}
+
+input {
+    width: 100%; /* Largura total do campo */
+    padding: 12px; /* Espaçamento interno do campo */
+    border-radius: 18px; /* Bordas arredondadas do campo */
+    border: 1px solid #ddd; /* Borda do campo */
+    font-size: 14px; /* Tamanho da fonte */
+    background-color: #cecece;
+}
+
+button {
+    width: 50%; /* Largura total do botão */
+    padding: 10px; /* Espaçamento interno do botão */
+    background-color: #b0c43a; /* Cor do botão */
+    color: black; /* Cor do texto do botão */
+    border: none; /* Sem borda */
+    border-radius: 20px; /* Bordas arredondadas do botão */
+    font-size: 16px; /* Tamanho da fonte do botão */
+    cursor: pointer; /* Cursor pointer ao passar o mouse */
+    position: relative;
+    top: 45px;
+    left: 160px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.cadastre-se {
+    position: relative;
+    left: -85px;
+    top: 0px;
+}
+
+button:hover {
+    background-color: #afc43ab8; /* Cor ao passar o mouse */
+
+}
+
+p {
+    text-align: center; /* Centraliza o texto */
+    margin-top: 10px; /* Espaçamento superior */
+    position: relative;
+    top: 120px;
+    color: white;
+}
+
+a {
+    color: white; /* Cor do link */
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+a:hover {
+    text-decoration: underline; /* Sublinha ao passar o mouse */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.contact-info {
+    display: flex;
+    gap: 20px;
+    
+}
+
+.info-item {
+    text-align: center;
+}
+
+.info-item i {
+    font-size: 30px;
+    
+}
+
+p {
+    margin: 5px 0;
+}
+
+
+.icon-1{
+    position: absolute;
+    top: 535px;
+    left: 60px;
+}
+.icon-2{
+    position: absolute;
+    font-size: 30px;
+    top: 535px;
+    left: 440px;
+}
+.icon-3{
+    position: absolute;
+    top: 635px;
+    left: 60px;
+}
+.icon-4{
+    position: absolute;
+    top: 635px;
+    left: 440px;
+}
+
+
+
+
+.end1{
+position: absolute;
+top: 625px;
+left: 500px;
+
+
+}
+.end2{
+    position: absolute;
+    top: 650px;
+    left: 500px;
+}
+
+.tel1{
+    position: absolute;
+    left: 120px;
+    top: 525px;
+}
+.tel2{
+    position: absolute;
+    left: 120px;
+    top: 550px
+}
+.email1{
+    position: absolute;
+    left: 500px;
+    top: 525px;
+}
+.email2{
+ position: absolute;
+ left: 500px;
+ top: 550px;
+}
+
+.web1{
+ position: absolute;
+ left: 120px;
+ top: 625px;
+}
+.web2{
+position: absolute;
+left: 120px;
+top: 650px;
+}
+
+
+/* Modal Styles */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: -140px;
+    width: 100%;
+    height: 150%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto; /* Centraliza verticalmente */
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+/* Estilização dos campos de entrada */
+.input-groupy label{
+margin-bottom: 10px;
+}       
+           /* Estilização dos campos de entrada */
+.input-groupy input {
+    width: 95%; /* Largura total do campo */
+    padding: 12px 10px; /* Espaçamento interno do campo */
+    border-radius: 18px; /* Bordas arredondadas do campo */
+    border: 1px solid #ddd; /* Borda do campo */
+    font-size: 16px; /* Tamanho da fonte */
+    margin-bottom: 15px;
+    
+}
+
+/* Quando o campo está em foco (selecionado pelo usuário) */
+.input-groupy input:focus {
+    background-color: #e6e6e6; /* Cor de fundo ao focar no campo */
+    border-color: #b0c43a; /* Cor da borda ao focar */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+/* Placeholder (texto que aparece quando o campo está vazio) */
+.input-groupy input::placeholder {
+    color: #888; /* Cor do placeholder */
+    font-size: 14px; /* Tamanho do texto do placeholder */
+}
+        
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button {
+    width: 50%; /* Ajuste para ocupar toda a largura */
+    padding: 10px;
+    background-color: #b0c43a;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+ position: relative;
+ top: 5px;
+   left: 95px;
+}
+
+button:hover {
+    background-color: #afc43ab8;
+}
+    
+
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+    margin: 0;
+    padding: 0;
+    background-image: url(../../../img/Captura\ de\ tela\ 2024-10-12\ 153126.png);
+    background-repeat: no-repeat;
+    background-size: cover; /* cobre toda a tela */
+    background-position: center;
+    background-attachment: fixed; /* opcional: mantém fixa ao rolar */
+}
+ main::before {
+        top: 0; /* ajusta o topo no mobile */
+        bottom: 0; 
+       height: 106%;
+       width: 106%;
+    }
+    .container {
+        
+        position: relative;
+        left: 10px;
+        top: 200px;
+        margin: 0 auto;
+    
+        
+
+    }
+    .login-box {
+       
+       
+       
+        padding: 40px; /* Espaçamento interno */
+        width: 260px; /* Largura da caixa de login */
+        height: 260PX;
+        padding-left: 16px;
+        
+        
+    }
+    .forgot-password {
+        color: #1c1c3b; /* Mudança para uma cor mais harmoniosa */
+        font-size: 14px;
+        display: block; /* Mantém a formatação de bloco para melhor controle */
+        text-align: right; /* Alinhamento à direita */
+        margin-top: -10px; /* Ajuste para aproximar do campo de senha */
+       
+        text-decoration: none; /* Remove sublinhado por padrão */
+    }
+    
+  
+    
+    h2 {
+        text-align: center; /* Centraliza o título */
+        margin-bottom: 0px; /* Espaçamento inferior */
+        position: relative;
+        top: -35px;
+        font-size: 22px;
+    }
+    
+    
+    
+    label {
+        display: block; /* Cada label ocupa uma linha */
+        margin-bottom: 5px; /* Espaçamento inferior */
+        color: #1c1c3b; /* Cor das labels */
+    }
+    
+    input {
+        width: 100%; /* Largura total do campo */
+        padding: 12px; /* Espaçamento interno do campo */
+        border-radius: 18px; /* Bordas arredondadas do campo */
+        border: 1px solid #ddd; /* Borda do campo */
+        font-size: 14px; /* Tamanho da fonte */
+        background-color: #cecece;
+    }
+    
+   
+    .cadastre-se {
+        position: relative;
+        left: -85px;
+        margin-bottom: -20px;
+        top: 0px;
+    }
+    
+    button:hover {
+        background-color: #afc43ab8; /* Cor ao passar o mouse */
+    
+    }
+    .contact-info{
+        display: none;
+    }
+    
+    
+    .modal-content {
+        background-color: white;
+        margin: 40% auto; /* Centraliza verticalmente */
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+   
+.conta{
+position: relative;
+top: -20px;
+}
+.button{
+    position: relative;
+    left: 70px;
+}
+
+
+    
+    
+
+    .menu ul {
+        flex-direction: column;
+        position: relative;
+        left: 2%;
+       
+    }
+    li{
+        padding: 20px;
+        
+    }
+
+    
+    
+    .input-group, .input-groupy {
+        width: 100%;
+       
+    }
+}
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

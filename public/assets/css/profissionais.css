@@ -1,0 +1,82 @@
+/* Estilização da seção de seleção de profissionais */
+.seleciona-profissionais {
+    display: none;
+    text-align: center;
+    padding: 20px; 
+    margin-top: 20px;
+    
+}
+
+.seleciona-profissionais h1 {
+    
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profissional-card {
+    display: inline-block;
+    margin: 55px;
+    cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+ 
+.profissional-card img:hover {
+    
+    box-shadow: 0 0 10px #D4AF37;
+}
+
+.profissional-card img {
+    width: 150px;
+    height: 150px;
+    
+    
+    object-fit: cover;
+    border-radius: 10px;
+    
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid #D4AF37;
+}
+
+
+
+
+
+
+.button-confirma-profissional {
+    background-color: #b0c43a;
+    color: #fff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 0px;
+}
+
+.button-confirma-profissional:hover {
+    background-color: #b0c43a;
+}
+
+.confirma-combo{
+    margin-top: 40px;
+    cursor: pointer;
+}
+.profissional-card h3 {
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px; 
+    width: 125px;
+    background: linear-gradient(to bottom, #afc43a00, #D4AF37);
+
+    padding: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    height: 15px;
+    position: relative;
+    top: -60px;
+    margin-left: 4px;
+    z-index: 1;
+    
+}
+

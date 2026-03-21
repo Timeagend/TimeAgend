@@ -1,0 +1,314 @@
+nav a:hover, .selected {
+    color: white;
+    background-color: #D4AF37;
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+/* Estilos gerais */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #000;
+    border-bottom: none; box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.515);
+    margin-top: 12px;
+    width: 87%;
+    position: relative;
+    left: 49px;
+}
+header img {
+    width: 200px;
+}
+nav a {
+    color: #fff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.container {
+    background-color: #fff;
+    color: #000;
+    width: 90%;
+    border-radius: 10px;
+    margin: -85px auto; /* Centraliza */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 380px;
+   
+    overflow: hidden;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    
+    width: 100%;
+    position: relative;
+    left: 500px;
+   
+    max-width: 100%;
+    margin-top: 0px;
+}
+
+    .profile-image {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        overflow: hidden;
+        
+        position: relative;
+        right: 0px;
+        left: 250px;
+        top: 80px;
+    }
+
+    .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+     
+    
+
+    .info label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .info input {
+        margin-bottom: 10px;
+    }
+
+    
+
+    .button {
+        background-color: #000000;
+        color: #fff;
+        padding: 6px 40px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+       position: relative;
+       top: 10px;
+       left: -60px;
+    }
+
+    .button:hover {
+        background-color: #45a049;
+    }
+    /* .button-logout {
+        background-color: #D4AF37;
+        color: #fff;
+        padding: 6px 40px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+       position: relative;
+       top: 10px;
+       left: -60px;
+    } */
+.botao-alterar{
+    position: relative;
+    right: 580px;
+    top: -40px;
+}
+input {
+    border: none; /* Remove as bordas */
+    background: transparent; /* Fundo transparente */
+    font-size: inherit; /* Mantém o tamanho da fonte do elemento pai */
+    color: inherit; /* Mantém a cor do texto do elemento pai */
+    padding: 0; /* Remove o preenchimento */
+    width: 100%; /* Faz o input ocupar toda a largura disponível */
+    outline: none; /* Remove o contorno ao focar no campo */
+}
+
+input:focus {
+    outline: none; /* Remove o contorno ao focar no campo */
+}
+.historico{
+    position: relative;
+    left: 1000px;
+    top: -70px;
+    background-color: #D4AF37;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    width: 20%;
+    text-align: center;
+}
+.edit-icon{
+    display: none;
+}
+
+/* Menu */
+.menu-principal {
+    
+    flex-direction: column; /* Organiza itens em coluna no modo responsivo */
+}
+
+.menu-principal.active {
+    display: flex; /* Exibe o menu quando 'active' está presente */
+}
+
+.menu-toggle {
+    display: none; /* Oculta o botão de menu em telas maiores */
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+}
+
+/* Responsividade geral */
+/* GERAL */
+@media (max-width: 768px) {
+  header {
+    left: 0;
+    width: 80%;
+    align-items: flex-start;
+  }
+  .container {
+    overflow: visible;
+
+  }
+
+  .menu-toggle {
+    display: block;
+    color: #fff;
+  }
+
+  .menu-principal {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    flex-direction: column;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .menu-principal.active {
+    display: flex;
+  }
+
+  nav a {
+    color: #000;
+    margin: 10px 0;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    left: 0;
+    top: 40px;
+    position: relative;
+  }
+
+  .info {
+    width: 80%;
+    left: 0;
+    margin-top: -40px;
+    position: relative;
+  }
+
+  .info input {
+    font-size: 14px;
+  }
+
+  .button,
+  .position-button {
+    width: 30%;
+    text-align: center;
+    margin-left: 80px;
+    
+  }
+
+  .historico {
+    width: 45%;
+    max-width: 300px;
+    margin: 20px auto;
+    font-size: 14px;
+    text-align: center;
+    left: 2px;
+    top: -45px;
+    margin-top: 100px;
+  }
+   label.upload-label{
+       margin-right: 0; /* substitui 'none' */
+       margin-left: 60px;
+       top: -80px;
+      height: 28px;
+
+    }
+    .upload-label img{
+        width: 30px;
+        height: 30px;
+    }
+
+    button.button-logout{
+        margin-right: 0;
+        margin-left: 220px;
+        position: relative;
+        top: 20px;
+        padding: 5px 8px;
+        font-size: 12px;
+        background-color: rgb(248, 28, 28);
+    }
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    color: #333;
+}
+
+  .edit-icon {
+    background-color: #D4AF37;
+    border-radius: 20px;
+    padding: 5px;
+    position: relative;
+    top: -20px;
+    right: 0;
+    margin: 0 auto;
+    display: block;
+  }
+
+
+/* TELAS MENORES QUE 480px */
+@media (max-width: 480px) {
+  .profile-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .botao-alterar {
+    font-size: 12px;
+  }
+}

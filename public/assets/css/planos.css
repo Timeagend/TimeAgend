@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    }
+    
+    
+    
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #000;
+      box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.515);
+      flex-wrap: wrap;
+      margin: 18px;
+    }
+    
+        
+        
+    header img {
+      width: 180px;
+      margin-bottom: 10px;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 2px 12px;
+      border-radius: 20px;
+      
+    }
+    nav a:hover, .selected {
+        color: white;
+        background-color: #D4AF37;
+        border-radius: 20px;
+        padding: 2px 15px;
+        
+    }
+    .planos-assinatura {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .planos-assinatura h2 {
+      font-size: 24px;
+    }
+    .planos-assinatura h3 {
+      font-size: 32px;
+      color: #D4AF37;
+      margin-bottom: 30px;
+    }
+    .container-planos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .plano {
+      background-color: #fff;
+      color: #000;
+      width: 100%;
+      max-width: 280px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    .plano h4 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .preco {
+      font-size: 24px;
+      color: #D4AF37;
+      margin: 10px 0 50px;
+    }
+    .preco span {
+      font-size: 16px;
+      color: #000;
+    }
+    .plano ul {
+      list-style: none;
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .plano ul li {
+      margin-bottom: 8px;
+    }
+    .plano button {
+      background-color: #D4AF37;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .plano button:hover {
+      background-color: #D4AF37;
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      header {
+        flex-direction: column;
+        align-items: center;
+      }
+      header img {
+        margin-bottom: 15px;
+      }
+    }

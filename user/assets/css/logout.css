@@ -1,0 +1,55 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Centraliza verticalmente */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Cor de fundo suave */
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 20px;
+    width: 300px; /* Largura do quadrado */
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: #adff2f; /* Azul para o título */
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+button {
+    background-color:#080008;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #080008; /* Cor mais escura ao passar o mouse */
+}

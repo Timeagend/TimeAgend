@@ -1,0 +1,31 @@
+<button onclick="testarAgendamento()">Testar POST</button>
+
+
+<script>
+function testarAgendamento() {
+    const formData = new FormData();
+    formData.append("servico", "Barba Desenhada");
+    formData.append("barbeiro", "Rafael");
+    formData.append("data", "2025-05-29");
+    formData.append("horario", "10:00");
+    formData.append("valor", 35);
+
+    fetch("http://localhost/TimeAgend/models/booking/controller.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(text => {
+        try {
+            const json = JSON.parse(text);
+            console.log("Resposta do servidor:", json);
+            alert("POST funcionou!");
+        } catch (e) {
+            console.error("Erro ao tentar ler JSON. Resposta bruta:", text);
+        }
+    })
+    .catch(err => {
+        console.error("Erro ao enviar dados:", err);
+    });
+}
+</script>

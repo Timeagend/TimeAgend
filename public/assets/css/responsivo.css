@@ -1,0 +1,55 @@
+/* Responsividade */
+
+@media (max-width: 600px) {
+  .servicos-1, .servicos-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .seleciona-servicos h3 {
+    width: 100px;
+    max-width: 250px;
+    text-align: center;
+  }
+
+  .button-confirma {
+    width: 100%;
+    max-width: 250px;
+  }
+  *{
+    border: 2px solid #ff0000;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .main-container h1.seleciona-span {
+    font-size: 1.5rem;
+  }
+
+  .h1-titulos {
+    font-size: 1.4rem;
+  }
+
+  tr {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  td.right {
+    justify-content: flex-start;
+    margin-top: 5px;
+  }
+
+  .icone-left {
+    width: 25px;
+    height: 25px;
+  }
+
+  .confirma-corte {
+    width: 100%;
+    max-width: 300px;
+  }
+}

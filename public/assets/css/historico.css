@@ -1,0 +1,145 @@
+.button-1{
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    position: absolute;
+    left: 1352px;
+    top: 220px;
+    cursor: pointer;
+}
+main {
+padding: 2rem;
+text-align: center;
+}
+
+h1 {
+font-size: 1.8rem;
+margin-bottom: 1rem;
+text-align: left;
+display: flex;
+margin-left: 70px;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.appointment-card {
+background-color: #1b1919;
+color: #FFF;
+padding: 2rem;
+width: 300px;
+height: 400px;
+margin: 0 auto;
+border-radius: 8px;
+text-align: left;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+.appointment-card h2 {
+font-size: 1rem;
+color: #FFF;
+border-bottom: 1px solid #666;
+padding-bottom: 0.5rem;
+margin-bottom: 1rem;
+}
+
+.appointment-card p {
+margin: 1rem 0;
+font-size: 0.9rem;
+line-height: 1.5;
+}
+
+.price {
+color: #32CD32;
+font-weight: bold;
+}
+
+.cancel-button {
+background-color: #B22222;
+color: #FFF;
+border: none;
+padding: 0.5rem 1rem;
+font-size: 1rem;
+border-radius: 5px;
+cursor: pointer;
+align-self: center;
+margin-top: 1rem;
+}
+
+.cancel-button:hover {
+background-color: #FF6347;
+}
+.separator {
+width: 100%;
+max-width: 1420px;
+height: 1px;
+background-color: #666;
+margin: 1rem auto;
+
+margin-right: 35px;
+}
+/* Menu */
+.menu-principal {
+    
+    flex-direction: column; /* Organiza itens em coluna no modo responsivo */
+}
+
+.menu-principal.active {
+    display: flex; /* Exibe o menu quando 'active' está presente */
+}
+
+.menu-toggle {
+    display: none; /* Oculta o botão de menu em telas maiores */
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+}
+
+@media (max-width: 768px){
+    .button-1{
+        position: relative;
+        left: 140px;
+        top: 50px;
+    }
+    h1{
+        margin-left: 20px;
+    }
+    header{
+        left: 0;
+    }
+
+/* Menu */
+.menu-toggle {
+        display: block; /* Exibe o botão de menu em telas menores */
+        color: #fff;
+    }
+
+    .menu-principal {
+        display: none; /* Oculta o menu por padrão em telas menores */
+        background-color: #fff;
+        color: #000;
+        position: absolute;
+        top: 60px; /* Ajuste a posição conforme o cabeçalho */
+        left: 250px;
+        width: 50%;
+        padding: 10px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .menu-principal.active {
+        display: flex; /* Mostra o menu quando a classe 'active' é adicionada */
+    }
+    nav a{
+    color: #000;
+    margin-bottom: 20px;
+    transition: 0.5s;
+    }
+
+}   

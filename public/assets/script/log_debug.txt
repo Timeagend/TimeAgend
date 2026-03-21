@@ -1,0 +1,1 @@
+{"tipoServico":"Sobrancelha Pinça","profissional":"Rafael","data":"2025-09-23","horario":"10:00","valor":25}

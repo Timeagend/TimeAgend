@@ -1,0 +1,67 @@
+
+
+  
+  .menu-container {
+    text-align: center;
+    display: none; /* Oculta todas as seções inicialmente */
+
+}
+
+
+
+
+
+
+
+/* Estilo para os serviços */
+
+
+button {
+    background-color: #b0c43a;
+    color: white;
+    font-size: 18px;
+    border-radius: 50px;
+    padding: 15px;
+    width: 280px;
+    font-family: sans-serif;
+    border: none;
+    font-weight: bold;
+    display: block; /* Faz o botão se comportar como um bloco */
+    margin: 0 8px; /* Centraliza horizontalmente */
+    text-align: center; /* Alinha o texto dentro do botão */
+    margin-top: -18px;
+    
+}
+
+
+
+/* --------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+.button-confirma {
+    background-color: #A9D935; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Remove a borda padrão */
+    padding: 15px 20px; /* Preenchimento do botão */
+    font-size: 18px; /* Tamanho da fonte */
+    border-radius: 50px; /* Bordas arredondadas */
+    width: 20%; /* Faz o botão ocupar toda a largura disponível */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+}
+
+.button-confirma:hover {
+    background-color: #8da32e; /* Cor do botão ao passar o mouse */
+}
+
+
+
+
+

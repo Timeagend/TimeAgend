@@ -1,0 +1,209 @@
+/* responsivo-modais.css */
+@media (max-width: 768px) {
+  /* MODAIS DE SERVIÇOS (CORTES, COMBO, BARBA, SOBRANCELHA) */
+  .linha-servico{
+    
+    margin-left: none;
+   
+  }
+  .menu-container {
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .menu-container .main-container h1 {
+    font-size: 1.4rem;
+    padding: 0 10px;
+  }
+  
+  .icone-left {
+    margin-right: 0;
+    margin-left: 10px;
+    width: 30px;
+    position: absolute;
+    left: 10px;
+    margin-top: 31px;
+
+  }
+  .main-container{
+    margin-bottom: -40px;
+  }
+  
+  .h1-titulos {
+    padding-left: 60px;
+    
+    font-size: 1.3rem;
+    margin-top: 35px;
+  }
+  
+  table {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  tr {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  td {
+    
+    padding: 5px 15px;
+    
+    box-sizing: border-box;
+  }
+  
+  td.left, td.right {
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .confirma-corte,
+  .confirma-combo,
+  .confirm-button {
+    width: 90%;
+    max-width: 300px;
+    margin: 20px auto;
+  }
+  /* // Titulos H1 */
+   
+  
+  /* SELEÇÃO DE PROFISSIONAIS */
+  /* .seleciona-profissionais {
+    padding: 10px;
+  }
+  
+  .seleciona-profissionais h1 {
+    font-size: 1.4rem;
+    margin-top: 20px;
+  }
+  
+  .profissional-card {
+    margin: 15px;
+    width: calc(50% - 30px);
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  
+  .profissional-card img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .button-confirma-profissional {
+    width: 90%;
+    max-width: 300px;
+    margin: 20px auto;
+  } */
+  
+  /* SELEÇÃO DE DATA/HORA */
+  .seleciona-data {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .seleciona-data h1 {
+    font-size: 1.4rem;
+  }
+  
+  .icone-left1 {
+    position: static;
+    margin: 10px 0;
+    width: 30px;
+    display: block;
+  }
+  
+  .agendar-horario-form {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .agendar-horario-form input[type="text"],
+  .agendar-horario-form input[type="date"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .horarios-grid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+  }
+  
+  .horarios-grid button {
+    min-width: 80px;
+    padding: 10px 5px;
+    font-size: 0.9rem;
+  }
+  
+  .button-confirma-agenda {
+    width: 90%;
+    max-width: 300px;
+    margin: 20px auto;
+  }
+  
+  .horarios-icon-setas {
+    display: none;
+  }
+  
+  /* MODAIS DE RESUMO */
+  .modal1 {
+    padding: 0px;
+        left: -17px;
+
+  }
+  
+  .modal-content {
+    margin-right: 0px;
+    padding: 0px;
+  }
+  
+  .titulo-resumo {
+    font-size: 1.3rem;
+  }
+  
+  .btn-pix {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* .profissional-card {
+    width: calc(100% - 30px);
+    margin: 10px 15px;
+  } */
+  
+  .servicos-1, .servicos-2 {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .seleciona-servicos h3 {
+    width: 250px;
+    margin-bottom: 15px;
+  }
+  
+  .button-confirma {
+    width: 60%;
+        margin-top: 20px;
+  }
+  
+  .horarios-grid button {
+    min-width: 70px;
+    padding: 8px 5px;
+    font-size: 0.8rem;
+  }
+  
+  .agendar-horario-form {
+    padding: 10px;
+  }
+}

@@ -1,0 +1,37 @@
+name: PHP Composer Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - salvar-alteracoes
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixar o repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false  # não busca submódulos quebrados
+
+      # 2. Configurar PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'  # ou a versão que você usa
+          extensions: mbstring, curl, json, xml
+
+      # 3. Instalar Composer
+      - name: Get Composer
+        run: composer install --no-interaction --prefer-dist
+
+      # 4. Testar que o autoload funciona (opcional)
+      - name: Check PHP
+        run: php -r "require 'vendor/autoload.php'; echo 'PHP e Composer funcionando!';"
