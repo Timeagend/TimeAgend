@@ -105,10 +105,34 @@
       });
     });
 
-    document.getElementById('checkout-btn').addEventListener('click', () => {
-      if (cartData.length === 0) { alert('Seu carrinho está vazio!'); return; }
-      alert('Obrigado pela compra! Sua encomenda será processada em breve.');
-      cartData = [];
-      updateCartUI();
-      closeCart();
-    });
+    const telefone = "5599984473691"; // COLOCA SEU NÚMERO AQUI
+
+document.getElementById('checkout-btn').addEventListener('click', () => {
+
+  if (cartData.length === 0) {
+    alert('Seu carrinho está vazio!');
+    return;
+  }
+
+  let mensagem = "Olá! 👋\nGostaria de fazer o pedido:\n\n";
+
+  cartData.forEach(item => {
+    mensagem += `🛒 ${item.name}\n`;
+    mensagem += `Qtd: ${item.quantity}\n`;
+    mensagem += `💰 R$ ${(item.price * item.quantity).toFixed(2).replace('.',',')}\n\n`;
+  });
+
+  const total = cartData.reduce((s,i) => s + i.price * i.quantity, 0);
+
+  mensagem += `📦 Total: R$ ${total.toFixed(2).replace('.',',')}`;
+  mensagem += `\n\nPode me ajudar com a compra?`;
+
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(url, "_blank");
+
+  // opcional: limpar carrinho depois
+  cartData = [];
+  updateCartUI();
+  closeCart();
+});

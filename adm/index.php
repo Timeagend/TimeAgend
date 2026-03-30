@@ -8,14 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/style.css">
-
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>AdminHub</title>
 </head>
 <body>
@@ -68,7 +68,6 @@
         </li>
     </ul>
 </section>
-<!-- SIDEBAR -->
 
 <!-- CONTEÚDO PRINCIPAL -->
 <section id="content">
@@ -92,11 +91,11 @@
             <img src="<?= BASE_URL?>/adm/img/people.png">
         </a>
     </nav>
-    <!-- NAVBAR -->
 
     <!-- MAIN -->
     <main>
-        <!-- Dashboard -->
+
+        <!-- ══════════════ DASHBOARD ══════════════ -->
         <div id="dashboard-content" class="content-section">
             <div class="head-title">
                 <div class="left">
@@ -145,7 +144,6 @@
                         <i class='bx bx-filter' id="filter-icon"></i>
                     </div>
 
-                    <!-- Modal filtro -->
                     <div id="filter-modal" class="filter-modal">
                         <div class="modal-content">
                             <span class="close" id="close-modal">&times;</span>
@@ -153,10 +151,8 @@
                             <form id="filter-form">
                                 <label for="filter-date">Data:</label>
                                 <input type="date" id="filter-date" name="date">
-
                                 <label for="filter-service">Serviço:</label>
                                 <input type="text" id="filter-service" name="service" placeholder="Digite o serviço">
-
                                 <button type="button" id="apply-filter">Aplicar Filtro</button>
                             </form>
                         </div>
@@ -194,7 +190,6 @@
                 </div>
             </div>
 
-            <!-- Lista de tarefas -->
             <div class="todo">
                 <div class="head">
                     <h3>Lista de Tarefas</h3>
@@ -204,105 +199,291 @@
             </div>
         </div>
 
-        <!-- Meu Site -->
+        <!-- ══════════════ MEU SITE ══════════════ -->
         <div id="meu-site-content" class="content-section" style="display: none;">
-            <h1>Meu Site</h1>
-			<p class="info">Aqui estão as informações sobre o seu site.</p>
 
-			<form action="<?= BASE_URL ?>/adm/services/localiza.php" method="POST">
-				<div class="meios">Meios de contato e endereços:</div>
-				<div class="contact-info">
-					<div>
-						<label>Telefone</label>
-						<input type="text" name="telefone" />
-					</div>
-					<div>
-						<label>E-Mail</label>
-						<input type="text" name="email" />
-					</div>
-					<div>
-						<label>Cidade</label>
-						<input type="text" name="cidade"/>
-					</div>
-					<div>
-						<label>Endereço</label>
-						<input type="text" name="local"/>
-					</div>
-				</div>
+            <div class="adm-section-head">
+                <div>
+                    <h1>Meu Site</h1>
+                    <p class="info">Gerencie as informações exibidas no seu site.</p>
+                </div>
+                <span class="adm-badge">Publicado</span>
+            </div>
 
-				<button type="submit" class="save-button">Salvar</button>
-			</form>
+            <!-- Card Contato -->
+            <div class="adm-card">
+                <div class="adm-card-header">
+                    <div class="adm-card-icon"><i class='bx bxs-map'></i></div>
+                    <div>
+                        <h2>Meios de Contato &amp; Endereço</h2>
+                        <p>Estas informações aparecem na página de contato do seu site.</p>
+                    </div>
+                </div>
 
-            <div class="services-prices">
-                <h2>Serviços & preços:</h2>
-                <div class="categories">
-                    <?php foreach ($servicos as $s): ?>
-                    <div class="category" style="display: inline-block; border: 10px 10px;margin: 10px;margin-top: 30px;align-items: center; text-align: center;">
-                        <div class="barber-card" style="display: inline-block; width: 160px; height: 160px; border: 40px 20px;
-                        padding: 10px auto; text-align: center;" >
-                            <div class="edit-icon"><i class="fas fa-edit"></i></div>
-                            <strong><?= htmlspecialchars($s['nome_servico']); ?></strong><br>
-                            Tipo: <?= htmlspecialchars($s['tipo']); ?><br>
-                            Preço: R$ <?= number_format($s['preco'], 2, ',', '.'); ?><br>
-                            Duração: <?= htmlspecialchars($s['duracao']); ?>
+                <!-- ✔ action original: localiza.php | names originais: telefone, email, cidade, local -->
+                <form action="<?= BASE_URL ?>/adm/services/localiza.php" method="POST">
+                    <div class="contact-info">
+                        <div>
+                            <label>Telefone</label>
+                            <div class="adm-input-wrap">
+                                <i class='bx bx-phone'></i>
+                                <input type="text" name="telefone" placeholder="(62) 99999-9999" />
+                            </div>
+                        </div>
+                        <div>
+                            <label>E-Mail</label>
+                            <div class="adm-input-wrap">
+                                <i class='bx bx-envelope'></i>
+                                <input type="text" name="email" placeholder="contato@barbearia.com" />
+                            </div>
+                        </div>
+                        <div>
+                            <label>Cidade</label>
+                            <div class="adm-input-wrap">
+                                <i class='bx bx-buildings'></i>
+                                <input type="text" name="cidade" placeholder="Goiânia, GO" />
+                            </div>
+                        </div>
+                        <div>
+                            <label>Endereço</label>
+                            <div class="adm-input-wrap">
+                                <i class='bx bx-location-plus'></i>
+                                <input type="text" name="local" placeholder="Rua Exemplo, 100" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="adm-form-footer">
+                        <!-- ✔ classe original: save-button -->
+                        <button type="submit" class="save-button">
+                            <i class='bx bx-save'></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Card Serviços -->
+            <div class="adm-card">
+                <div class="adm-card-header">
+                    <div class="adm-card-icon" style="background:var(--light-yellow);color:var(--yellow);">
+                        <i class="bx bx-package"></i>
+                    </div>
+                    <div>
+                        <h2>Serviços &amp; Preços</h2>
+                        <p>Clique no lápis para editar um serviço existente.</p>
+                    </div>
+                </div>
+
+                <!-- ✔ classes originais: services-prices / categories / category / barber-card / edit-icon -->
+                <div class="services-prices">
+                    <div class="categories">
+                        <?php foreach ($servicos as $s): ?>
+                        <div class="category">
+                            <div class="barber-card">
+                                <div class="edit-icon"><i class="fas fa-edit"></i></div>
+                                <span class="adm-chip-badge"><?= htmlspecialchars($s['tipo']); ?></span>
+                                <strong><?= htmlspecialchars($s['nome_servico']); ?></strong>
+                                <span class="adm-chip-meta">
+                                    <i class='bx bx-time-five'></i> <?= htmlspecialchars($s['duracao']); ?>
+                                </span>
+                                <span class="adm-chip-price">R$ <?= number_format($s['preco'], 2, ',', '.'); ?></span>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="adm-divider"></div>
+
+                    <h2>Inserir novo Serviço</h2>
+                    <!-- ✔ action original: saveService.php | names originais: service-name, service-tipo, service-valor, service-duracao -->
+                    <form action="<?= BASE_URL?>/adm/services/saveService.php" method="POST">
+                        <div class="adm-form-grid">
+                            <div>
+                                <label>Nome do serviço</label>
+                                <input type="text" name="service-name" placeholder="Ex: Hidratação" required>
+                            </div>
+                            <div>
+                                <label>Tipo de serviço</label>
+                                <input type="text" name="service-tipo" placeholder="Ex: Cabelo" required>
+                            </div>
+                            <div>
+                                <label>Valor do serviço</label>
+                                <input type="number" name="service-valor" placeholder="0,00" step="0.01" required>
+                            </div>
+                            <div>
+                                <label>Duração do serviço</label>
+                                <input type="text" name="service-duracao" placeholder="Ex: 30 min" required>
+                            </div>
+                        </div>
+                        <div class="adm-form-footer">
+                            <!-- ✔ classe original: save-button-1 -->
+                            <button type="submit" class="save-button-1">
+                                <i class='bx bx-plus'></i> Adicionar Serviço
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════ ANÁLISE ══════════════ -->
+        <div id="analise-content" class="content-section" style="display: none;">
+            <h1>Análise</h1>
+            <p>Relatórios e gráficos sobre o desempenho do site.</p>
+            <div style="max-width:800px;margin:20px auto;"><canvas id="visitasChart"></canvas></div>
+            <div style="max-width:800px;margin:20px auto;"><canvas id="servicosChart"></canvas></div>
+            <div style="max-width:800px;margin:20px auto;"><canvas id="crescimentoChart"></canvas></div>
+        </div>
+
+        <!-- ══════════════ EQUIPE ══════════════ -->
+        <div id="equipe-content" class="content-section" style="display: none;">
+
+            <div class="adm-section-head">
+                <div>
+                    <h1>Equipe</h1>
+                    <p class="info">Gerencie os profissionais exibidos no seu site.</p>
+                </div>
+                <span class="adm-badge adm-badge--green"><?= count($barbeiroList) ?> ativos</span>
+            </div>
+
+            <!-- ✔ classe original: barber-section -->
+            <div class="barber-section adm-card">
+                <div class="adm-card-header">
+                    <!-- <div class="adm-card-icon" style="background:var(--light-yellow);color:var(--yellow);">
+                        <i class='bx bxs-group'></i>
+                    </div> -->
+                    <div>
+                        <h2>Profissionais</h2>
+                        <p>Clique no ícone para editar nome ou foto.</p>
+                    </div>
+                </div>
+
+                <!-- ✔ classe original: barber-cards -->
+                <div class="barber-cards">
+                    <?php foreach ($barbeiroList as $barbeiro): ?>
+                    <!-- ✔ classe original: barber-card -->
+                    <div class="barber-card adm-team-card">
+                        <div class="adm-team-img-wrap">
+                            <img src="<?= $barbeiro['foto'] ?>"
+                                 alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
+                            <div class="adm-team-overlay"></div>
+                            <div class="adm-team-status">Ativo</div>
+                        </div>
+                        <!-- ✔ classe original: edit-icon -->
+                        <div class="edit-icon"><i class="fas fa-edit"></i></div>
+                        <!-- ✔ classe original: name -->
+                        <div class="name">
+                            <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
                         </div>
                     </div>
                     <?php endforeach; ?>
                 </div>
 
-                <h2>Inserir novo Serviço</h2>
-                <form action="<?= BASE_URL?>/adm/services/controlService.php" method="POST">
-                    <div><label>Nome do serviço :</label><input type="text" name="service-name" required></div>
-                    <div><label>Tipo de serviço: </label><input type="text" name="service-tipo" required></div>
-                    <div><label>Valor do serviço:</label><input type="number" name="service-valor" required></div>
-                    <div><label>Duração do serviço:</label><input type="text" name="service-duracao" required></div>
-                    <button type="submit" class="save-button-1">Salvar</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Análise -->
-        <div id="analise-content" class="content-section" style="display: none;">
-            <h1>Análise</h1>
-            <p>Relatórios e gráficos sobre o desempenho do site.</p>
-        </div>
-
-        <!-- Equipe -->
-        <div id="equipe-content" class="content-section" style="display: none;">
-            <p>Lista de membros e informações sobre a equipe.</p>
-
-            <div class="barber-section">
-                <h2>Adicione as imagens dos barbeiros junto com seus nomes</h2>
-                <div class="barber-cards">
-                    <?php foreach ($barbeiroList as $barbeiro): ?>
-                    <div class="barber-card">
-                        <img src="<?= $barbeiro['foto'] ?>" height="150" width="150" alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
-                        <div class="edit-icon"><i class="fas fa-edit"></i></div>
-                        <div class="name">Nome: <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" /></div>
-                    </div>
-                    <?php endforeach; ?>
+                <div class="adm-form-footer">
+                    <!-- ✔ classe original: button-barber -->
+                    <button class="button-barber">
+                        <i class='bx bx-save'></i> Salvar Alterações
+                    </button>
                 </div>
-                <button class="button-barber">Salvar</button>
             </div>
 
-            <div class="barber-section">
+            <!-- ✔ classe original: barber-section -->
+            <div class="barber-section adm-card">
+                <div class="adm-card-header">
+                    <!-- <div class="adm-card-icon" style="background:#E8F8EF;color:#27AE60;">
+                        <i class='bx bx-user-plus'></i>
+                    </div> -->
+                    <div>
+                        <h2>Adicionar Profissional</h2>
+                        <p>Preencha os dados e salve para exibir no site.</p>
+                    </div>
+                </div>
+
+                <!-- ✔ classe original: services-prices -->
                 <div class="services-prices">
+                    <!-- ✔ action original: controlBarber.php | names originais: nome, email, senha, obs, foto -->
                     <form action="<?= BASE_URL?>/adm/services/controlBarber.php" method="POST" enctype="multipart/form-data">
-                        <div><label>Nome Funcionário:</label><input type="text" name="nome"></div>
-                        <div><label>Email:</label><input type="text" name="email"></div>
-                        <div><label>Senha:</label><input type="password" name="senha"></div>
-                        <div><label>Descrição:</label><input type="textarea" name="obs"></div>
-                        <div><label>Foto Perfil:</label><input type="file" name="foto"></div>
-                        <div><button type="submit" class="button-barber">Salvar</button></div>
+                        <div class="adm-form-grid">
+                            <div>
+                                <label>Nome Funcionário</label>
+                                <input type="text" name="nome" placeholder="Ex: João Pereira">
+                            </div>
+                            <div>
+                                <label>Email</label>
+                                <input type="email" name="email" placeholder="joao@barbearia.com">
+                            </div>
+                            <div>
+                                <label>Senha</label>
+                                <input type="password" name="senha" placeholder="••••••••">
+                            </div>
+                            <div>
+                                <label>Descrição</label>
+                                <input type="text" name="obs" placeholder="Especialidades, experiência...">
+                            </div>
+                            <div class="adm-file-wrap">
+                                <label>Foto Perfil</label>
+                                <div class="adm-file-drop">
+                                    <input type="file" name="foto" accept="image/*">
+                                    <i class='bx bx-image-add'></i>
+                                    <p>Clique ou arraste uma imagem aqui</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="adm-form-footer">
+                            <!-- ✔ classe original: button-barber -->
+                            <button type="submit" class="button-barber">
+                                <i class='bx bx-user-plus'></i> Adicionar à Equipe
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
+
         </div>
+        <!-- /equipe-content -->
+
     </main>
 </section>
 
 <script src="<?= BASE_URL?>/adm/assets/script/script.js"></script>
-<script src="<?= BASE_URL?>/adm/assets/script/menuhub.js"></script>
 <script src="<?= BASE_URL?>/adm/assets/script/filtro.js"></script>
+<script src="<?= BASE_URL?>/adm/assets/script/menuhub.js"></script>
+
+<script>
+    let chartsInitialized = false;
+    function initCharts() {
+        if (chartsInitialized) return;
+        chartsInitialized = true;
+        new Chart(document.getElementById('visitasChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'],
+                datasets: [{ label:'Visitas Mensais', data:[120,190,300,500,250,320,410,460,530],
+                    borderColor:'#3C91E6', backgroundColor:'rgba(60,145,230,0.2)', tension:0.3, fill:true }]
+            },
+            options: { responsive:true, plugins:{ legend:{display:true}, title:{display:true,text:'Visitas Mensais do Site'} } }
+        });
+        new Chart(document.getElementById('servicosChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Cortes','Barba','Coloração','Sobrancelha','Pacotes'],
+                datasets: [{ label:'Acessos', data:[350,280,150,120,200],
+                    backgroundColor:['#3C91E6','#FFCE26','#FD7238','#CFE8FF','#DB504A'] }]
+            },
+            options: { responsive:true, plugins:{ legend:{display:false}, title:{display:true,text:'Serviços Mais Acessados'} } }
+        });
+        new Chart(document.getElementById('crescimentoChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Novo Tráfego','Retornos','Indicações'],
+                datasets: [{ data:[45,35,20], backgroundColor:['#3C91E6','#FFCE26','#FD7238'] }]
+            },
+            options: { responsive:true, plugins:{ title:{display:true,text:'Fontes de Crescimento do Site'} } }
+        });
+    }
+    document.querySelectorAll('[data-target="analise-content"]').forEach(function(link) {
+        link.addEventListener('click', function() { setTimeout(initCharts, 50); });
+    });
+</script>
+
 </body>
 </html>
