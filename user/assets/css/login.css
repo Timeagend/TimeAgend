@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     padding: 0;
@@ -334,13 +333,6 @@ button:hover {
 
 /* Media Queries */
 @media (max-width: 768px) {
-<<<<<<< HEAD
-    .container {
-        
-        position: absolute;
-        left: 80px;
-        top: 200px;
-=======
     body {
     margin: 0;
     padding: 0;
@@ -362,7 +354,6 @@ button:hover {
         left: 10px;
         top: 200px;
         margin: 0 auto;
->>>>>>> 97f7664fd35f45bea8fabad40c387e4cac7c0186
     
         
 
@@ -457,16 +448,12 @@ top: -20px;
     .menu ul {
         flex-direction: column;
         position: relative;
-<<<<<<< HEAD
-        left: -17px;
-=======
         left: 2%;
        
     }
     li{
         padding: 20px;
         
->>>>>>> 97f7664fd35f45bea8fabad40c387e4cac7c0186
     }
 
     
@@ -481,4 +468,3 @@ top: -20px;
     font-size: 12px;
     margin-top: 5px;
 }
-

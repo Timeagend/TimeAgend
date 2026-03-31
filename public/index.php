@@ -33,7 +33,8 @@
                 
                 <div class="hidden md:flex space-x-8">
                     <a href="#home" class="nav-link font-medium hover:text-accent transition-colors">Início</a>
-                    <a href="#services" class="nav-link font-medium hover:text-accent transition-colors">Serviços</a>
+                    <a href="<?= BASE_URL ?>/public/Produtos/produtos.php" class="nav-link font-medium hover:text-accent transition-colors">Produtos</a>
+
                     <a href="#gallery" class="nav-link font-medium hover:text-accent transition-colors">Galeria</a>
                     <a href="#about" class="nav-link font-medium hover:text-accent transition-colors">Sobre</a>
                     <a href="<?= BASE_URL ?>/public/contato.php" class="nav-link font-medium hover:text-accent transition-colors">Contato</a>
