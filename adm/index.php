@@ -51,6 +51,12 @@
                 <span class="text">Equipe</span>
             </a>
         </li>
+        <li>
+            <a href="product.php">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Produtos</span>
+            </a>
+        </li>
     </ul>
 
     <ul class="side-menu">
@@ -298,6 +304,8 @@
                 </div>
             </div>
         </div>
+         <!-- Produtos -->
+        
     </main>
 </section>
 
