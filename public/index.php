@@ -12,7 +12,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
     <style>
+        #map02{
+    height:100vh;
+    width:100%;
+    }
+
+    #coords02{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    background:white;
+    padding:10px;
+    border-radius:5px;
+    box-shadow:0 0 5px rgba(0,0,0,0.3);
+    font-family:Arial;
+    z-index:1000;
+    }
+
         
     </style>
 </head>
@@ -211,80 +231,19 @@
     <section id="gallery" class="section-padding gradient-bg">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16 slide-in">
-                <span class="text-accent font-medium text-sm uppercase tracking-wider">Nossa Galeria</span>
+                <span class="text-accent font-medium text-sm uppercase tracking-wider">Nosso Cantinho</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gradient">
-                    Trabalhos Realizados
+                    Localização
                 </h2>
                 <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Confira alguns dos nossos melhores trabalhos e transformações
+                    Venha nos visitar e descubra o ambiente acolhedor e sofisticado da TimeAgend
                 </p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M5 16L3 14l5.5-5.5L10 10l7-7h3v3l-7 7 1.5 1.5L9 16H5z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 3h18v2H3V3zm0 4h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M5 16L3 14l5.5-5.5L10 10l7-7h3v3l-7 7 1.5 1.5L9 16H5z"/>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="aspect-square glass-card rounded-xl overflow-hidden slide-in floating-subtle">
-                    <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+                    
+            <!-- <div id="coords02"> [-16.690241108302864, -49.25239841959069]</div> -->
+            <div id="map02"></div>
+
         </div>
     </section>
 
@@ -489,5 +448,54 @@
 
 
 <script src="<?= BASE_URL?>public/assets/script/index.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+// 📍 Coordenadas fixas do seu local
+var local = [-16.690241108302864, -49.25239841959069];
+
+// Criar mapa já centralizado
+var map = L.map('map02').setView(local, 17);
+
+// Camada do mapa (OpenStreetMap)
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19
+}).addTo(map);
+
+// 🔴 Marcador fixo (principal)
+var markerFixo = L.marker(local).addTo(map)
+.bindPopup(`
+  <b>📍 Local do Projeto</b><br>
+  Endereço correto
+`)
+.openPopup();
+
+// Mostrar coordenadas fixas no topo
+document.getElementById("coords02").innerHTML =
+"📍 Local fixo: " + local[0] + " | " + local[1];
+
+// 🟡 Marcador temporário ao clicar (opcional)
+var markerTemp;
+
+map.on('click', function(e){
+
+  var lat = e.latlng.lat;
+  var lon = e.latlng.lng;
+
+  document.getElementById("coords02").innerHTML =
+  "📌 Clique: " + lat + " | " + lon;
+
+  if(markerTemp){
+    map.removeLayer(markerTemp);
+  }
+
+  markerTemp = L.marker([lat,lon]).addTo(map)
+  .bindPopup("Lat: "+lat+"<br>Lng: "+lon)
+  .openPopup();
+
+});
+
+</script>
 </body>
 </html>
