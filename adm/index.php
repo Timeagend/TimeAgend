@@ -14,6 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/modal.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>AdminHub</title>
@@ -447,6 +448,7 @@
 <script src="<?= BASE_URL?>/adm/assets/script/script.js"></script>
 <script src="<?= BASE_URL?>/adm/assets/script/filtro.js"></script>
 <script src="<?= BASE_URL?>/adm/assets/script/menuhub.js"></script>
+<script src="<?= BASE_URL?>/adm/assets/script/modal.js"></script>
 
 <script>
     let chartsInitialized = false;

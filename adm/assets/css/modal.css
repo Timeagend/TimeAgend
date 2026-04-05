@@ -1,0 +1,186 @@
+/* ── Modal Overlay ───────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+}
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ── Modal Box ───────────────────────────────────────── */
+.modal-box {
+    background: var(--body-color, #fff);
+    border-radius: 14px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+    transform: translateY(16px) scale(.97);
+    transition: transform .22s ease, opacity .2s ease;
+    position: relative;
+}
+.modal-overlay.open .modal-box {
+    transform: translateY(0) scale(1);
+}
+
+/* ── Modal Header ────────────────────────────────────── */
+.modal-box .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+.modal-box .modal-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark, #342ab5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.modal-box .modal-header h3 i {
+    font-size: 1.2rem;
+}
+.modal-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--dark-grey, #888);
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background .15s;
+}
+.modal-close-btn:hover {
+    background: rgba(0,0,0,.08);
+}
+
+/* ── Modal Form Grid ─────────────────────────────────── */
+.modal-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+}
+.modal-form-grid .full {
+    grid-column: 1 / -1;
+}
+.modal-form-grid label {
+    display: block;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--dark-grey, #888);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 5px;
+}
+.modal-form-grid input[type="text"],
+.modal-form-grid input[type="number"],
+.modal-form-grid input[type="email"],
+.modal-form-grid input[type="password"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: .92rem;
+    color: var(--dark, #222);
+    background: var(--body-color, #fff);
+    transition: border-color .15s;
+    box-sizing: border-box;
+}
+.modal-form-grid input:focus {
+    outline: none;
+    border-color: var(--blue, #3C91E6);
+}
+
+/* ── File drop (foto) ────────────────────────────────── */
+.modal-file-drop {
+    border: 2px dashed #d0d0d0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative;
+    overflow: hidden;
+}
+.modal-file-drop:hover {
+    border-color: var(--blue, #3C91E6);
+    background: rgba(60,145,230,.04);
+}
+.modal-file-drop input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.modal-file-drop i {
+    font-size: 1.8rem;
+    color: var(--dark-grey, #aaa);
+}
+.modal-file-drop p {
+    margin: 6px 0 0;
+    font-size: .83rem;
+    color: var(--dark-grey, #999);
+}
+.modal-file-drop img.preview-thumb {
+    max-height: 80px;
+    border-radius: 8px;
+    margin-top: 8px;
+    display: none;
+}
+
+/* ── Modal Footer ────────────────────────────────────── */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+.modal-btn-cancel {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    background: transparent;
+    color: var(--dark-grey, #666);
+    font-size: .9rem;
+    cursor: pointer;
+    transition: background .15s;
+}
+.modal-btn-cancel:hover {
+    background: rgba(0,0,0,.05);
+}
+.modal-btn-save {
+    padding: 9px 22px;
+    border-radius: 8px;
+    border: none;
+    background: var(--blue, #3C91E6);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background .15s, transform .1s;
+}
+.modal-btn-save:hover {
+    background: #2a7fd4;
+}
+.modal-btn-save:active {
+    transform: scale(.97);
+}
+
+/* ── Edit icon cursor ────────────────────────────────── */
+.edit-icon {
+    cursor: pointer;
+}
