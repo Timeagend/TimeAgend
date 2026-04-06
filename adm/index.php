@@ -55,6 +55,12 @@
 
     <ul class="side-menu">
         <li>
+            <a href="<?= BASE_URL ?>adm/product.php">
+                <i class='bx bxs-cog'></i>
+                <span class="text">Produtos</span>
+            </a>
+        </li>
+        <li>
             <a href="#">
                 <i class='bx bxs-cog'></i>
                 <span class="text">Configurações</span>
@@ -66,6 +72,7 @@
                 <span class="text">Sair</span>
             </a>
         </li>
+        
     </ul>
 </section>
 
@@ -295,7 +302,7 @@
 
                     <h2>Inserir novo Serviço</h2>
                     <!-- ✔ action original: saveService.php | names originais: service-name, service-tipo, service-valor, service-duracao -->
-                    <form action="<?= BASE_URL?>/adm/services/saveService.php" method="POST">
+                    <form action="<?= BASE_URL?>/adm/services/controlService.php" method="POST">
                         <div class="adm-form-grid">
                             <div>
                                 <label>Nome do serviço</label>

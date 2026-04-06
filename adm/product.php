@@ -1,5 +1,5 @@
 <?php
-include_once "../config/conection.php";
+
 include_once "services/controlProduct.php";
 include_once "services/Produtos.php";
 $controlProduct = new Produtos($con);
