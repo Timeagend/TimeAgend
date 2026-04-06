@@ -1154,7 +1154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('DOMContentLoaded', function() {
             // Current date management
             let currentDate = new Date();
-            let selectedDate = new Date();
             
             // Sample appointments data for different dates
             const appointmentsData = {
