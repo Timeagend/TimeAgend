@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
     } else {
-        echo "Nenhum arquivo de imagem foi enviado.";
+        echo "<span style='color: red;'>Erro ao enviar a foto de perfil. Por favor, tente novamente.</span>";
+        header('Location: '.BASE_URL.'adm/index.php');
         exit;
     }
     $instancia = new Barbeiro($con);

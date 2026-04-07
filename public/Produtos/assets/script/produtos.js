@@ -106,7 +106,36 @@
     });
 
     const telefone = "5599984473691"; // COLOCA SEU NÚMERO AQUI
+    
+   function postBackend(novoPedido) {
 
+  console.log("🚀 TESTE INICIADO");
+
+  fetch('../../../../adm/services/controlProduct.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ novoPedido })
+  })
+  .then(res => {
+    console.log("STATUS:", res.status);
+
+    return res.text().then(text => {
+      console.log("📡 RESPOSTA BRUTA:", text);
+
+      if (!res.ok) {
+        throw new Error(text);
+      }
+
+      return text;
+    });
+  })
+  .then(data => {
+    console.log("✅ SUCESSO:", data);
+  })
+  .catch(err => {
+    console.error("🔥 ERRO COMPLETO:", err);
+  });
+}
 document.getElementById('checkout-btn').addEventListener('click', () => {
 
   if (cartData.length === 0) {
@@ -129,6 +158,7 @@ document.getElementById('checkout-btn').addEventListener('click', () => {
 
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
+  postBackend(cartData);
   window.open(url, "_blank");
 
   // opcional: limpar carrinho depois
