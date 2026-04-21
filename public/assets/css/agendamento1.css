@@ -108,6 +108,7 @@ h2 {
 
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
+   
     header{
        padding: 15px 60px;
         left: 0px;
@@ -132,10 +133,7 @@ h2 {
         border-radius: 5px;
     }
 
-    .menu-principal.active {
-        display: flex; /* Aparece quando toggle é clicado */
-    }
-
+    
     .menu-toggle {
         display: block; /* Botão visível no mobile */
         font-size: 24px;
@@ -144,6 +142,10 @@ h2 {
         cursor: pointer;
         color: #fff;
     }
+    .menu-principal.active {
+        display: flex; /* ✅ essa linha está faltando */
+    }
+   
 }
 
 /* Responsividade para outras partes */

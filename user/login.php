@@ -37,8 +37,8 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
         <h2>ACESSE SUA CONTA</h2>
         <form action="<?= BASE_URL ?>/models/auth/DBlogin.php" method="POST">
             <div class="input-group">
-                <label for="login">Login:</label>
-                <input type="text" id="login" name="email" placeholder="Digite seu login" required>
+                <label for="login">Email:</label>
+                <input type="text" id="login" name="email" placeholder="Digite seu email" required>
                 <p class="error-message" id="loginError"></p>
             </div>
             <div class="input-group">

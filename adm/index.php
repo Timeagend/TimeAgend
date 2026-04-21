@@ -365,27 +365,29 @@
                     </div>
                 </div>
 
-                <!-- ✔ classe original: barber-cards -->
-                <div class="barber-cards">
-                    <?php foreach ($barbeiroList as $barbeiro): ?>
-                    <!-- ✔ classe original: barber-card -->
-                    <div class="barber-card adm-team-card">
-                        <div class="adm-team-img-wrap">
-                            <img src="<?= $barbeiro['foto'] ?>"
-                                 alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
-                            <div class="adm-team-overlay"></div>
-                            <div class="adm-team-status">Ativo</div>
-                        </div>
-                        <!-- ✔ classe original: edit-icon -->
-                        <div class="edit-icon"><i class="fas fa-edit"></i></div>
-                        <!-- ✔ classe original: name -->
-                        <div class="name">
-                            <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-
+                    <!-- ✔ classe original: barber-cards -->
+<!-- ✔ classe original: barber-cards -->
+<div class="barber-cards">
+    <?php foreach ($barbeiroList as $barbeiro): ?>
+    <!-- ✔ classe original: barber-card -->
+    <div class="barber-card adm-team-card"
+         data-id="<?= $barbeiro['idbarbeiro'] ?? '' ?>"
+         data-obs="<?= htmlspecialchars($barbeiro['descricao'] ?? '') ?>">
+        <div class="adm-team-img-wrap">
+            <img src="<?= $barbeiro['foto'] ?>"
+                 alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
+            <div class="adm-team-overlay"></div>
+            <div class="adm-team-status">Ativo</div>
+        </div>
+        <!-- ✔ classe original: edit-icon -->
+        <div class="edit-icon"><i class="fas fa-edit"></i></div>
+        <!-- ✔ classe original: name -->
+        <div class="name">
+            <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
+        </div>
+    </div>
+    <?php endforeach; ?>
+</div>
                 <div class="adm-form-footer">
                     <!-- ✔ classe original: button-barber -->
                     <button class="button-barber">
