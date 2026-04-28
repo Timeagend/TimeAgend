@@ -45,6 +45,10 @@
     cursor: pointer;
     color: #000;
 }
+/* ✅ Essa regra é o que faz o menu aparecer ao clicar */
+  .menu-principal.active {
+    display: flex;
+  }
 
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
@@ -71,7 +75,9 @@
 .menu-toggle {
     display: block; /* Exibe o botão de menu em telas menores */
     color: #fff;
-   
+    position: relative;
+    left: 20px;
+   top: 4px;
 }
 
 .menu-principal {
@@ -80,7 +86,7 @@
     color: #000;
     position: absolute;
     top: 60px; /* Ajuste a posição conforme o cabeçalho */
-    left: 250px;
+    left: 230px;
     width: 38%;
     padding: 10px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

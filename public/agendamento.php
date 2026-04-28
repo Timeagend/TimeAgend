@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
   <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal">
     &#9776;
   </button>
+ 
 
   <!-- Menu principal -->
   <nav class="menu-principal" id="menu-principal">
@@ -184,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
 
     <h2 class="titulo">SELECIONE O <span style="color:#f0c000">PROFISSIONAL</span></h2>
 
-    <div id="resumoTopo" class="resumo-servicos"></div>
+    <!-- <div id="resumoTopo" class="resumo-servicos"></div> -->
 
     <div id="listaProfissionais" class="lista-profissionais">
       <img src="<?= BASE_URL ?>img/barber.png" alt="Foto do barbeiro">
@@ -269,6 +270,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
                 <button id="btnFinalizarAgendamento" class="btn-confirmar">FINALIZAR AGENDAMENTO</button>
             </div>
         </div>
+
+        <div id="popupSucesso" style="display:none;">
+        <div class="popup-overlay"></div>
+        <div class="popup-box">
+           <div class="popup-icone">✂️</div>
+            <h2>Agendamento Realizado!</h2>
+            <p>Seu horário foi confirmado com sucesso.</p>
+        <button id="popupBtnOk">OK</button>
+  </div>
+</div>
 </main>
 
   <script>
@@ -303,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resumoProfissionalConfirmacao = document.getElementById("resumoProfissionalConfirmacao");
   const resumoDataHoraConfirmacao = document.getElementById("resumoDataHoraConfirmacao");
   const totalConfirmacao = document.getElementById("totalConfirmacao");
+  const btnVoltarConfirmacao = document.getElementById("btnVoltarConfirmacao");
   const btnFinalizarAgendamento = document.getElementById("btnFinalizarAgendamento");
 
   // --- DADOS ---
@@ -312,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let horarioSelecionado = null;
   let servicosPorCategoria = {};
   let profissionais = [];
-  let descontoPlano = 0; // desconto em %
+  let descontoPlano = 0;
 
   // --- CARREGAR SERVIÇOS ---
   function carregarServicos() {
@@ -329,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error(err);
-        servicosPorCategoria = { cortes: [{nome:"Corte Clássico", preco:40}] };
+        servicosPorCategoria = { cortes: [{ nome: "Corte Clássico", preco: 40 }] };
         renderizarServicos(categoriaAtiva);
       });
   }
@@ -338,13 +350,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function carregarProfissionais() {
     return fetch("../../models/agenda/agendamento/api/Barbeiros.php")
       .then(res => res.json())
-      .then(data => { 
-        profissionais = data; 
-        renderizarProfissionais(); 
+      .then(data => {
+        profissionais = data;
+        renderizarProfissionais();
       })
       .catch(err => {
         console.error(err);
-        profissionais = [{ nome_barbeiro:"Rafael Costa", descricao:"2 anos", foto:"<?= BASE_URL ?>adm/img/barber.png" }];
+        profissionais = [{ nome_barbeiro: "Rafael Costa", descricao: "2 anos", foto: "<?= BASE_URL ?>adm/img/barber.png" }];
         renderizarProfissionais();
       });
   }
@@ -367,21 +379,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- ETAPA 1 ---
   function renderizarServicos(categoria) {
     listaServicos.innerHTML = "";
-    const chave = categoria;
-    if (!servicosPorCategoria[chave]?.length) {
+    if (!servicosPorCategoria[categoria]?.length) {
       listaServicos.innerHTML = "<p>Nenhum serviço disponível.</p>";
       return;
     }
-    servicosPorCategoria[chave].forEach(servico => {
+    servicosPorCategoria[categoria].forEach(servico => {
       const btn = document.createElement("button");
       btn.classList.add("servico");
       btn.dataset.nome = servico.nome;
       btn.dataset.preco = servico.preco;
-      btn.dataset.categoria = chave;
-      // aplicar desconto no display
+      btn.dataset.categoria = categoria;
       const precoFinal = servico.preco - ((servico.preco * descontoPlano) / 100);
-      btn.innerHTML = `${servico.nome} <span class="preco">R$ ${precoFinal.toFixed(2).replace('.',',')}</span>`;
-      if (selecionados[chave]?.nome === servico.nome) btn.classList.add("selecionado");
+      btn.innerHTML = `${servico.nome} <span class="preco">R$ ${precoFinal.toFixed(2).replace('.', ',')}</span>`;
+      if (selecionados[categoria]?.nome === servico.nome) btn.classList.add("selecionado");
       btn.addEventListener("click", () => selecionarServico(btn));
       listaServicos.appendChild(btn);
     });
@@ -391,13 +401,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoria = btn.dataset.categoria;
     const nome = btn.dataset.nome;
     const preco = parseFloat(btn.dataset.preco);
-    const precoFinal = preco - ((preco * descontoPlano)/100);
-
+    const precoFinal = preco - ((preco * descontoPlano) / 100);
     const jaSelecionado = selecionados[categoria]?.nome === nome;
 
-    if (jaSelecionado) { 
-      btn.classList.remove("selecionado"); 
-      delete selecionados[categoria]; 
+    if (jaSelecionado) {
+      btn.classList.remove("selecionado");
+      delete selecionados[categoria];
     } else {
       document.querySelectorAll(`.servico[data-categoria="${categoria}"]`).forEach(s => s.classList.remove("selecionado"));
       btn.classList.add("selecionado");
@@ -408,18 +417,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function atualizarResumo() {
     const valores = Object.values(selecionados);
-
     if (valores.length > 0) {
       resumoServicos.style.display = "block";
-      listaSelecionados.innerHTML = valores.map(i=>{
-        return `<p>${i.nome} — R$ ${i.precoFinal.toFixed(2).replace('.',',')}</p>`;
-      }).join("");
-      const total = valores.reduce((acc,i)=>acc + i.precoFinal,0);
-      totalValor.textContent = total.toFixed(2).replace('.',',');
+      listaSelecionados.innerHTML = valores.map(i => `<p>${i.nome} — R$ ${i.precoFinal.toFixed(2).replace('.', ',')}</p>`).join("");
+      const total = valores.reduce((acc, i) => acc + i.precoFinal, 0);
+      totalValor.textContent = total.toFixed(2).replace('.', ',');
     } else {
-      resumoServicos.style.display="none";
-      listaSelecionados.textContent="Nenhum serviço selecionado.";
-      totalValor.textContent="0,00";
+      resumoServicos.style.display = "none";
+      listaSelecionados.textContent = "Nenhum serviço selecionado.";
+      totalValor.textContent = "0,00";
     }
   }
 
@@ -433,26 +439,27 @@ document.addEventListener("DOMContentLoaded", () => {
   btnConfirmarServicos.addEventListener("click", () => {
     if (!Object.values(selecionados).length) { alert("Selecione pelo menos um serviço!"); return; }
     localStorage.setItem("servicosSelecionados", JSON.stringify(Object.values(selecionados)));
-    etapa1.style.display = "none"; etapa2.style.display = "block";
+    etapa1.style.display = "none";
+    etapa2.style.display = "block";
   });
 
   // --- ETAPA 2 ---
   function renderizarProfissionais() {
     listaContainer.innerHTML = "";
-    profissionais.forEach((prof,index) => {
+    profissionais.forEach((prof, index) => {
       const nome = prof.nome_barbeiro || "Não definido";
       const descricao = prof.descricao || "Descrição não informada";
       const foto = prof.foto ? `<?= BASE_URL ?>adm/img/${prof.foto}` : `<?= BASE_URL ?>adm/img/barber.png`;
       const card = document.createElement("div");
       card.classList.add("prof-card");
       card.innerHTML = `<img src="${foto}" alt="${nome}"><h3>${nome}</h3><p>${descricao}</p>`;
-      card.addEventListener("click", () => selecionarProfissional(card,index));
+      card.addEventListener("click", () => selecionarProfissional(card, index));
       listaContainer.appendChild(card);
     });
   }
 
-  function selecionarProfissional(card,index){
-    document.querySelectorAll(".prof-card").forEach(c=>c.classList.remove("selecionado"));
+  function selecionarProfissional(card, index) {
+    document.querySelectorAll(".prof-card").forEach(c => c.classList.remove("selecionado"));
     card.classList.add("selecionado");
     profissionalSelecionado = profissionais[index];
   }
@@ -460,28 +467,35 @@ document.addEventListener("DOMContentLoaded", () => {
   btnConfirmarProf.addEventListener("click", () => {
     if (!profissionalSelecionado) { alert("Selecione um profissional!"); return; }
     localStorage.setItem("profissionalSelecionado", JSON.stringify(profissionalSelecionado));
-    etapa2.style.display="none";
-    etapa3.style.display="block";
+    etapa2.style.display = "none";
+    etapa3.style.display = "block";
+    document.querySelector(".horarios-section").style.display = "none";
     renderizarHorarios();
   });
 
   btnVoltar.addEventListener("click", () => {
-    etapa2.style.display="none"; etapa1.style.display="block";
+    etapa2.style.display = "none";
+    etapa1.style.display = "block";
   });
 
   // --- ETAPA 3 ---
   function renderizarHorarios() {
     containerHorarios.innerHTML = "";
     horarioSelecionado = null;
-    if (!profissionalSelecionado) { containerHorarios.innerHTML="<p>Selecione um profissional primeiro.</p>"; return; }
-    if (!inputData.value) { containerHorarios.innerHTML="<p>Selecione uma data.</p>"; return; }
+
+    if (!profissionalSelecionado) { containerHorarios.innerHTML = "<p>Selecione um profissional primeiro.</p>"; return; }
+    if (!inputData.value) {
+      document.querySelector(".horarios-section").style.display = "none";
+      return;
+    }
+
+    document.querySelector(".horarios-section").style.display = "block";
 
     fetch(`../../models/agenda/agendamento/api/Horario.php?idbarbeiro=${profissionalSelecionado.idbarbeiro}&data=${inputData.value}`)
       .then(res => res.json())
       .then(resp => {
         const disponiveis = resp.disponiveis || [];
-        if (!disponiveis.length) { containerHorarios.innerHTML="<p>Nenhum horário disponível.</p>"; return; }
-
+        if (!disponiveis.length) { containerHorarios.innerHTML = "<p>Nenhum horário disponível.</p>"; return; }
         disponiveis.forEach(hora => {
           const btn = document.createElement("button");
           btn.classList.add("hora");
@@ -497,7 +511,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Erro ao carregar horários:", err);
-        containerHorarios.innerHTML="<p>Erro ao carregar horários.</p>";
+        containerHorarios.innerHTML = "<p>Erro ao carregar horários.</p>";
       });
   }
 
@@ -507,33 +521,38 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inputData.value || !horarioSelecionado) { alert("Selecione data e horário!"); return; }
     localStorage.setItem("dataSelecionada", inputData.value);
     localStorage.setItem("horarioSelecionado", horarioSelecionado);
-    etapa3.style.display="none";
-    etapaConfirmacao.style.display="block";
+    etapa3.style.display = "none";
+    etapaConfirmacao.style.display = "block";
     renderizarConfirmacao();
   });
 
   btnVoltar2.addEventListener("click", () => {
-    etapa3.style.display="none";
-    etapa2.style.display="block";
+    etapa3.style.display = "none";
+    etapa2.style.display = "block";
   });
 
   // --- ETAPA 4 ---
   function renderizarConfirmacao() {
-    const servicos = JSON.parse(localStorage.getItem("servicosSelecionados"))||[];
-    const prof = JSON.parse(localStorage.getItem("profissionalSelecionado"))||{};
+    const servicos = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
+    const prof = JSON.parse(localStorage.getItem("profissionalSelecionado")) || {};
     const data = localStorage.getItem("dataSelecionada");
     const hora = localStorage.getItem("horarioSelecionado");
-    const total = servicos.reduce((acc,i)=>acc + i.precoFinal,0).toFixed(2).replace('.',',');
+    const total = servicos.reduce((acc, i) => acc + i.precoFinal, 0).toFixed(2).replace('.', ',');
 
-    resumoServicosConfirmacao.innerHTML = servicos.map(i=>`<p>${i.nome} — R$ ${i.precoFinal.toFixed(2).replace('.',',')}</p>`).join("");
+    resumoServicosConfirmacao.innerHTML = servicos.map(i => `<p>${i.nome} — R$ ${i.precoFinal.toFixed(2).replace('.', ',')}</p>`).join("");
     resumoProfissionalConfirmacao.textContent = prof.nome_barbeiro || "Não definido";
     resumoDataHoraConfirmacao.textContent = `${data} — ${hora}`;
     totalConfirmacao.textContent = total;
   }
 
+  btnVoltarConfirmacao.addEventListener("click", () => {
+    etapaConfirmacao.style.display = "none";
+    etapa3.style.display = "block";
+  });
+
   btnFinalizarAgendamento.addEventListener("click", () => {
-    const servicos = JSON.parse(localStorage.getItem("servicosSelecionados"))||[];
-    const prof = JSON.parse(localStorage.getItem("profissionalSelecionado"))||{};
+    const servicos = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
+    const prof = JSON.parse(localStorage.getItem("profissionalSelecionado")) || {};
     const data = localStorage.getItem("dataSelecionada");
     const hora = localStorage.getItem("horarioSelecionado");
 
@@ -542,9 +561,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Enviar nomes para o backend
     const dados = {
-      servicos: servicos.map(s=>s.nome),
+      servicos: servicos.map(s => s.nome),
       barbeiro: prof.nome_barbeiro,
       data: data,
       horario: hora,
@@ -559,9 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(resp => {
       if (resp.sucesso) {
-        alert("Agendamento realizado!");
-        localStorage.clear();
-        window.location.href = "index.php";
+        mostrarPopupSucesso();
       } else {
         alert("Erro: " + (resp.mensagem || "Tente novamente."));
       }
@@ -569,11 +585,23 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(err => { console.error(err); alert("Erro ao agendar."); });
   });
 
+  // --- POPUP SUCESSO ---
+  function mostrarPopupSucesso() {
+    const popup = document.getElementById("popupSucesso");
+    popup.style.display = "flex";
+
+    document.getElementById("popupBtnOk").addEventListener("click", () => {
+      popup.style.display = "none";
+      localStorage.clear();
+      window.location.href = "index.php";
+    });
+  }
+
   // --- Inicialização ---
-  etapa1.style.display="block";
-  etapa2.style.display="none";
-  etapa3.style.display="none";
-  etapaConfirmacao.style.display="none";
+  etapa1.style.display = "block";
+  etapa2.style.display = "none";
+  etapa3.style.display = "none";
+  etapaConfirmacao.style.display = "none";
 
   Promise.all([carregarDescontoPlano(), carregarServicos(), carregarProfissionais()]);
 });
@@ -592,6 +620,8 @@ body {
   /* font-family: 'Poppins', sans-serif; */
   margin: 0;
   padding: 0;
+  /* ✅ MELHORIA: Evita scroll horizontal em mobile */
+  overflow-x: hidden;
 }
 
 .agenda-container {
@@ -599,29 +629,35 @@ body {
   max-width: 900px;
   margin: 60px auto;
   text-align: center;
+  /* ✅ MELHORIA: Caixa não ultrapassa a tela */
+  box-sizing: border-box;
 }
 
 /* ====== Etapas ====== */
- .steps {
+.steps {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 50px;
   margin-bottom: 40px;
-  transform: scale(1.05); /* 🔽 diminui 5% o tamanho total */
-  transform-origin: center; /* mantém centralizado */
+  transform: scale(1.05);
+  transform-origin: center;
+  /* ✅ MELHORIA: Evita quebra em telas pequenas */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
 }
-
-
 
 .step {
   display: flex;
-  align-items: center;   /* Alinha círculo e texto no centro */
-  flex-direction: row;   /* Fica lado a lado */
+  align-items: center;
+  flex-direction: row;
   color: #999;
   font-size: 0.9rem;
   position: relative;
-  gap: 8px;              /* Espaço entre o círculo e o texto */
+  gap: 8px;
+  /* ✅ MELHORIA: Não encolhe em telas pequenas */
+  flex-shrink: 0;
 }
 
 .circle {
@@ -671,6 +707,8 @@ body {
   margin-bottom: 40px;
   color: white;
   margin-top: 60px;
+  /* ✅ MELHORIA: Quebra linha em telas muito pequenas */
+  word-break: break-word;
 }
 
 .destaque {
@@ -683,22 +721,31 @@ body {
   justify-content: center;
   gap: 15px;
   margin-bottom: 60px;
+  /* ✅ MELHORIA: Quebra linha quando não cabe */
+  /* flex-wrap: wrap; */
 }
 
 .categoria {
   background-color: #222;
   border: none;
   color: #fff;
-  padding: 8px 18px;
+  /* padding: 8px 18px; */
   border-radius: 20px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s, transform 0.15s;
   font-weight: 500;
+  
+  white-space: nowrap;
 }
 
 .categoria.ativa {
   background-color: #f0c000;
   color: #000;
+}
+
+/* ✅ MELHORIA: Leve feedback visual ao clicar */
+.categoria:active {
+  transform: scale(0.96);
 }
 
 /* ====== Lista de serviços ====== */
@@ -721,13 +768,20 @@ body {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s, transform 0.15s;
   margin-bottom: 15px;
-  width: 100%;
+  width: 98%;
+  /* ✅ MELHORIA: Garante que padding não estoure a largura */
+  box-sizing: border-box;
 }
 
 .servico:hover {
   background-color: #333;
+}
+
+/* ✅ MELHORIA: Leve feedback visual ao clicar */
+.servico:active {
+  transform: scale(0.98);
 }
 
 .servico.selecionado {
@@ -735,7 +789,11 @@ body {
   color: #000;
 }
 
-/* ====== Resumo ====== */
+/* ====== Resumo ====== 
+   ✅ CORREÇÃO PRINCIPAL: Oculto por padrão, aparece só após selecionar serviço
+   O JS já controla o display, mas adicionamos display:none inicial aqui
+   para garantir que não aparece antes de qualquer seleção.
+*/
 .resumo-servicos {
   background-color: #1c1c1c;
   padding: 20px;
@@ -743,6 +801,15 @@ body {
   text-align: left;
   font-size: 0.95rem;
   margin-bottom: 30px;
+  /* ✅ OCULTO POR PADRÃO */
+  display: none;
+  /* ✅ MELHORIA: Transição suave ao aparecer */
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 #listaSelecionados {
@@ -758,26 +825,98 @@ body {
   padding: 12px 40px;
   font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s, transform 0.15s;
+  /* ✅ MELHORIA: Mínimo de largura legível */
+  min-width: 160px;
 }
 
 .btn-confirmar:hover {
   background-color: #9a9a3d;
 }
 
-/* ====== Responsividade ====== */
+/* ✅ MELHORIA: Responsividade ====== */
 @media (max-width: 768px) {
+  header img{
+    margin-left: 0;
+    position: relative;
+    right: 40px;
+  }
   .agenda-container {
     width: 95%;
+    margin: 30px auto;
+    padding: 0 4px;
   }
+
+  /* Steps menores: esconde texto, mostra só número */
   .steps {
-    gap: 20px;
-    font-size: 0.8rem;
+    gap: 12px;
+    transform: scale(1);
+    margin-bottom: 28px;
   }
+
+  .step span:last-child {
+    /* ✅ Esconde o label de texto em mobile, mantém só o círculo */
+    display: none;
+  }
+
+  .step::after {
+    right: -16px;
+    width: 14px;
+  }
+
+  .titulo {
+    font-size: 1.3rem;
+    margin-top: 30px;
+    margin-bottom: 24px;
+  }
+
+  .categorias {
+    gap: 0;
+    margin-top: 40px;
+    /* margin-bottom: 30px; */
+  }
+
   .categoria {
-    padding: 6px 12px;
+    /* padding: 7px 13px; */
+    font-size: 0.88rem;
+    margin-bottom: -10px;
+  }
+
+  .servico {
+    padding: 12px 18px;
+    font-size: 0.93rem;
+    border-radius: 14px;
+    /* margin-bottom: 8px; */
+  }
+
+  .preco {
+    margin-right: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  .btn-confirmar,
+  .btn-voltar {
+    padding: 11px 24px;
+    font-size: 0.9rem;
+    min-width: 120px;
   }
 }
+
+@media (max-width: 480px) {
+  .btn-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-confirmar,
+  .btn-voltar {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
 /* ---------------------------------- */
 /* etapa 2 - Profissionais */
 /* ---------------------------------- */
@@ -795,9 +934,11 @@ body {
   padding: 25px;
   text-align: center;
   width: 220px;
-  transition: 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
   cursor: pointer;
   margin-bottom: 20px;
+  /* ✅ MELHORIA: Não ultrapassa a tela em mobile */
+  box-sizing: border-box;
 }
 
 .prof-card img {
@@ -838,6 +979,14 @@ body {
   color: #000;
 }
 
+/* ✅ MELHORIA: Cards de profissional full-width em mobile */
+@media (max-width: 520px) {
+  .prof-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
 .botoes {
   display: flex;
   justify-content: center;
@@ -852,16 +1001,17 @@ body {
   padding: 12px 40px;
   font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s, transform 0.15s;
+  min-width: 160px;
 }
 
 .btn-voltar:hover {
   background-color: #777;
 }
+
 /* ----------------------------------
 Etapa 3 - Data e Hora
 ---------------------------------- */
-/* ETAPA 3 - DATA E HORA */
 .data-hora-box {
   background: #1a1a1a;
   border-radius: 15px;
@@ -869,6 +1019,8 @@ Etapa 3 - Data e Hora
   margin: 25px 0;
   border: 2px solid #2a2a2a;
   margin-bottom: 50px;
+  /* ✅ MELHORIA: Padding não estoura em mobile */
+  box-sizing: border-box;
 }
 
 .data-section {
@@ -884,7 +1036,6 @@ Etapa 3 - Data e Hora
   margin-bottom: 15px;
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .data-section p i {
@@ -898,9 +1049,11 @@ Etapa 3 - Data e Hora
   color: white;
   padding: 12px 15px;
   font-size: 16px;
-  width: 96%;
+  /* ✅ MELHORIA: 100% em vez de 96% para alinhar melhor */
+  width: 100%;
   margin-bottom: 10px;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 #dataSelecionada:focus {
@@ -943,10 +1096,11 @@ Etapa 3 - Data e Hora
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color 0.25s, background-color 0.25s, transform 0.15s;
   text-align: center;
   margin-top: 0px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .hora:hover {
@@ -962,37 +1116,26 @@ Etapa 3 - Data e Hora
   transform: scale(1.05);
 }
 
-/* Estilização do input date para navegadores modernos */
+/* Estilização do input date */
 #dataSelecionada::-webkit-calendar-picker-indicator {
   filter: invert(1);
   cursor: pointer;
   padding: 5px;
 }
 
-#dataSelecionada::-webkit-datetime-edit-fields-wrapper {
-  color: white;
-}
-
-#dataSelecionada::-webkit-datetime-edit-text {
-  color: white;
-}
-
+#dataSelecionada::-webkit-datetime-edit-fields-wrapper { color: white; }
+#dataSelecionada::-webkit-datetime-edit-text { color: white; }
 #dataSelecionada::-webkit-datetime-edit-month-field,
 #dataSelecionada::-webkit-datetime-edit-day-field,
-#dataSelecionada::-webkit-datetime-edit-year-field {
-  color: white;
-}
+#dataSelecionada::-webkit-datetime-edit-year-field { color: white; }
 
-/* Para Firefox */
-#dataSelecionada {
-  color-scheme: dark;
-}
+/* #dataSelecionada { color-scheme: dark; } */
 
-/* Responsividade */
+/* Responsividade etapa 3 */
 @media (max-width: 768px) {
   .data-hora-box {
     padding: 20px;
-    margin: 20px 0;
+    
   }
   
   .horarios-grid {
@@ -1008,7 +1151,7 @@ Etapa 3 - Data e Hora
 
 @media (max-width: 480px) {
   .horarios-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .data-section p,
@@ -1031,7 +1174,6 @@ Etapa 3 - Data e Hora
   text-transform: uppercase;
 }
 
-/* Caixa geral do resumo */
 .resumo-completo {
   background: #1a1a1a;
   border-radius: 20px;
@@ -1041,12 +1183,13 @@ Etapa 3 - Data e Hora
   text-align: left;
   border: 2px solid #2a2a2a;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  /* ✅ MELHORIA */
+  box-sizing: border-box;
 }
 
 .resumo-item {
   margin-bottom: 25px;
   border-bottom: 1px solid #333;
-  /* padding-bottom: 15px; */
 }
 
 .resumo-item:last-child {
@@ -1073,16 +1216,16 @@ Etapa 3 - Data e Hora
   background: #2a2a2a;
   padding: 1px;
   border-radius: 12px;
-  /* font-size: 20px; */
   font-weight: bold;
-  
 }
 
-/* ===== BOTÕES ===== */
+/* ===== BOTÕES GERAIS ===== */
 .btn-row {
   display: flex;
   justify-content: center;
   gap: 20px;
+  /* ✅ MELHORIA: Quebra em telas muito pequenas */
+  flex-wrap: wrap;
 }
 
 .btn-voltar, .btn-confirmar {
@@ -1091,14 +1234,17 @@ Etapa 3 - Data e Hora
   border-radius: 50px;
   padding: 12px 35px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s, transform 0.15s, color 0.3s;
   text-transform: uppercase;
   font-size: 15px;
+  /* ✅ MELHORIA: Evita texto cortado em mobile */
+  white-space: nowrap;
 }
 
 .btn-voltar {
   background: #444;
   color: #fff;
+  
 }
 
 .btn-voltar:hover {
@@ -1117,24 +1263,106 @@ Etapa 3 - Data e Hora
   transform: translateY(-2px);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE ETAPA 4 ===== */
 @media (max-width: 768px) {
   .resumo-completo {
     padding: 20px;
-    width: 90%;
+    width: 100%;
   }
 
   .btn-row {
     flex-direction: column;
     gap: 15px;
+    align-items: center;
+  }
+  .btn-voltar{
+    margin-bottom: 12px;
   }
 
   .btn-voltar, .btn-confirmar {
     width: 100%;
+    max-width: 320px;
+    text-align: center;
   }
 }
+
 .resumo-item h3{
     color: white;
 }
+/* // ✅ MELHORIA: Estilização do popup de sucesso */
+#popupSucesso {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(3px);
+}
+
+.popup-box {
+  position: relative;
+  z-index: 1;
+  background: #1a1a1a;
+  /* border: 2px solid #f0c000; */
+  border-radius: 20px;
+  padding: 40px 20px;
+  text-align: center;
+  animation: popupEntrar 0.35s ease;
+  max-width: 340px;
+  width: 80%;
+}
+
+@keyframes popupEntrar {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.popup-icone {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.popup-box h2 {
+  color: #f0c000;
+  font-size: 1.4rem;
+  margin: 0 0 10px;
+}
+
+.popup-box p {
+  color: #ccc;
+  font-size: 0.8rem;
+  margin: 0 0 50px;
+}
+
+#popupBtnOk {
+  background: #99a532;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 11px 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.15s;
+  display: inline-block;
+}
+
+#popupBtnOk:hover {
+  background: #b8c94a;
+  color: #000;
+  transform: translateY(-2px);
+}
 </style>
+
+
+<script src="<?= BASE_URL?>/public/assets/script/menu.js"></script>
+
+</body>
+</html>
