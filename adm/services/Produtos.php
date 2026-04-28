@@ -1,14 +1,14 @@
 <?php 
 
-include_once "../config/conection.php";
+require_once "../../config/conection.php";
 
 class Produtos {
     private $con;
 
-    public function __construct($conexao) {
-        $this->con = $conexao;
+    public function __construct($con) {
+        $this->con = $con;
     }
-
+    
     // ✅ LISTAR PRODUTOS
     public function listarProdutos() {
         $result = $this->con->query("SELECT * FROM produtos");
@@ -30,3 +30,4 @@ class Produtos {
         return $stmt->execute();
     }
 }
+

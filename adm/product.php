@@ -1,6 +1,5 @@
 <?php
 
-include_once "services/controlProduct.php";
 include_once "services/Produtos.php";
 $controlProduct = new Produtos($con);
 
@@ -54,10 +53,41 @@ img.prod { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
 <div class="tabs">
     <button onclick="openTab('listar')">📦 Produtos</button>
     <button onclick="openTab('add')">➕ Adicionar</button>
+    <button onclick="openTab('pedidos')">Pedidos</button>
     <button onclick="redirect()">Voltar</button>
 </div>
 
 <div id="listar" class="tab-content active">
+    <div class="card">
+        <h3>Lista de Produtos</h3>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Ação</th>
+            </tr>
+            <?php while($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td><?= $row['id'] ?></td>
+                <td>
+                    <?php if($row['imagem']): ?>
+                        <img class="prod" src="uploads/<?= $row['imagem'] ?>">
+                    <?php endif; ?>
+                </td>
+                <td><?= $row['nome'] ?></td>
+                <td>R$ <?= number_format($row['preco'],2,',','.') ?></td>
+                <td>
+                    <button onclick="editar(<?= $row['id'] ?>, '<?= $row['nome'] ?>', '<?= $row['descricao'] ?>', <?= $row['preco'] ?>)">Editar</button>
+                    <button onclick="excluir(<?= $row['id'] ?>)">Excluir</button>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+    </div>
+</div>
+<div id="pedidos" class="tab-content active">
     <div class="card">
         <h3>Lista de Produtos</h3>
         <table class="table">

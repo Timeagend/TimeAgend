@@ -10,16 +10,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimeAgend Barbearia</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?= BASE_URL ?>public/Produtos/assets/css/produtos.css">
  </head>
- <body class="h-full" style="background-color:#000;">
+  <body class="h-full" style="background-color:#000;">
   <div id="app-wrapper" class="w-full h-full overflow-auto flex flex-col" style="background-color:#000;">
 
    <!-- Sidebar Carrinho -->
-   <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-96 overflow-hidden z-50 transition-all duration-300" style="background-color:#0d0d0d; transform:translateX(100%); box-shadow:-4px 0 30px rgba(0,0,0,0.9);">
+   <!-- <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-96 overflow-hidden z-50 transition-all duration-300" style="background-color:#0d0d0d; transform:translateX(100%); box-shadow:-4px 0 30px rgba(0,0,0,0.9);">
     <div class="h-full flex flex-col">
      <div class="p-6 border-b" style="border-color:#1e1e1e;">
       <div class="flex items-center justify-between">
@@ -44,7 +41,43 @@
       </button>
      </div>
     </div>
-   </div>
+   </div> -->
+
+   
+  <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-96 overflow-hidden z-50 transition-all duration-300" style="background-color:#0d0d0d; transform:translateX(100%); box-shadow:-4px 0 30px rgba(0,0,0,0.9);">
+    
+    <form id="cart-form" action="<?= BASE_URL ?>adm/services/controlProduct.php" method="post" class="h-full flex flex-col m-0 p-0">
+        
+        <div class="p-6 border-b" style="border-color:#1e1e1e;">
+            <div class="flex items-center justify-between">
+                <h2 class="font-display text-2xl" style="color:#C9A227;">Carrinho</h2>
+                <button type="button" id="close-cart" class="p-2 hover:opacity-70 transition-opacity">
+                    <svg class="w-6 h-6" style="color:#C9A227;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+            <p class="font-body text-center py-12" style="color:#444;">Nenhum produto no carrinho</p>
+        </div>
+
+        <input type="hidden" name="cart_data" id="cart-data-input" value="">
+
+        <div class="border-t p-6" style="border-color:#1e1e1e;">
+            <div class="flex justify-between mb-6">
+                <span class="font-body" style="color:#555;">Subtotal:</span>
+                <span class="font-display text-xl" style="color:#C9A227;" id="cart-total">R$ 0,00</span>
+            </div>
+            <button type="submit" onclick="document.getElementById('cart-data-input').value = JSON.stringify(cartData)"
+             id="checkout-btn"
+            class="w-full py-3 rounded-lg font-body font-medium uppercase tracking-wider transition-all" style="background-color:#C9A227; color:#000; cursor:pointer;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                Finalizar Compra
+              </button>
+        </div>
+    </form>
+</div>
 
    <!-- Overlay -->
    <div id="cart-overlay" class="fixed inset-0 z-40 opacity-0 pointer-events-none transition-opacity duration-300" style="background-color:rgba(0,0,0,0.75);"></div>
