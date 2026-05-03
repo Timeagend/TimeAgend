@@ -1,10 +1,36 @@
-<?php 
 
-require_once '../config/url.php'; 
+<?php
+
+require_once "../config/conection.php";
+include_once "services/Produtos.php";
+include_once "services/Pedidos.php";
+
+$controlProduct = new Produtos($con);
+
+$listaprodutos = $controlProduct->listarProdutos();
+$totalProdutos = $controlProduct->contarProdutos();
+$mediaProdutos = $controlProduct->mediaValorProdutos();
+
+$controlPedidos = new Pedidos($con);
+$totalVendas = $controlPedidos->totalVendas();
 
 
+if (isset($_POST['add'])) {
+    $nome = $_POST['nome'];
+    $preco = $_POST['preco'];
+    $con->query("INSERT INTO produtos (nome, preco) VALUES ('$nome', '$preco')");
+}
+
+
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $nome = $_POST['nome'];
+    $preco = $_POST['preco'];
+    $con->query("UPDATE produtos SET nome='$nome', preco='$preco' WHERE id=$id");
+}
+
+$result = $con->query("SELECT * FROM produtos");
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -378,6 +404,7 @@ body.dark .form-row select{background:var(--light)}
 </head>
 <body>
 
+
 <!-- Modal -->
 <div class="modal-overlay" id="del-modal">
   <div class="modal-box">
@@ -389,6 +416,7 @@ body.dark .form-row select{background:var(--light)}
       <button class="btn-blue" style="background:var(--red)" id="confirm-del">Excluir</button>
     </div>
   </div>
+
 </div>
 
 <!-- Toast -->
@@ -420,6 +448,12 @@ body.dark .form-row select{background:var(--light)}
       <a href="index.php">
         <i class='bx bx-home bx'></i>
         <span>Início</span>
+      </a>
+    </li>
+    <li>
+      <a href="pedidos.php">
+        <i class='bx bx-home bx'></i>
+        <span>Pedidos</span>
       </a>
     </li>
   </ul>
@@ -468,21 +502,21 @@ body.dark .form-row select{background:var(--light)}
         <li>
           <i class='bx bx-package bx'></i>
           <div class="text">
-            <h3>6</h3>
+            <h3><?= $totalProdutos;?></h3>
             <p>Produtos cadastrados</p>
           </div>
         </li>
         <li>
           <i class='bx bx-dollar-circle bx'></i>
           <div class="text">
-            <h3>R$ 80,58</h3>
+            <h3><?php echo "R$ " . number_format($mediaProdutos, 2, ',', '.'); ?></h3>
             <p>Ticket médio</p>
           </div>
         </li>
         <li>
           <i class='bx bx-cart bx'></i>
           <div class="text">
-            <h3>R$ 483,50</h3>
+            <h3><?php echo "R$ ",$totalVendas; ?></h3>
             <p>Valor do portfólio</p>
           </div>
         </li>
@@ -510,7 +544,36 @@ body.dark .form-row select{background:var(--light)}
               </tr>
             </thead>
             <tbody id="prod-tbody">
+              <?php foreach ($listaprodutos as $produto): ?>
               <tr data-name="Pomada Matte Premium">
+                
+                <td>
+                  <img class="prod-thumb" src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=120&q=70" alt="">
+                  <div class="prod-name-cell">
+                    <strong><?= $produto['nome']; ?></strong>
+                    <span>#001</span>
+                  </div>
+                </td>
+                <td><?= $produto['categoria_nome'] ?></td>
+                <td><span class="price-td"><?=  $produto['preco']; ?></span></td>
+                <td><span class="status active">Ativo</span></td>
+                <td> 
+                  <button class="btn-sm-edit" 
+                    onclick="editarItem(
+                      '<?= $produto['nome'] ?>',
+                      '<?= $produto['descricao'] ?>',
+                      <?= $produto['preco'] ?>,
+                      <?= $produto['categoria_id'] ?>,
+                      <?= $produto['id'] ?>
+                    )">
+                    <i class='bx bx-edit-alt'></i> Editar
+                    </button>                                      <!--  -->
+                   <button class="btn-sm-del" onclick="confirmarExcluir(1)"><i class='bx bx-trash'></i> Excluir</button>
+                </td>
+                
+              </tr>
+              <?php endforeach; ?>
+              <!-- <tr data-name="Pomada Matte Premium">
                 <td>
                   <img class="prod-thumb" src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=120&q=70" alt="">
                   <div class="prod-name-cell">
@@ -605,18 +668,20 @@ body.dark .form-row select{background:var(--light)}
                   <button class="btn-sm-edit" onclick="editarItem('Kit Pentes Premium','3 pentes de acetato.','129.90','Acessórios')"><i class='bx bx-edit-alt'></i> Editar</button>
                   <button class="btn-sm-del" onclick="confirmarExcluir(6)"><i class='bx bx-trash'></i> Excluir</button>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
+</div>
+
     <!-- ── TAB: ADICIONAR ── -->
     <div id="add" class="tab-section" style="margin-top:36px">
       <div class="form-card">
         <h3><i class='bx bx-plus-circle'></i> Novo Produto</h3>
-        <form method="POST" enctype="multipart/form-data" onsubmit="handleSubmit(event,'add')">
+        <form method="POST" enctype="multipart/form-data" action="services/newProduto.php">
           <div class="form-row">
             <label>Nome do produto</label>
             <input type="text" name="nome" placeholder="Ex: Pomada Matte Premium" required>
@@ -632,12 +697,11 @@ body.dark .form-row select{background:var(--light)}
             </div>
             <div class="form-row">
               <label>Categoria</label>
-              <select name="categoria">
+              <select name="categoria_id">
                 <option value="" disabled selected>Selecionar...</option>
-                <option>Cabelo</option>
-                <option>Barba</option>
-                <option>Skincare</option>
-                <option>Acessórios</option>
+                <?php foreach($listaprodutos as $produtos): ?>
+                  <option value="<?= $produtos['categoria_id'] ;?>"><?= $produtos['categoria_nome']; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -662,7 +726,7 @@ body.dark .form-row select{background:var(--light)}
     <div id="editar" class="tab-section" style="margin-top:36px">
       <div class="form-card">
         <h3><i class='bx bx-edit'></i> Editar Produto</h3>
-        <form method="POST" enctype="multipart/form-data" onsubmit="handleSubmit(event,'update')">
+        <form method="POST" enctype="multipart/form-data" action="services/updateProduto.php">
           <input type="hidden" name="id" id="edit_id">
           <div class="form-row">
             <label>Nome do produto</label>
@@ -680,10 +744,9 @@ body.dark .form-row select{background:var(--light)}
             <div class="form-row">
               <label>Categoria</label>
               <select name="categoria" id="edit_cat">
-                <option>Cabelo</option>
-                <option>Barba</option>
-                <option>Skincare</option>
-                <option>Acessórios</option>
+                <?php foreach($listaprodutos as $produtos): ?>
+                  <option value="<?= $produtos['categoria_id'] ;?>"><?= $produtos['categoria_nome']; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -765,6 +828,9 @@ function editarItem(nome,desc,preco,cat){
   for(let o of sel.options) if(o.text===cat) o.selected=true;
   openTab('editar');
   setActiveByIndex(1);
+
+  
+
 }
 
 /* form submit */
