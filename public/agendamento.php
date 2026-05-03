@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/responsivo.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/contact.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>adm/img">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/contato.css">
     <style>
         
     </style>
@@ -66,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
     <a href="<?= BASE_URL ?>/public/agendamento.php" class="selected">Agenda</a>
     <a href="<?= BASE_URL ?>/public/planos.php">Planos</a>
     <a href="<?= BASE_URL ?>/public/perfil.php">Perfil</a>
-    <a href="#" onclick="openContact()">Contato</a>
+    <a onclick="abrirModalContato()" class="nav-link font-medium hover:text-accent transition-colors cursor-pointer">Contato</a>
   </nav>
 
        
@@ -75,43 +76,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['sendEmail'])) {
             {.menu-principal {
                 z-index: 10;
             }}
+          
         </style>
     </header>
-    <div class="modal" id="contactModal">
-    <div class="modal-content-1">
+   <div id="modalContato">
+  <div class="modal-card">
 
-    <?php if (!empty($successMessage) || !empty($errorMessage)): ?>
-    <div id="mensagemModal" class="custom-modal" style="display: block;">
-        <div class="custom-modal-content">
-            <p>
-                <?php 
-                    echo !empty($successMessage) 
-                        ? htmlspecialchars($successMessage) 
-                        : htmlspecialchars($errorMessage); 
-                ?>
-            </p>
-            <button onclick="fecharModal()">OK</button>
-        </div>
+    <button class="btn-fechar" onclick="fecharModalContato()">&times;</button>
+
+    <!-- Cabeçalho -->
+    <div id="m_cabecalho">
+      <h2>FALE <span>CONOSCO</span></h2>
+      <p>Envie sua dúvida ou sugestão. Respondemos em breve.</p>
+      <hr>
     </div>
-    <?php endif; ?>
 
+    <!-- Formulário -->
+    <form id="contactFormModal">
+      <label>Nome</label>
+      <input type="text" id="m_nome" placeholder="Seu nome completo">
+      <span id="m_erroNome" class="erro-campo"></span>
 
-        <span class="close" onclick="closeContactModal()">&times;</span>
-    
-        <div id="contato" class="contato-container">
-      
-            <form class="form-email" method="POST">
-            <h3 class="fale-conosco">Fale <span class="conosco">Conosco</span></h3>
-                <label for="user_name">Nome:</label>
-                <input type="text" name="user_name" id="user_name" required>
-                <label for="user_email">E-mail:</label>
-                <input type="email" name="user_email" id="user_email" required>
-                <label for="mensagem">Mensagem:</label>
-                <textarea name="mensagem" id="mensagem" required></textarea>
-                <button type="submit" name="sendEmail" data-button>Enviar</button>
-            </form>
-        </div>
+      <label>E-mail</label>
+      <input type="email" id="m_email" placeholder="seuemail@exemplo.com">
+      <span id="m_erroEmail" class="erro-campo"></span>
+
+      <label>Mensagem</label>
+      <textarea id="m_mensagem" rows="4" placeholder="Digite sua mensagem..."></textarea>
+      <span id="m_erroMensagem" class="erro-campo"></span>
+
+      <button type="submit" class="btn-enviar" id="m_btnEnviar">Enviar Mensagem</button>
+    </form>
+
+    <!-- Feedback -->
+    <div id="m_feedback">
+      <div id="m_feedbackIcone"></div>
+      <div id="m_feedbackTitulo"></div>
+      <p id="m_feedbackMsg"></p>
+      <button class="btn-ok" onclick="fecharModalContato()">OK</button>
     </div>
+
+  </div>
 </div>
 
 
@@ -1359,10 +1364,22 @@ Etapa 3 - Data e Hora
   color: #000;
   transform: translateY(-2px);
 }
+
 </style>
 
 
-<script src="<?= BASE_URL?>/public/assets/script/menu.js"></script>
+<script>
+ 
+</script>
+<script>
+  const BASE_URL = "<?= BASE_URL ?>";
+</script>
+
+
+<script src="<?= BASE_URL?>public/assets/script/contato.js"></script>
+<script src="<?= BASE_URL?>public/assets/script/menu.js"></script>
+
+
 
 </body>
 </html>

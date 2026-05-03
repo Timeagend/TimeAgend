@@ -1,4 +1,4 @@
-.modal {
+/* .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -26,7 +26,7 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
-}
+} */
 /* Menu */
 /* .menu-principal {
     
@@ -50,7 +50,7 @@
     display: flex;
   }
 
-/* Responsividade para telas menores */
+/* // Responsividade para telas menores */
 @media (max-width: 768px) {
     .barber-grid {
         display: grid;
@@ -402,3 +402,6 @@ transition: 0.5s;
     text-decoration: none;
     cursor: pointer;
 }
+
+
+
