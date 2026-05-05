@@ -98,7 +98,7 @@ CREATE TABLE `barbeiro` (
   `email` varchar(100) DEFAULT NULL,
   `senha` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idbarbeiro`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +107,7 @@ CREATE TABLE `barbeiro` (
 
 LOCK TABLES `barbeiro` WRITE;
 /*!40000 ALTER TABLE `barbeiro` DISABLE KEYS */;
-INSERT INTO `barbeiro` VALUES (5,'alan','Profissional em cortes','2024-01-24.png','alangabryel17092002@gmail.com','66666'),(28,'João Sliva','Profissional em cortes','image (12).png','jon@gmail.com','barber123'),(29,'Carlos Souza','5 anos de exeperiencia','img barber.jpg','carlos@gmail.com','barber123');
+INSERT INTO `barbeiro` VALUES (5,'alan','Profissional em cortes','2024-01-24.png','alangabryel17092002@gmail.com','66666'),(28,'João Sliva','Profissional em cortes','image (12).png','jon@gmail.com','barber123'),(29,'Carlos Souza','5 anos de exeperiencia','img barber.jpg','carlos@gmail.com','barber123'),(30,'alan ','vadiar','Captura de Tela (1).png','alan@email.com','agl1308');
 /*!40000 ALTER TABLE `barbeiro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +131,7 @@ CREATE TABLE `categorias` (
 
 LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
-INSERT INTO `categorias` VALUES (1,'Hardware'),(2,'Periféricos'),(3,'Software');
+INSERT INTO `categorias` VALUES (1,'Hardware'),(2,'Periféricos'),(3,'Software'),(4,'Cabelo'),(5,'Barba'),(6,'Skincare'),(7,'Acessórios');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +195,7 @@ CREATE TABLE `itens_pedido` (
   `produto_id` int NOT NULL,
   `quantidade` int DEFAULT NULL,
   PRIMARY KEY (`pedido_id`,`produto_id`),
-  KEY `produto_id` (`produto_id`),
+  KEY `itens_pedido_ibfk_2` (`produto_id`),
   CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`),
   CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -207,7 +207,7 @@ CREATE TABLE `itens_pedido` (
 
 LOCK TABLES `itens_pedido` WRITE;
 /*!40000 ALTER TABLE `itens_pedido` DISABLE KEYS */;
-INSERT INTO `itens_pedido` VALUES (101,3,2),(101,5,1),(102,2,1),(103,7,1),(104,8,1),(104,9,2),(105,1,1),(105,4,1),(106,10,1),(107,6,1),(108,5,1),(109,3,2),(110,2,1);
+INSERT INTO `itens_pedido` VALUES (101,3,2),(101,5,1),(102,2,1),(103,7,1),(104,8,1),(104,9,2),(105,1,1),(105,4,1),(106,10,1),(107,6,1),(108,5,1),(109,3,2),(110,2,1),(114,1,1),(115,1,1),(116,3,1),(117,1,1),(118,1,1);
 /*!40000 ALTER TABLE `itens_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,13 +255,14 @@ DROP TABLE IF EXISTS `pedidos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pedidos` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `cliente_id` int DEFAULT NULL,
   `data_pedido` date DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'pendente',
   PRIMARY KEY (`id`),
   KEY `cliente_id` (`cliente_id`),
   CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +271,7 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (101,1,'2024-01-10'),(102,2,'2024-01-12'),(103,1,'2024-02-15'),(104,3,'2024-02-20'),(105,4,'2024-03-05'),(106,5,'2024-03-10'),(107,2,'2024-03-18'),(108,1,'2024-04-01'),(109,3,'2024-04-05'),(110,4,'2024-04-22');
+INSERT INTO `pedidos` VALUES (101,1,'2024-01-10','pendente'),(102,2,'2024-01-12','pendente'),(103,1,'2024-02-15','pendente'),(104,3,'2024-02-20','pendente'),(105,4,'2024-03-05','pendente'),(106,5,'2024-03-10','pendente'),(107,2,'2024-03-18','pendente'),(108,1,'2024-04-01','pendente'),(109,3,'2024-04-05','pendente'),(110,4,'2024-04-22','pendente'),(111,1,'2026-04-22','pendente'),(112,1,'2026-04-22','pendente'),(113,1,'2026-04-22','pendente'),(114,1,'2026-04-22','pendente'),(115,1,'2026-04-22','pendente'),(116,1,'2026-04-22','pendente'),(117,1,'2026-04-22','pendente'),(118,1,'2026-04-22','pendente');
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,14 +343,16 @@ DROP TABLE IF EXISTS `produtos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `produtos` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) DEFAULT NULL,
   `preco` decimal(10,2) DEFAULT NULL,
   `categoria_id` int DEFAULT NULL,
+  `imagem` varchar(255) DEFAULT NULL,
+  `descricao` text,
   PRIMARY KEY (`id`),
   KEY `categoria_id` (`categoria_id`),
   CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +361,7 @@ CREATE TABLE `produtos` (
 
 LOCK TABLES `produtos` WRITE;
 /*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-INSERT INTO `produtos` VALUES (1,'Processador Core i9',3200.00,1),(2,'Placa de Vídeo RTX 4080',7500.00,1),(3,'Memória RAM 16GB DDR5',650.00,1),(4,'SSD NVMe 1TB',800.00,1),(5,'Mouse Gamer Pro',450.00,2),(6,'Teclado Mecânico RGB',580.00,2),(7,'Monitor 4K 27\"',2800.00,2),(8,'Licença Windows 11 Pro',950.00,3),(9,'Licença Antivírus Premium',150.00,3),(10,'Suite de Edição de Vídeo',1200.00,3);
+INSERT INTO `produtos` VALUES (1,'Processador Core i9',200.00,1,NULL,NULL),(2,'Placa de Vídeo RTX 4080',7500.00,1,NULL,NULL),(3,'Memória RAM 16GB DDR5',650.00,1,NULL,NULL),(4,'SSD NVMe 1TB',800.00,1,NULL,NULL),(5,'Mouse Gamer Pro',450.00,2,NULL,NULL),(6,'Teclado Mecânico RGB',580.00,2,NULL,NULL),(7,'Monitor 4K 27\"',2800.00,2,NULL,NULL),(8,'Licença Windows 11 Pro',950.00,3,NULL,NULL),(9,'Licença Antivírus Premium',150.00,3,NULL,NULL),(10,'Suite de Edição de Vídeo',1200.00,3,NULL,NULL),(11,'Pomada',35.00,NULL,NULL,NULL),(12,'Pomada',40.00,NULL,NULL,NULL),(13,'alan',10.00,NULL,NULL,NULL),(14,'Pomada Matte Premium',89.90,4,'https://images.unsplash.com/photo-1621607512214-68297480165e?w=120&q=70','Fixação forte com acabamento natural.'),(15,'Óleo para Barba',69.90,5,'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=120&q=70','Hidrata e amacia os fios.'),(16,'Balm Modelador',59.90,5,'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=120&q=70','Modela e nutre a barba.'),(17,'Shampoo Antiqueda',54.90,4,'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=120&q=70','Fortalece os fios.'),(18,'Hidratante Facial',79.90,6,'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=120&q=70','Hidratação profunda.'),(19,'Kit Pentes Premium',129.90,7,'https://images.unsplash.com/photo-1621607512022-6aecc4fed814?w=120&q=70','3 pentes de acetato.'),(22,'Pente',20.00,4,'uploads/69f29c274f502_Captura de Tela (1).png','Pente'),(23,'Notebook',20.00,1,'uploads/69f2a7c148652_Captura de Tela (1).png','new'),(24,'HDMI',1.00,1,'uploads/69f2a7f7c1803_Captura de Tela (1).png','sei la'),(25,'alan',20.00,1,'uploads/69f2aa06982c9_Captura de Tela (1).png','jihj8rg');
 /*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +380,7 @@ CREATE TABLE `servico` (
   `tipo` varchar(50) NOT NULL,
   `duracao` int DEFAULT NULL,
   PRIMARY KEY (`idservico`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +389,7 @@ CREATE TABLE `servico` (
 
 LOCK TABLES `servico` WRITE;
 /*!40000 ALTER TABLE `servico` DISABLE KEYS */;
-INSERT INTO `servico` VALUES (9,'BARBA COMPLETA',35.00,'Barba completa com navalha e acabamento','barba',30),(10,'BARBA DESENHADA',30.00,'Barba desenhada com precisão e acabamento','barba',25),(11,'SÓ NAVALHA',25.00,'Apenas limpeza com navalha','barba',20),(12,'CORTE CLÁSSICO',40.00,'Corte de cabelo tradicional e elegante','corte',30),(13,'CORTE INFANTIL',40.00,'Corte infantil com todo o cuidado','corte',30),(14,'CORTE DEGRADÊ',30.00,'Corte com degradê moderno','corte',30),(15,'CORTE AMERICANO',60.00,'Estilo americano com acabamento premium','corte',40),(16,'CORTE LOW FADE',65.00,'Corte moderno com low fade','corte',40),(17,'CORTE + BARBA',60.00,'Combo de corte de cabelo e barba','combo',50),(18,'CORTE + SOBRANCELHA',55.00,'Combo de corte de cabelo e sobrancelha','combo',45),(19,'COMPLETO (C/B/S)',80.00,'Corte, barba e sobrancelha completo','combo',60),(20,'SOBRANCELHA NAVALHA',20.00,'Sobrancelha feita com navalha','sobrancelha',15),(21,'SOBRANCELHA PINÇA',25.00,'Sobrancelha feita com pinça','sobrancelha',15);
+INSERT INTO `servico` VALUES (9,'BARBA COMPLETA',35.00,'Barba completa com navalha e acabamento','barba',30),(10,'BARBA DESENHADA',30.00,'Barba desenhada com precisão e acabamento','barba',25),(11,'SÓ NAVALHA',25.00,'Apenas limpeza com navalha','barba',20),(12,'CORTE CLÁSSICO',40.00,'Corte de cabelo tradicional e elegante','corte',30),(13,'CORTE INFANTIL',40.00,'Corte infantil com todo o cuidado','corte',30),(14,'CORTE DEGRADÊ',30.00,'Corte com degradê moderno','corte',30),(15,'CORTE AMERICANO',60.00,'Estilo americano com acabamento premium','corte',40),(16,'CORTE LOW FADE',65.00,'Corte moderno com low fade','corte',40),(17,'CORTE + BARBA',60.00,'Combo de corte de cabelo e barba','combo',50),(18,'CORTE + SOBRANCELHA',55.00,'Combo de corte de cabelo e sobrancelha','combo',45),(19,'COMPLETO (C/B/S)',80.00,'Corte, barba e sobrancelha completo','combo',60),(20,'SOBRANCELHA NAVALHA',20.00,'Sobrancelha feita com navalha','sobrancelha',15),(21,'SOBRANCELHA PINÇA',25.00,'Sobrancelha feita com pinça','sobrancelha',15),(22,'Barba + Corte',45.00,'','Combo',20);
 /*!40000 ALTER TABLE `servico` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,4 +432,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-14 20:45:49
+-- Dump completed on 2026-05-05 19:30:49
