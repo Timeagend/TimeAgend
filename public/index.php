@@ -57,7 +57,8 @@
 
                     <a href="#gallery" class="nav-link font-medium hover:text-accent transition-colors">Galeria</a>
                     <a href="#about" class="nav-link font-medium hover:text-accent transition-colors">Sobre</a>
-                    <a href="<?= BASE_URL ?>/public/contato.php" class="nav-link font-medium hover:text-accent transition-colors">Contato</a>
+                    <a onclick="abrirModalContato()" class="nav-link font-medium hover:text-accent transition-colors cursor-pointer">Contato</a>
+
                 </div>
                 
                 <a href="<?= BASE_URL?>/public/agendamento.php" class="btn-primary px-6 py-2.5 rounded-lg inline-block text-center">
@@ -66,6 +67,55 @@
             </div>
         </div>
     </nav>
+   
+    <!-- Modal Contato -->
+   <div id="modalContato" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.8); backdrop-filter:blur(4px); justify-content:center; align-items:center;">
+  <div style="background:#fff; border-radius:24px; padding:44px 40px 40px; width:90%; max-width:480px; position:relative; animation:popupEntrar 0.3s ease; box-shadow:0 12px 40px rgba(0,0,0,0.6);">
+
+    <button onclick="fecharModalContato()" style="position:absolute; top:16px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:#999; line-height:1;">&times;</button>
+
+    <!-- Cabeçalho -->
+    <div id="m_cabecalho">
+      <h2 style="text-align:center; font-size:1.8rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:#111; margin-bottom:6px;">
+        FALE <span style="color:#f0c000;">CONOSCO</span>
+      </h2>
+      <p style="text-align:center; color:#999; font-size:0.9rem; margin-bottom:24px;">Envie sua dúvida ou sugestão. Respondemos em breve.</p>
+      <hr style="border:none; border-top:1.5px solid #e5e5e5; margin-bottom:24px;">
+    </div>
+
+    <!-- Formulário -->
+    <form id="contactFormModal">
+      <label style="display:block; margin-bottom:6px; font-size:0.82rem; font-weight:900; color:#111; letter-spacing:1px; text-transform:uppercase;">Nome</label>
+      <input type="text" id="m_nome" placeholder="Seu nome completo"
+        style="width:100%; padding:13px 16px; margin-bottom:4px; background:#fff; border:1.5px solid #ddd; border-radius:10px; color:#111; font-size:0.95rem; font-family:inherit; box-sizing:border-box;">
+      <span id="m_erroNome" style="color:#e03333; font-size:0.78rem; display:block; min-height:18px; margin-bottom:10px;"></span>
+
+      <label style="display:block; margin-bottom:6px; font-size:0.82rem; font-weight:900; color:#111; letter-spacing:1px; text-transform:uppercase;">E-mail</label>
+      <input type="email" id="m_email" placeholder="seuemail@exemplo.com"
+        style="width:100%; padding:13px 16px; margin-bottom:4px; background:#fff; border:1.5px solid #ddd; border-radius:10px; color:#111; font-size:0.95rem; font-family:inherit; box-sizing:border-box;">
+      <span id="m_erroEmail" style="color:#e03333; font-size:0.78rem; display:block; min-height:18px; margin-bottom:10px;"></span>
+
+      <label style="display:block; margin-bottom:6px; font-size:0.82rem; font-weight:900; color:#111; letter-spacing:1px; text-transform:uppercase;">Mensagem</label>
+      <textarea id="m_mensagem" rows="4" placeholder="Digite sua mensagem..."
+        style="width:100%; padding:13px 16px; margin-bottom:4px; background:#fff; border:1.5px solid #ddd; border-radius:10px; color:#111; font-size:0.95rem; font-family:inherit; resize:vertical; box-sizing:border-box;"></textarea>
+      <span id="m_erroMensagem" style="color:#e03333; font-size:0.78rem; display:block; min-height:18px; margin-bottom:10px;"></span>
+
+      <button type="submit"
+        style="width:100%; padding:15px; background:#f0c000; border:none; border-radius:50px; color:#000; font-size:1rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; margin-top:4px; box-shadow:0 4px 16px rgba(240,192,0,0.35);">
+        Enviar Mensagem
+      </button>
+    </form>
+
+    <!-- Feedback -->
+    <div id="m_feedback" style="display:none; text-align:center; padding:20px 0 10px;">
+      <div id="m_feedbackIcone" style="font-size:2.8rem; margin-bottom:12px;"></div>
+      <div id="m_feedbackTitulo" style="font-size:1.1rem; font-weight:900; color:#111; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"></div>
+      <p id="m_feedbackMsg" style="color:#777; font-size:0.92rem; line-height:1.6; margin-bottom:24px;"></p>
+      <button onclick="fecharModalContato()" style="width:100%; padding:13px; background:#f0c000; border:none; border-radius:50px; color:#000; font-size:0.95rem; font-weight:900; text-transform:uppercase; letter-spacing:1px; cursor:pointer;">OK</button>
+    </div>
+
+  </div>
+</div>
 
     <!-- Hero Section -->
     <section id="home" class="gradient-bg min-h-screen flex items-center justify-center relative subtle-pattern">
@@ -448,6 +498,8 @@
 
 
 <script src="<?= BASE_URL?>public/assets/script/index.js"></script>
+<script src="<?= BASE_URL?>public/assets/script/contato-index.js"></script>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
@@ -495,7 +547,7 @@ map.on('click', function(e){
   .openPopup();
 
 });
-
 </script>
+<script></script>
 </body>
 </html>

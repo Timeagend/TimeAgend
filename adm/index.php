@@ -1,6 +1,14 @@
 <?php 
+     $numUser = 0;
+     $numAtendimentos = 0;
+     $totalLucro = 0;
+     $agendamentos = [];
+     $barbeiroList = [];
+     $servicos = [];
+     
   include_once('../adm/services/controlBarber.php');
   include_once('../adm/services/controlService.php');
+  require_once ('../config/url.php');
 ?>
 
 <!DOCTYPE html>
@@ -57,12 +65,12 @@
     <ul class="side-menu">
         <li>
             <a href="<?= BASE_URL ?>adm/product.php">
-                <i class='bx bxs-cog'></i>
+               <i class="bx bx-package bx-remove-padding"></i> 
                 <span class="text">Produtos</span>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="<?= BASE_URL ?>adm/configuracoes.php">
                 <i class='bx bxs-cog'></i>
                 <span class="text">Configurações</span>
             </a>

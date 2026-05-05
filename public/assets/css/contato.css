@@ -1,0 +1,253 @@
+     /* ====== MODAL CONTATO ====== */
+#modalContato {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+#modalContato .modal-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 44px 40px 40px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  animation: popupEntrar 0.3s ease;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  max-height: 92vh;
+  overflow-y: auto;
+  overflow: hidden;
+}
+
+@keyframes popupEntrar {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Botão fechar */
+#modalContato .btn-fechar {
+  position: absolute;
+  left: 360px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  z-index: 1;
+  padding: 4px 8px;
+}
+
+#modalContato .btn-fechar:hover {
+  color: #333;
+}
+
+/* Cabeçalho */
+#m_cabecalho h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+#m_cabecalho h2 span {
+  color: #f0c000;
+}
+
+#m_cabecalho p {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+#m_cabecalho hr {
+  border: none;
+  border-top: 1.5px solid #e5e5e5;
+  margin-bottom: 24px;
+}
+
+/* Labels */
+#contactFormModal label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #111;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Inputs */
+#contactFormModal input,
+#contactFormModal textarea {
+  width: 100%;
+  padding: 13px 16px;
+  margin-bottom: 4px;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  color: #111;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+#contactFormModal input:focus,
+#contactFormModal textarea:focus {
+  border-color: #f0c000;
+  box-shadow: 0 0 0 3px rgba(240, 192, 0, 0.15);
+  outline: none;
+}
+
+#contactFormModal textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Erros */
+#contactFormModal .erro-campo {
+  color: #e03333;
+  font-size: 0.78rem;
+  display: block;
+  min-height: 18px;
+  margin-bottom: 10px;
+}
+
+/* Botão enviar */
+#contactFormModal .btn-enviar {
+  width: 97%;
+  padding: 15px;
+  background: #f0c000;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0 4px 16px rgba(240, 192, 0, 0.35);
+  transition: background 0.3s, transform 0.15s;
+}
+
+#contactFormModal .btn-enviar:hover {
+  background: #e0b000;
+  transform: translateY(-2px);
+}
+
+/* Feedback */
+#m_feedback {
+  display: none;
+  text-align: center;
+  padding: 20px 0 10px;
+}
+
+#m_feedbackIcone {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+#m_feedbackTitulo {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+#m_feedbackMsg {
+  color: #777;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+#m_feedback .btn-ok {
+  width: 100%;
+  padding: 13px;
+  background: #f0c000;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.15s;
+}
+
+#m_feedback .btn-ok:hover {
+  background: #e0b000;
+  transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  #modalContato .modal-card {
+    padding: 36px 20px 28px;
+    border-radius: 18px;
+    max-height: 88vh;
+  }
+
+  #m_cabecalho h2 {
+    font-size: 1.4rem;
+  }
+
+  #contactFormModal input,
+  #contactFormModal textarea {
+    font-size: 16px; /* evita zoom no iOS */
+  }
+
+  #contactFormModal textarea {
+    min-height: 90px;
+  }
+  #modalContato .btn-fechar
+  {
+    left: 160px;
+    top: 40px;
+  }
+  #contactFormModal .btn-enviar{
+    width: 95%;
+  }
+}
+
+
+
+
+/* // Efeito de loading no botão enviar // */
+.btn-enviar.loading {
+  opacity: 0.75;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.btn-enviar.loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
