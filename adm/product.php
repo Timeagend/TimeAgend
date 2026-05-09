@@ -413,7 +413,7 @@ body.dark .form-row select{background:var(--light)}
     <p>Tem certeza? Esta ação é irreversível e o produto será removido permanentemente do catálogo.</p>
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn-blue" style="background:var(--red)" id="confirm-del">Excluir</button>
+      <button class="btn-blue"  style="background:var(--red)" id="confirm-del">Excluir</button>
     </div>
   </div>
 
@@ -560,15 +560,18 @@ body.dark .form-row select{background:var(--light)}
                 <td> 
                   <button class="btn-sm-edit" 
                     onclick="editarItem(
-                      '<?= $produto['nome'] ?>',
-                      '<?= $produto['descricao'] ?>',
-                      <?= $produto['preco'] ?>,
-                      <?= $produto['categoria_id'] ?>,
-                      <?= $produto['id'] ?>
+                      '<?= $produto['nome']; ?>',
+                      '<?= $produto['descricao'];?>',
+                      '<?= $produto['preco']; ?>',
+                      '<?= $produto['categoria_id']; ?>',
+                      '<?= $produto['id']; ?>'
                     )">
                     <i class='bx bx-edit-alt'></i> Editar
-                    </button>                                      <!--  -->
-                   <button class="btn-sm-del" onclick="confirmarExcluir(1)"><i class='bx bx-trash'></i> Excluir</button>
+                    </button>  
+                    <td>
+                    <form action="services/deleteProduct.php" method="POST">                                   <!--  -->
+                      <button class="btn-sm-del" name="id" value="<?= $produto['id']; ?>" onclick="confirmarExcluir()"><i class='bx bx-trash'></i> Excluir</button>
+                    </form></td>
                 </td>
                 
               </tr>
@@ -596,7 +599,7 @@ body.dark .form-row select{background:var(--light)}
                     <strong>Óleo para Barba</strong>
                     <span>#002</span>
                   </div>
-                </td>
+                </td></td>
                 <td>Barba</td>
                 <td><span class="price-td">R$ 69,90</span></td>
                 <td><span class="status active">Ativo</span></td>
@@ -808,7 +811,12 @@ document.getElementById('search-input').addEventListener('input',function(){
 
 /* delete modal */
 let pendingId=null;
-function confirmarExcluir(id){pendingId=id;document.getElementById('del-modal').classList.add('open')}
+// function confirmarExcluir(id){
+//   pendingId=id;
+//   document.getElementById('del-modal').classList.add('open')
+
+// }
+
 function closeModal(){document.getElementById('del-modal').classList.remove('open');pendingId=null}
 document.getElementById('del-modal').addEventListener('click',e=>{if(e.target===document.getElementById('del-modal'))closeModal()});
 document.getElementById('confirm-del').addEventListener('click',()=>{
@@ -820,7 +828,8 @@ document.getElementById('confirm-del').addEventListener('click',()=>{
 });
 
 /* edit */
-function editarItem(nome,desc,preco,cat){
+function editarItem(nome,desc,preco,cat,id){
+  document.getElementById('edit_id').value = id;
   document.getElementById('edit_nome').value=nome;
   document.getElementById('edit_descricao').value=desc;
   document.getElementById('edit_preco').value=preco;
@@ -861,6 +870,32 @@ function showToast(msg,ms=3000){
   document.getElementById('toast-msg').textContent=msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+function deletarProduto(id) {
+  if (!confirm("Tem certeza que deseja deletar este produto?")) {
+    return;
+  }
+
+  fetch('services/deleteProduto.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'id=' + encodeURIComponent(id)
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+
+    // sucesso → recarrega ou remove da tela
+    alert("Produto deletado com sucesso!");
+    location.reload();
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+    alert("Erro ao deletar produto");
+  });
 }
 </script>
 </body>

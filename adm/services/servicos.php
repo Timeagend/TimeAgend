@@ -101,6 +101,17 @@ class Servicos {
         }
         return $agendamentos;
     }
+    function editServico($idservico, $nome, $tipo, $preco, $duracao) {
+        $sql = "UPDATE servico SET nome_servico = ?, tipo = ?, preco = ?, duracao = ? WHERE idservico = ?";
+        $stmt = $this->con->prepare($sql);
+
+        if (!$stmt) {
+            die("Erro ao preparar: " . $this->con->error);
+        }
+
+        $stmt->bind_param("ssdsi", $nome, $tipo, $preco, $duracao, $idservico);
+        return $stmt->execute();
+    }
 }
 // echo json_encode($agendamentos);
 

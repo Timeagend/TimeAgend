@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descricao = trim($_POST['descricao']);
 
     $imagem = null;
-
+    
     // Se enviou nova imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
 
