@@ -26,6 +26,95 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>AdminHub</title>
+
+    <!-- ── STATUS CHANGE STYLES (added) ── -->
+    <style>
+        /* ── Badge cores por status — especificidade igual ao style.css ── */
+        #content main .table-data .order table tr td .status.pendente {
+            background: var(--orange);
+        }
+        #content main .table-data .order table tr td .status.confirmado {
+            background: var(--blue)  ;
+        }
+        #content main .table-data .order table tr td .status.cancelado {
+            background: var(--red)   ;
+        }
+
+        /* ── Wrapper e dropdown ── */
+        .status-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .status {
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            transition: opacity .15s, background .2s, color .2s;
+        }
+        .status:hover { opacity: .8; }
+
+        .status::after {
+            content: "▾";
+            font-size: .7em;
+            opacity: .7;
+        }
+
+        .status-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white, #fff);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.12);
+            z-index: 999;
+            min-width: 150px;
+            overflow: hidden;
+            animation: fadeDropdown .15s ease;
+        }
+
+        @keyframes fadeDropdown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+        }
+
+        .status-dropdown.open { display: block; }
+
+        .status-option {
+            padding: 8px 14px;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background .12s;
+        }
+        .status-option:hover { background: #f5f5f5; }
+
+        .status-option::before {
+            content: "";
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-option[data-value="pendente"]::before   { background: var(--orange); }
+        .status-option[data-value="confirmado"]::before { background: var(--blue);   }
+        .status-option[data-value="cancelado"]::before  { background: var(--red);    }
+
+        .status-saving { opacity: .45; pointer-events: none; }
+    </style>
+    <!-- ── /STATUS CHANGE STYLES ── -->
 </head>
 <body>
 
@@ -194,11 +283,24 @@
                                 <td><?= htmlspecialchars($a['data']);?></td>
                                 <td><?= htmlspecialchars($a['nome_servico']);?></td>
                                 <td><?= htmlspecialchars($a['horario']);?></td>
+
+                                <!-- ── STATUS CELL (added wrapper + data-id) ── -->
                                 <td>
-                                    <span class="status <?= htmlspecialchars($a['status']) ?>">
-                                        <?= htmlspecialchars($a['status']); ?>
-                                    </span>
+                                    <div class="status-wrapper">
+                                        <span class="status <?= htmlspecialchars($a['status']) ?>"
+                                              data-id="<?= htmlspecialchars($a['id'] ?? $a['idagendamento'] ?? '') ?>"
+                                              data-status="<?= htmlspecialchars($a['status']) ?>">
+                                            <?= htmlspecialchars($a['status']); ?>
+                                        </span>
+                                        <div class="status-dropdown">
+                                            <div class="status-option" data-value="pendente">Pendente</div>
+                                            <div class="status-option" data-value="confirmado">Confirmado</div>
+                                            <div class="status-option" data-value="cancelado">Cancelado</div>
+                                        </div>
+                                    </div>
                                 </td>
+                                <!-- ── /STATUS CELL ── -->
+
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -364,20 +466,14 @@
             <!-- ✔ classe original: barber-section -->
             <div class="barber-section adm-card">
                 <div class="adm-card-header">
-                    <!-- <div class="adm-card-icon" style="background:var(--light-yellow);color:var(--yellow);">
-                        <i class='bx bxs-group'></i>
-                    </div> -->
                     <div>
                         <h2>Profissionais</h2>
                         <p>Clique no ícone para editar nome ou foto.</p>
                     </div>
                 </div>
 
-                    <!-- ✔ classe original: barber-cards -->
-<!-- ✔ classe original: barber-cards -->
 <div class="barber-cards">
     <?php foreach ($barbeiroList as $barbeiro): ?>
-    <!-- ✔ classe original: barber-card -->
     <div class="barber-card adm-team-card"
          data-id="<?= $barbeiro['idbarbeiro'] ?? '' ?>"
          data-obs="<?= htmlspecialchars($barbeiro['descricao'] ?? '') ?>">
@@ -387,9 +483,7 @@
             <div class="adm-team-overlay"></div>
             <div class="adm-team-status">Ativo</div>
         </div>
-        <!-- ✔ classe original: edit-icon -->
         <div class="edit-icon"><i class="fas fa-edit"></i></div>
-        <!-- ✔ classe original: name -->
         <div class="name">
             <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
         </div>
@@ -407,9 +501,6 @@
             <!-- ✔ classe original: barber-section -->
             <div class="barber-section adm-card">
                 <div class="adm-card-header">
-                    <!-- <div class="adm-card-icon" style="background:#E8F8EF;color:#27AE60;">
-                        <i class='bx bx-user-plus'></i>
-                    </div> -->
                     <div>
                         <h2>Adicionar Profissional</h2>
                         <p>Preencha os dados e salve para exibir no site.</p>
@@ -468,7 +559,9 @@
 <script src="<?= BASE_URL?>/adm/assets/script/modal.js"></script>
 <script src="<?= BASE_URL?>/adm/assets/script/analise.js"></script>
 
-
+<!-- ── STATUS CHANGE SCRIPT (added) ── -->
+<script src="<?= BASE_URL?>/adm/assets/script/status.js"></script>
+<!-- ── /STATUS CHANGE SCRIPT ── -->
 
 </body>
 </html>

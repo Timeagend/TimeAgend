@@ -8,44 +8,47 @@ require_once __DIR__ . "/../../config/conection.php";
 // ===================================================
 
 class User{
-    protected $con;
+    protected mysqli $con;
 
-    private $iduser;
-    private $nome_user;
-    private $email_user;
-    private $password;
-    private $phone;
-
-    public function __construct($con){
+    public function __construct(mysqli $con){
         $this->con = $con;
     }
 
 
-    public function countUser(){
+    public function countUser(): array {
         try {
-            $stmt = $this ->con->prepare("SELECT COUNT(*) AS iduser FROM user");
+            $stmt = $this->con->prepare("SELECT COUNT(*) AS iduser FROM user");
             $stmt->execute();
             $resultado = $stmt->get_result();
             return $resultado->fetch_all(MYSQLI_ASSOC);
         } catch (Exception $e) {
             echo "Erro ao contar usuários: " . $e->getMessage();
-            return 0;
+            return [];
         }
     }
 
-    public function register($name, $email, $phone, $password){
-    $sql = "INSERT INTO user (nome_user,phone,email_user, password) VALUES (?, ?, ?, ?)";
-    $stmt = $this->con->prepare($sql);
-    $stmt->bind_param("ssss", $name,$phone, $email,  $password);
+    public function register(string $name, string $email, string $phone, string $password): bool {
+        $sql = "INSERT INTO user (nome_user, phone, email_user, password) VALUES (?, ?, ?, ?)";
+        $stmt = $this->con->prepare($sql);
 
-    if ($stmt->execute()) {
-        header("Location: " . BASE_URL . "/user/login.php");
-    } else {
-        echo "Erro no cadastro.";
-    }
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("ssss", $name, $phone, $email, $password);
+
+        try {
+            return $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            // Código 1062 = Duplicate entry (email já cadastrado)
+            if ($e->getCode() === 1062) {
+                return false;
+            }
+            throw $e;
+        }
     }
 
-    public function getUserByEmail($email) {
+    public function getUserByEmail(string $email): ?array {
         $stmt = $this->con->prepare("SELECT * FROM user WHERE email_user = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -58,13 +61,13 @@ class User{
         }
     }
     
-    public function alterPassword($email, $newPassword) {
+    public function alterPassword(string $email, string $newPassword): bool {
         $stmt = $this->con->prepare("UPDATE user SET password = ? WHERE email_user = ?");
         $stmt->bind_param("ss", $newPassword, $email);
         return $stmt->execute();
     }
 
-    public function getPhoneById($iduser) {
+    public function getPhoneById(int $iduser): ?string {
         $stmt = $this->con->prepare("SELECT phone FROM user WHERE iduser = ?");
         $stmt->bind_param("i", $iduser);
         $stmt->execute();
@@ -78,7 +81,7 @@ class User{
         }
     }
     
-    public function updateProfile($iduser, $nome_user, $phone, $foto_perfil) {
+    public function updateProfile(int $iduser, string $nome_user, string $phone, string $foto_perfil): bool {
         $stmt = $this->con->prepare("UPDATE user SET nome_user = ?, phone = ?, foto_perfil = ? WHERE iduser = ?");
         $stmt->bind_param("sssi", $nome_user, $phone, $foto_perfil, $iduser);
         return $stmt->execute();
@@ -88,27 +91,27 @@ class User{
 // 🔐 Classe base de AUTENTICAÇÃO
 // ===================================================
 class Auth {
-    protected $con;
+    protected mysqli $con;
 
-    public function __construct($con) {
+    public function __construct(mysqli $con) {
         $this->con = $con;
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    protected function verifyPassword($senhaDigitada, $senhaHash) {
+    protected function verifyPassword(string $senhaDigitada, string $senhaHash): bool {
         return password_verify($senhaDigitada, $senhaHash);
     }
 
-    public function logout() {
+    public function logout(): void {
         session_unset();
         session_destroy();
         header("Location: " . BASE_URL . "/user/login.php");
         exit();
     }
 
-    public function isAuthenticated() {
+    public function isAuthenticated(): bool {
         return isset($_SESSION['iduser']) || isset($_SESSION['idbarbeiro']) || isset($_SESSION['adm']);
     }
 }
@@ -117,7 +120,7 @@ class Auth {
 // 👤 Classe do CLIENTE
 // ===================================================
 class UserAuth extends Auth {
-    public function login($email, $senha) {
+    public function login(string $email, string $senha) {
         $stmt = $this->con->prepare("SELECT * FROM user WHERE email_user = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -149,7 +152,7 @@ class UserAuth extends Auth {
 // ===================================================
 class BarbeiroAuth extends Auth {
 
-    public function login($email, $senha) {
+    public function login(string $email, string $senha) {
         $stmt = $this->con->prepare("SELECT * FROM barbeiro WHERE email = ? LIMIT 1");
         if (!$stmt) {
             return [
@@ -192,6 +195,4 @@ class BarbeiroAuth extends Auth {
         }
     }
 }
-
-
 

@@ -88,16 +88,8 @@ class Servicos {
         $stmt->execute();
         $result = $stmt->get_result();
         $agendamentos = [];
-        while($row = $result->fetch_assoc()){
-            if($row['status'] == 'confirmado'){
-                $row['status'] = 'completed';
-            }else if($row['status'] == 'pendente'){
-                $row['status'] = 'pending';
-            }else if($row['status'] == 'cancelado'){
-                $row['status'] = 'canceled';
-            }
-            
-            $agendamentos[] = $row;
+         while($row = $result->fetch_assoc()){
+        $agendamentos[] = $row;
         }
         return $agendamentos;
     }

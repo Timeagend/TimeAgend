@@ -201,7 +201,7 @@ body.dark{--light:#0C0C1E;--grey:#060714;--dark:#FBFBFB}
 }
 #content main .table-data .order table tbody tr:hover{background:var(--grey)}
 #content main .table-data .order table tr td .status{
-  font-size:10px;padding:6px 14px;color:var(--light);
+  font-size:10px;padding:6px 14px;
   border-radius:20px;font-weight:700;
 }
 #content main .table-data .order table tr td .status.completed{background:var(--blue)}

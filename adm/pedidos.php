@@ -22,12 +22,16 @@ $pedidos = $pedidoModel->listarPedidos();
   <div class="card">
 
     <div class="card-titulo">
-      <div class="card-titulo-left">
-        <i class='bx bx-receipt'></i>
-        <h2>Pedidos</h2>
-      </div>
-      <span class="total-badge"><?= count($pedidos) ?> pedido(s)</span>
-    </div>
+  <div class="card-titulo-left">
+    <button class="btn-voltar" onclick="history.back()">
+      <i class='bx bx-arrow-back'></i>
+    </button>
+    <i class='bx bx-receipt'></i>
+    <h2>Pedidos</h2>
+  </div>
+  <span class="total-badge"><?= count($pedidos) ?> pedido(s)</span>
+</div>
+    
 
     <?php if (empty($pedidos)): ?>
       <div class="empty-state">

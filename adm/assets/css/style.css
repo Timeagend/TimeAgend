@@ -468,22 +468,90 @@ body {
 #content main .table-data .order table tbody tr:hover {
 	background: var(--grey);
 }
-#content main .table-data .order table tr td .status {
-	font-size: 10px;
-	padding: 6px 16px;
-	color: var(--light);
-	border-radius: 20px;
-	font-weight: 700;
-}
-#content main .table-data .order table tr td .status.completed {
-	background: var(--blue);
-}
-#content main .table-data .order table tr td .status.process {
-	background: var(--yellow);
-}
-#content main .table-data .order table tr td .status.pending {
-	background: var(--orange);
-}
+ /* ── Badge cores por status — especificidade igual ao style.css ── */
+        #content main .table-data .order table tr td .status.pendente {
+            background: var(--orange);
+        }
+        #content main .table-data .order table tr td .status.confirmado {
+            background: var(--blue)  ;
+        }
+        #content main .table-data .order table tr td .status.cancelado {
+            background: var(--red)   ;
+        }
+
+        /* ── Wrapper e dropdown ── */
+        .status-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .status {
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            transition: opacity .15s, background .2s, color .2s;
+        }
+        .status:hover { opacity: .8; }
+
+        .status::after {
+            content: "▾";
+            font-size: .7em;
+            opacity: .7;
+        }
+
+        .status-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white, #fff);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.12);
+            z-index: 999;
+            min-width: 150px;
+            overflow: hidden;
+            animation: fadeDropdown .15s ease;
+        }
+
+        @keyframes fadeDropdown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+        }
+
+        .status-dropdown.open { display: block; }
+
+        .status-option {
+            padding: 8px 14px;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background .12s;
+        }
+        .status-option:hover { background: #f5f5f5; }
+
+        .status-option::before {
+            content: "";
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-option[data-value="pendente"]::before   { background: var(--orange); }
+        .status-option[data-value="confirmado"]::before { background: var(--blue);   }
+        .status-option[data-value="cancelado"]::before  { background: var(--red);    }
+
+        .status-saving { opacity: .45; pointer-events: none; }
 
 
 #content main .table-data .todo {
