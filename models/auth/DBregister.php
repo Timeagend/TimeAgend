@@ -1,4 +1,6 @@
 <?php
+$con = getDatabaseConnection();
+
 session_start();
 
 require_once '../../config/url.php';

@@ -1,97 +1,287 @@
-.button-1{
+/* ── Botão Voltar ───────────────────────────────────────────── */
+.button-1 {
     border: 1px solid white;
     background-color: black;
     color: white;
     padding: 5px 15px;
     border-radius: 15px;
-    position: absolute;
-    left: 1352px;
-    top: 220px;
     cursor: pointer;
+    display: block;
+    margin: 1rem 1rem 0 auto;
 }
+
+/* ── Main ────────────────────────────────────────────────────── */
 main {
-padding: 2rem;
-text-align: center;
+    padding: 2rem;
+    text-align: center;
 }
 
 h1 {
-font-size: 1.8rem;
-margin-bottom: 1rem;
-text-align: left;
-display: flex;
-margin-left: 70px;
-font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    display: flex;
+    margin-left: 70px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.separator {
+    width: calc(100% - 140px);
+    height: 1px;
+    background-color: #666;
+    margin: 1rem auto;
+}
+
+/* ── Filtro ──────────────────────────────────────────────────── */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 1.5rem auto;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #555;
+    padding: 6px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: #aaa;
+    color: #fff;
+}
+
+.filter-btn.active {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+    font-weight: bold;
+}
+
+/* ── Empty State ─────────────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #aaa;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.button-new {
+    display: inline-block;
+    margin-top: 1rem;
+    background: #fff;
+    color: #000;
+    padding: 8px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.button-new:hover {
+    background: #ddd;
+}
+
+/* ── Cards ───────────────────────────────────────────────────── */
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+.appointment-card.hidden {
+    display: none;
 }
 
 .appointment-card {
-background-color: #1b1919;
-color: #FFF;
-padding: 2rem;
-width: 300px;
-height: 400px;
-margin: 0 auto;
-border-radius: 8px;
-text-align: left;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
+    background-color: #1b1919;
+    color: #FFF;
+    padding: 2rem;
+    width: 300px;
+    min-height: 400px;
+    border-radius: 8px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
 }
 
 .appointment-card h2 {
-font-size: 1rem;
-color: #FFF;
-border-bottom: 1px solid #666;
-padding-bottom: 0.5rem;
-margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #FFF;
+    border-bottom: 1px solid #666;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .appointment-card p {
-margin: 1rem 0;
-font-size: 0.9rem;
-line-height: 1.5;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .price {
-color: #32CD32;
-font-weight: bold;
+    color: #32CD32;
+    font-weight: bold;
 }
 
+/* ── Badge ───────────────────────────────────────────────────── */
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-proximo {
+    background-color: #1a3a1a;
+    color: #32CD32;
+    border: 1px solid #32CD32;
+}
+
+.badge-passado {
+    background-color: #2a2a2a;
+    color: #888;
+    border: 1px solid #555;
+}
+
+/* ── Botão Cancelar ──────────────────────────────────────────── */
 .cancel-button {
-background-color: #B22222;
-color: #FFF;
-border: none;
-padding: 0.5rem 1rem;
-font-size: 1rem;
-border-radius: 5px;
-cursor: pointer;
-align-self: center;
-margin-top: 1rem;
+    background-color: #B22222;
+    color: #FFF;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background 0.2s;
 }
 
 .cancel-button:hover {
-background-color: #FF6347;
+    background-color: #FF6347;
 }
-.separator {
-width: 100%;
-max-width: 1420px;
-height: 1px;
-background-color: #666;
-margin: 1rem auto;
 
-margin-right: 35px;
+/* ── Overlay / Modais ────────────────────────────────────────── */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
 }
-/* Menu */
+
+.overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: #1b1919;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid #444;
+    animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.modal h3 {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.modal p {
+    font-size: 0.95rem;
+    color: #bbb;
+    margin-bottom: 1.5rem;
+}
+
+.modal-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.modal-icon.success { color: #32CD32; }
+.modal-icon.warning { color: #f0a500; }
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+.modal-btn.secondary {
+    background: #333;
+    color: #fff;
+}
+
+.modal-btn.secondary:hover { background: #444; }
+
+.modal-btn.danger {
+    background: #B22222;
+    color: #fff;
+}
+
+.modal-btn.danger:hover { background: #FF6347; }
+
+.modal-btn:not(.secondary):not(.danger) {
+    background: #fff;
+    color: #000;
+}
+
+.modal-btn:not(.secondary):not(.danger):hover { background: #ddd; }
+
+/* ── Menu ────────────────────────────────────────────────────── */
 .menu-principal {
-    
-    flex-direction: column; /* Organiza itens em coluna no modo responsivo */
+    flex-direction: column;
 }
 
 .menu-principal.active {
-    display: flex; /* Exibe o menu quando 'active' está presente */
+    display: flex;
 }
 
 .menu-toggle {
-    display: none; /* Oculta o botão de menu em telas maiores */
+    display: none;
     font-size: 24px;
     background: none;
     border: none;
@@ -99,33 +289,37 @@ margin-right: 35px;
     color: #000;
 }
 
-@media (max-width: 768px){
-    .button-1{
-        position: relative;
-        left: 140px;
-        top: 50px;
-    }
-    h1{
-        margin-left: 20px;
-    }
-    header{
-        left: 0;
+/* ── Responsivo ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .button-1 {
+        margin: 1rem auto 0;
+        display: block;
+        width: fit-content;
     }
 
-/* Menu */
-.menu-toggle {
-        display: block; /* Exibe o botão de menu em telas menores */
+    h1 {
+        margin-left: 20px;
+        font-size: 1.4rem;
+    }
+
+    .separator {
+        width: calc(100% - 40px);
+    }
+
+    .menu-toggle {
+        display: block;
         color: #fff;
     }
 
     .menu-principal {
-        display: none; /* Oculta o menu por padrão em telas menores */
+        display: none;
         background-color: #fff;
         color: #000;
         position: absolute;
-        top: 60px; /* Ajuste a posição conforme o cabeçalho */
-        left: 250px;
-        width: 50%;
+        top: 60px;
+        right: 16px;
+        left: auto;
+        width: clamp(160px, 50%, 240px);
         padding: 10px 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 10;
@@ -134,12 +328,32 @@ margin-right: 35px;
     }
 
     .menu-principal.active {
-        display: flex; /* Mostra o menu quando a classe 'active' é adicionada */
-    }
-    nav a{
-    color: #000;
-    margin-bottom: 20px;
-    transition: 0.5s;
+        display: flex;
     }
 
-}   
+    nav a {
+        color: #000;
+        margin-bottom: 20px;
+        transition: 0.5s;
+    }
+
+    .appointment-card {
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .filter-bar {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .appointment-card {
+        padding: 1.2rem;
+    }
+}

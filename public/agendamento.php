@@ -884,7 +884,7 @@ body {
   .categoria {
     /* padding: 7px 13px; */
     font-size: 0.88rem;
-    margin-bottom: -10px;
+    margin-bottom: -20px;
   }
 
   .servico {
@@ -1364,7 +1364,15 @@ Etapa 3 - Data e Hora
   color: #000;
   transform: translateY(-2px);
 }
-
+@media screen and (max-width: 600px) {
+    button {
+       margin: 0 4px; /* Reduz a margem horizontal para telas menores */
+    }
+    .servico{
+        margin-bottom: 0px;
+    }
+    
+}
 </style>
 
 

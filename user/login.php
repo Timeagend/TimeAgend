@@ -2,7 +2,7 @@
 include_once('../config/url.php');
 include_once('../adm/services/servicos.php');
 
-$dadosBarbearia = new Empresa($con);
+$dadosBarbearia = new Empresa($con); 
 $dados = $dadosBarbearia->mostrarDadosBarbearia();
 ?>
 <!DOCTYPE html>
@@ -146,7 +146,7 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
                     .opçoes:hover { border-color: #007bff; }
                 </style>
             </div>
-            <a href="<?= BASE_URL ?>user/logout.php" class="forgot-password">Esqueceu a senha?</a>
+            <a href="<?= BASE_URL ?>user/newpassword.php" class="forgot-password">Esqueceu a senha?</a>
             <button type="submit" id="loginButton">LOGIN</button>
         </form>
         <p class="cadastre-se">Não tem conta? <br> <a href="#" id="open-modal">Cadastre-se aqui</a></p> 
