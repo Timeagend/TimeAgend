@@ -433,3 +433,23 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-05-05 19:30:49
+
+-- --------------------------------------------------------
+-- Tabela password_resets
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token CHAR(64) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY uq_user (user_id),
+    INDEX idx_token (token),
+
+    CONSTRAINT fk_pr_user
+        FOREIGN KEY (user_id)
+        REFERENCES user (iduser)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
