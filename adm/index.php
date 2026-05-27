@@ -8,8 +8,10 @@
      
   include_once('../adm/services/controlBarber.php');
   include_once('../adm/services/controlService.php');
-  require_once ('../config/url.php');
-?>
+   require_once ('../config/url.php');
+
+   
+  ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -118,6 +120,8 @@
 </head>
 <body>
 
+
+
 <!-- SIDEBAR -->
 <section id="sidebar">
     <a href="#" class="brand">
@@ -165,7 +169,7 @@
             </a>
         </li>
         <li>
-            <a href="<?=BASE_URL?>/user/login.php" class="logout">
+            <a href="<?=BASE_URL?>user/login.php" class="logout">
                 <i class='bx bxs-log-out-circle'></i>
                 <span class="text">Sair</span>
             </a>
@@ -318,6 +322,8 @@
         </div>
 
         <!-- ══════════════ MEU SITE ══════════════ -->
+
+        
         <div id="meu-site-content" class="content-section" style="display: none;">
 
             <div class="adm-section-head">
@@ -393,21 +399,112 @@
 
                 <!-- ✔ classes originais: services-prices / categories / category / barber-card / edit-icon -->
                 <div class="services-prices">
-                    <div class="categories">
-                        <?php foreach ($servicos as $s): ?>
+                  <div class="categories">
+                    <?php foreach ($servicos as $s): ?>
                         <div class="category">
                             <div class="barber-card">
-                                <div class="edit-icon"><i class="fas fa-edit"></i></div>
-                                <span class="adm-chip-badge"><?= htmlspecialchars($s['tipo']); ?></span>
+                                <div class="icon" onclick="abrirModalServico<?= $s['idservico']; ?>()">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+
+                                <span class="adm-chip-badge">
+                                    <?= htmlspecialchars($s['tipo']); ?>
+                                </span>
+
                                 <strong><?= htmlspecialchars($s['nome_servico']); ?></strong>
+
                                 <span class="adm-chip-meta">
                                     <i class='bx bx-time-five'></i> <?= htmlspecialchars($s['duracao']); ?>
                                 </span>
-                                <span class="adm-chip-price">R$ <?= number_format($s['preco'], 2, ',', '.'); ?></span>
+
+                                <span class="adm-chip-price">
+                                    R$ <?= number_format($s['preco'], 2, ',', '.'); ?>
+                                </span>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                    </div>
+
+                        <!-- MODAL DO SERVIÇO -->
+                        <div id="modal-servico-<?= $s['idservico']; ?>" class="modal-overlay">
+                            <div class="modal-box">
+                                <div class="modal-header">
+                                    <h3>Editar Serviço</h3>
+                                    <button type="button" onclick="fecharModalServico<?= $s['idservico']; ?>()">
+                                        &times;
+                                    </button>
+                                </div>
+
+                                <!-- FORM EDITAR -->
+                                <form action="<?= BASE_URL ?>adm/services/editService.php" method="POST">
+                                    <input type="hidden" name="service-id" value="<?= $s['idservico']; ?>">
+
+                                    <label>Nome do serviço</label>
+                                    <input type="text"
+                                        name="service-name"
+                                        value="<?= htmlspecialchars($s['nome_servico']); ?>"
+                                        required>
+
+                                    <label>Tipo</label>
+                                    <input type="text"
+                                        name="service-tipo"
+                                        value="<?= htmlspecialchars($s['tipo']); ?>"
+                                        required>
+
+                                    <label>Duração</label>
+                                    <input type="text"
+                                        name="service-duracao"
+                                        value="<?= htmlspecialchars($s['duracao']); ?>"
+                                        required>
+
+                                    <label>Valor</label>
+                                    <input type="number"
+                                        name="service-valor"
+                                        value="<?= htmlspecialchars($s['preco']); ?>"
+                                        step="0.01"
+                                        required>
+
+                                    <button type="submit">Atualizar</button>
+                                </form>
+
+                                <!-- FORM EXCLUIR -->
+                                <form action="<?= BASE_URL ?>adm/services/controlDelete.php"
+                                    method="POST"
+                                    onsubmit="return confirm('Deseja realmente excluir este serviço?');">
+
+                                    <input type="hidden" name="acao" value="excluir">
+                                    <input type="hidden" name="id" value="<?= $s['idservico']; ?>">
+
+                                    <button type="submit">Excluir Serviço</button>
+                                </form>
+                                
+                                <?php if (isset($_GET['error'])): ?>
+                                    <div style="
+                                        background: #fdecea;
+                                        color: #c0392b;
+                                        border: 1px solid #f5c6cb;
+                                        padding: 12px 16px;
+                                        border-radius: 8px;
+                                        margin: 15px 0;
+                                        font-weight: 500;
+                                    ">
+                                        <?= htmlspecialchars(urldecode($_GET['error'])) ?>
+                                    </div>
+                                <?php endif; ?>
+
+                            </div>
+                        </div>
+
+                        <script>
+                            function abrirModalServico<?= $s['idservico']; ?>() {
+                                document.getElementById('modal-servico-<?= $s['idservico']; ?>').classList.add('open');
+                            }
+
+                            function fecharModalServico<?= $s['idservico']; ?>() {
+                                document.getElementById('modal-servico-<?= $s['idservico']; ?>').classList.remove('open');
+                            }
+                        </script>
+
+                    <?php endforeach; ?>
+                </div>
 
                     <div class="adm-divider"></div>
 
@@ -472,6 +569,7 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
 <div class="barber-cards">
     <?php foreach ($barbeiroList as $barbeiro): ?>
     <div class="barber-card adm-team-card"
@@ -490,11 +588,70 @@
     </div>
     <?php endforeach; ?>
 </div>
+=======
+                    <!-- ✔ classe original: barber-cards -->
+<!-- ✔ classe original: barber-cards -->
+                <div class="barber-cards">
+                    <?php foreach ($barbeiroList as $barbeiro): ?>
+                    <!-- ✔ classe original: barber-card -->
+                    <div class="barber-card adm-team-card"
+                        data-id="<?= $barbeiro['idbarbeiro'] ?? '' ?>"
+                        data-obs="<?= htmlspecialchars($barbeiro['descricao'] ?? '') ?>">
+                        <div class="adm-team-img-wrap">
+                            <img src="<?= $barbeiro['foto'] ?>"
+                                alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
+                            <div class="adm-team-overlay"></div>
+                            <div class="adm-team-status">Ativo</div>
+                        </div>
+                        <!-- ✔ classe original: edit-icon -->
+                        <div class="edit-icon"><i class="fas fa-edit"></i></div>
+                        <!-- ✔ classe original: name -->
+                        <div class="name">
+                            <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+>>>>>>> 5f27645 (Atualização)
                 <div class="adm-form-footer">
                     <!-- ✔ classe original: button-barber -->
                     <button class="button-barber">
                         <i class='bx bx-save'></i> Salvar Alterações
                     </button>
+                </div>
+                <div id="modal-edit-team" class="modal-overlay">
+
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3><i class='bx bx-user-circle'></i> Editar Profissional</h3>
+                            <button type="button" class="modal-close-btn">&times;</button>
+                        </div>
+
+                        <form action="<?= BASE_URL ?>/adm/services/editBarber.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="idbarbeiro" id="edit-barber-id">
+
+                            <label>Nome do profissional</label>
+                            <input type="text" name="nome" id="edit-barber-nome" required>
+
+                            <label>Descrição</label>
+                            <input type="text" name="descricao" id="edit-barber-obs">
+
+                            <label>Foto de perfil</label>
+                            <input type="file" name="foto" id="edit-barber-foto" accept="image/*">
+
+                            <div class="modal-footer">
+                                <button type="submit" name="acao" value="excluir" class="modal-btn-cancel">
+                                    <i class='bx bx-trash'></i> Excluir
+                                </button>
+
+                                <button type="button" class="modal-btn-cancel close-modal">Cancelar</button>
+
+                                <button type="submit" name="acao" value="editar" class="modal-btn-save">
+                                    <i class='bx bx-save'></i> Salvar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
