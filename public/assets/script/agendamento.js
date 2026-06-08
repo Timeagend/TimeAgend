@@ -310,7 +310,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("popupBtnOk").addEventListener("click", () => {
       popup.style.display = "none";
-      localStorage.clear();
+      localStorage.removeItem("servicosSelecionados");
+    localStorage.removeItem("profissionalSelecionado");
+    localStorage.removeItem("dataSelecionada");
+    localStorage.removeItem("horarioSelecionado");
+    localStorage.removeItem("descontoPlano");
       window.location.href = "index.php";
     });
   }
