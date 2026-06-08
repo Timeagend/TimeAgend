@@ -13,60 +13,132 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-    <style>
-        #map02{
-    height:100vh;
-    width:100%;
-    }
-
-    #coords02{
-    position:absolute;
-    top:10px;
-    left:50%;
-    transform:translateX(-50%);
-    background:white;
-    padding:10px;
-    border-radius:5px;
-    box-shadow:0 0 5px rgba(0,0,0,0.3);
-    font-family:Arial;
-    z-index:1000;
-    }
-
-        
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/mapa.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/cookies.css">
 </head>
 <body class="bg-black text-white overflow-x-hidden">
-    <!-- Navigation -->
-    <nav class="fixed w-full top-0 z-50 modern-navbar">
-        <div class="max-w-6xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    </div>
+ <!-- Navigation -->
+<nav class="fixed w-full top-0 z-50 modern-navbar" id="main-nav">
+    <div class="max-w-6xl mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
 
-                    <div class="brand-logo">TimeAgend</div>
+            <!-- Logo -->
+            <a href="#home" class="flex items-center space-x-3 text-decoration-none">
+                <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-scissors text-black text-lg"></i>
                 </div>
-                
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link font-medium hover:text-accent transition-colors">Início</a>
-                    <a href="<?= BASE_URL ?>/public/Produtos/produtos.php" class="nav-link font-medium hover:text-accent transition-colors">Produtos</a>
+                <div class="brand-logo">TimeAgend</div>
+            </a>
 
-                    <a href="#gallery" class="nav-link font-medium hover:text-accent transition-colors">Galeria</a>
-                    <a href="#about" class="nav-link font-medium hover:text-accent transition-colors">Sobre</a>
-                    <a onclick="abrirModalContato()" class="nav-link font-medium hover:text-accent transition-colors cursor-pointer">Contato</a>
+            <!-- Links desktop -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#home"     class="nav-link font-medium hover:text-accent transition-colors">Início</a>
+                <a href="<?= BASE_URL ?>/public/Produtos/produtos.php" class="nav-link font-medium hover:text-accent transition-colors">Produtos</a>
+                <a href="#gallery"  class="nav-link font-medium hover:text-accent transition-colors">Localização</a>
+                <a href="#about"    class="nav-link font-medium hover:text-accent transition-colors">Sobre</a>
+                <a href="#" onclick="abrirModalContato(); return false;" class="nav-link font-medium hover:text-accent transition-colors cursor-pointer">Contato</a>
+            </div>
 
-                </div>
-                
-                <a href="<?= BASE_URL?>/public/agendamento.php" class="btn-primary px-6 py-2.5 rounded-lg inline-block text-center">
-                  Agendar
+            <!-- Direita -->
+            <div class="flex items-center space-x-4">
+                <!-- Botão Entrar (desktop + mobile) -->
+                <a href="<?= BASE_URL ?>/public/agendamento.php"
+                   class="flex items-center gap-2 btn-primary px-5 py-2.5 rounded-lg text-center">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    </svg>
+                    Entrar
                 </a>
+
+                <!-- Hambúrguer mobile -->
+                <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5">
+                    <span class="block w-6 h-0.5 bg-white transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white transition-all"></span>
+                </button>
             </div>
         </div>
-    </nav>
+
+        <!-- Menu mobile -->
+        <div id="menu-mobile" class="hidden md:hidden flex-col space-y-4 pt-4 pb-2">
+            <a href="#home"     class="nav-link font-medium hover:text-accent transition-colors block">Início</a>
+            <a href="<?= BASE_URL ?>/public/Produtos/produtos.php" class="nav-link font-medium hover:text-accent transition-colors block">Produtos</a>
+            <a href="#gallery"  class="nav-link font-medium hover:text-accent transition-colors block">Localização</a>
+            <a href="#about"    class="nav-link font-medium hover:text-accent transition-colors block">Sobre</a>
+            <a href="#" onclick="abrirModalContato(); return false;" class="nav-link font-medium hover:text-accent transition-colors cursor-pointer block">Contato</a>
+            <a href="<?= BASE_URL ?>/public/agendamento.php"
+               class="btn-primary px-6 py-2.5 rounded-lg text-center flex items-center justify-center gap-2 block">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+                Entrar
+            </a>
+        </div>
+    </div>
+</nav>
+
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const menuMobile = document.getElementById('menu-mobile');
+
+menuBtn.addEventListener('click', () => {
+    menuMobile.classList.toggle('hidden');
+    menuMobile.classList.toggle('flex');
+});
+
+menuMobile.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        menuMobile.classList.add('hidden');
+        menuMobile.classList.remove('flex');
+    });
+});
+</script>
+<style>@media (max-width: 767px) {
+    nav .btn-primary {
+        background: transparent;
+        color: #D4AF37;
+        border: 1px solid #D4AF37;
+        box-shadow: none;
+        padding: 4px 8px;
+    }
+    nav .btn-primary:hover {
+        background: #D4AF37;
+        color: #000;
+    }
+    #home {
+    padding-top: 90px;
+}
+.brand-logo {
+    font-size: 1.1rem;
+    line-height: 1.6 ;
+    max-width: 320px;
+    margin: 10px auto;
+}
+.h-10 {
+    height: 2.2rem;
+}
+.w-10 {
+    width: 2.2rem;
+}
+.text-gradient {
+    margin-top: 40px;
+   }
+   
+     }
+
+     .py-2\.5 {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    background: none;
+    border: 2px solid #D4AF37;
+    color: #D4AF37;
+}
+</style>
    
     <!-- Modal Contato -->
    <div id="modalContato" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.8); backdrop-filter:blur(4px); justify-content:center; align-items:center;">
@@ -278,22 +350,57 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="section-padding gradient-bg">
+      <section id="about" class="section-padding gradient-bg">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 slide-in">
-                <span class="text-accent font-medium text-sm uppercase tracking-wider">Nosso Cantinho</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gradient">
-                    Localização
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Venha nos visitar e descubra o ambiente acolhedor e sofisticado da TimeAgend
-                </p>
-            </div>
-            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="slide-in">
+                    <span class="text-accent font-medium text-sm uppercase tracking-wider">Nossa História</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gradient">
+                        Tradição e Inovação
+                    </h2>
                     
-            <!-- <div id="coords02"> [-16.690241108302864, -49.25239841959069]</div> -->
-            <div id="map02"></div>
-
+                    <div class="space-y-6 mb-8">
+                        <p class="text-gray-400 text-lg leading-relaxed">
+                            A <span class="font-semibold text-accent">TimeAgend</span> nasceu da paixão por oferecer serviços de barbearia de alta qualidade, combinando técnicas tradicionais com a praticidade da tecnologia moderna.
+                        </p>
+                        <p class="text-gray-400 text-lg leading-relaxed">
+                            Nossa equipe é formada por profissionais experientes e apaixonados pelo que fazem, sempre em busca da excelência no atendimento e nos resultados.
+                        </p>
+                        <p class="text-gray-400 text-lg leading-relaxed">
+                            Acreditamos que cada cliente merece uma experiência única e personalizada, por isso investimos constantemente em qualificação e equipamentos de última geração.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="stats-number mb-2">8+</div>
+                            <div class="text-gray-500 text-sm">Anos de Experiência</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="stats-number mb-2">2K+</div>
+                            <div class="text-gray-500 text-sm">Clientes Satisfeitos</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="stats-number mb-2">98%</div>
+                            <div class="text-gray-500 text-sm">Satisfação</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Illustration -->
+                <div class="relative slide-in">
+                    <div>
+                        <img class="img-barber" src="<?= BASE_URL ?>/img//image-barber.png" alt="Barbearia TimeAgend"  />
+                        <style>
+                            .img-barber {
+                                border-radius: 20px;
+                            }
+                        </style>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -365,58 +472,23 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section-padding gradient-bg">
+    <!-- Section Mapa -->
+     <section id="gallery" class="section-padding gradient-bg">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="slide-in">
-                    <span class="text-accent font-medium text-sm uppercase tracking-wider">Nossa História</span>
-                    <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gradient">
-                        Tradição e Inovação
-                    </h2>
-                    
-                    <div class="space-y-6 mb-8">
-                        <p class="text-gray-400 text-lg leading-relaxed">
-                            A <span class="font-semibold text-accent">TimeAgend</span> nasceu da paixão por oferecer serviços de barbearia de alta qualidade, combinando técnicas tradicionais com a praticidade da tecnologia moderna.
-                        </p>
-                        <p class="text-gray-400 text-lg leading-relaxed">
-                            Nossa equipe é formada por profissionais experientes e apaixonados pelo que fazem, sempre em busca da excelência no atendimento e nos resultados.
-                        </p>
-                        <p class="text-gray-400 text-lg leading-relaxed">
-                            Acreditamos que cada cliente merece uma experiência única e personalizada, por isso investimos constantemente em qualificação e equipamentos de última geração.
-                        </p>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-8">
-                        <div class="text-center">
-                            <div class="stats-number mb-2">8+</div>
-                            <div class="text-gray-500 text-sm">Anos de Experiência</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="stats-number mb-2">2K+</div>
-                            <div class="text-gray-500 text-sm">Clientes Satisfeitos</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="stats-number mb-2">98%</div>
-                            <div class="text-gray-500 text-sm">Satisfação</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Illustration -->
-                <div class="relative slide-in">
-                    <div>
-                        <img class="img-barber" src="<?= BASE_URL ?>/img//image-barber.png" alt="Barbearia TimeAgend"  />
-                        <style>
-                            .img-barber {
-                                border-radius: 20px;
-                            }
-                        </style>
-                    </div>
-                    
-                </div>
-                </div>
+            <div class="text-center mb-16 slide-in">
+                <span class="text-accent font-medium text-sm uppercase tracking-wider">Nosso Cantinho</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gradient">
+                    Localização
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Venha nos visitar e descubra o ambiente acolhedor e sofisticado da TimeAgend
+                </p>
             </div>
+            
+                    
+            <!-- <div id="coords02"> [-16.690241108302864, -49.25239841959069]</div> -->
+            <div id="map02"></div>
+
         </div>
     </section>
 
@@ -429,20 +501,16 @@
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
+                        <i class="fa-solid fa-scissors text-black text-lg"></i>
+                    </div>
                         <div class="brand-logo">TimeAgend</div>
                     </div>
                     <p class="text-gray-500 mb-6 leading-relaxed">
                         A barbearia que combina tradição e modernidade para oferecer a melhor experiência em cuidados masculinos.
                     </p>
                     <div class="flex space-x-3">
-                        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
-                            <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
+                        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer" >
+                            <i class="fa-brands fa-instagram" style="color: rgb(0, 0, 0); font-weight: bold; font-size: 1.25rem;"></i>
                         </div>
                         <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
                             <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
@@ -450,9 +518,7 @@
                             </svg>
                         </div>
                         <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
-                            <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.083.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
-                            </svg>
+                            <i class="fa-brands fa-whatsapp" style="color: rgb(0, 0, 0); font-weight: bold; font-size: 1.25rem;"></i>
                         </div>
                     </div>
                 </div>
@@ -462,9 +528,9 @@
                     <ul class="space-y-3 text-gray-500">
                         <li><a href="#home" class="hover:text-accent transition-colors">Início</a></li>
                         <li><a href="#services" class="hover:text-accent transition-colors">Serviços</a></li>
-                        <li><a href="#gallery" class="hover:text-accent transition-colors">Galeria</a></li>
                         <li><a href="#about" class="hover:text-accent transition-colors">Sobre</a></li>
-                        <li><a href="#contact" class="hover:text-accent transition-colors">Contato</a></li>
+                        <li><a href="#gallery" class="hover:text-accent transition-colors">Localização</a></li>
+
                     </ul>
                 </div>
                 
@@ -491,63 +557,152 @@
             </div>
             
             <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 TimeAgend. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+        <p>&copy; 2026 TimeAgend. Todos os direitos reservados.</p>
+    <p class="footer-legal">
+        <a href="#" onclick="abrirModalPrivacidade(); return false;">Política de Privacidade</a>
+        &nbsp;·&nbsp;
+        <a href="#" onclick="abrirModalPrivacidade(); showTab('cook'); return false;">Política de Cookies</a>
+    </p>
+    </div>
+    </div>
 
+    </footer>
+    
+    <div id="cookieBanner">
+  <div class="cookie-banner__inner">
+    <div class="cookie-banner__text">
+      <p class="cookie-banner__title">🍪 Política de Cookies</p>
+      <p class="cookie-banner__desc">
+        Utilizamos cookies para melhorar sua experiência, analisar o tráfego e personalizar conteúdo, conforme nossa
+        <a href="#" onclick="abrirModalPrivacidade(); return false;">Política de Privacidade</a>.
+        Ao continuar navegando, você concorda com o uso de cookies essenciais.
+      </p>
+    </div>
+    <div class="cookie-banner__actions">
+      <button class="cookie-btn cookie-btn--outline-gray"  onclick="abrirModalPrivacidade()">Personalizar</button>
+      <button class="cookie-btn cookie-btn--outline-gold"  onclick="recusarCookies()">Recusar Opcionais</button>
+      <button class="cookie-btn cookie-btn--gold"          onclick="aceitarTodosCookies()">Aceitar Todos</button>
+    </div>
+    
+  </div>
+</div>
+<div id="modalPrivacidade">
+  <div class="priv-modal">
+
+    <div class="priv-modal__header">
+      <button class="priv-modal__close" onclick="fecharModalPrivacidade()">&times;</button>
+      <h2 class="priv-modal__title">PRIVACIDADE <span>&amp; COOKIES</span></h2>
+      <p class="priv-modal__date">TimeAgend — Última atualização: Junho/2026</p>
+      <hr class="priv-modal__divider">
+    </div>
+
+    <div class="priv-modal__body">
+
+      <!-- Tabs -->
+      <div class="priv-tabs">
+        <button id="tabPriv" class="priv-tab active" onclick="showTab('priv')">Privacidade</button>
+        <button id="tabCook" class="priv-tab"        onclick="showTab('cook')">Cookies</button>
+        <button id="tabPref" class="priv-tab"        onclick="showTab('pref')">Preferências</button>
+      </div>
+
+      <!-- Tab Privacidade -->
+      <div id="contentPriv" class="priv-content active">
+        <h3 class="priv-section-title">1. Quais dados coletamos</h3>
+        <p class="priv-text">Coletamos nome, e-mail, telefone e dados de agendamento fornecidos voluntariamente ao criar uma conta ou reservar um horário. Também coletamos automaticamente dados de acesso (endereço IP, tipo de navegador, páginas visitadas) para fins de segurança e melhoria do serviço.</p>
+
+        <h3 class="priv-section-title">2. Como usamos seus dados</h3>
+        <p class="priv-text">Seus dados são utilizados para: gerenciar agendamentos e enviar lembretes; responder mensagens de contato; melhorar nossos serviços; cumprir obrigações legais. <strong>Não vendemos nem compartilhamos seus dados com terceiros para fins comerciais.</strong></p>
+
+        <h3 class="priv-section-title">3. Seus direitos (LGPD)</h3>
+        <p class="priv-text">Conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a: acessar, corrigir ou excluir seus dados; revogar consentimentos; solicitar portabilidade; e opor-se ao tratamento. Para exercer seus direitos, entre em contato conosco.</p>
+
+        <h3 class="priv-section-title">4. Retenção e segurança</h3>
+        <p class="priv-text">Seus dados são armazenados pelo tempo necessário à prestação do serviço e cumprimento de obrigações legais. Adotamos medidas técnicas e organizacionais para proteger suas informações contra acesso não autorizado.</p>
+
+        <h3 class="priv-section-title">5. Contato do responsável</h3>
+        <p class="priv-text" style="margin-bottom:0">Para dúvidas sobre privacidade, entre em contato pelo formulário de contato disponível no site ou diretamente pelo e-mail cadastrado.</p>
+      </div>
+
+      <!-- Tab Cookies -->
+      <div id="contentCook" class="priv-content">
+        <p class="priv-text">Cookies são pequenos arquivos de texto armazenados no seu dispositivo. Utilizamos os seguintes tipos:</p>
+
+        <div class="cookie-card cookie-card--essential">
+          <div class="cookie-card__header">
+            <span class="cookie-card__label">✅ Essenciais — sempre ativos</span>
+          </div>
+          <div class="cookie-card__body">
+            <p class="cookie-card__desc">Necessários para o funcionamento básico do site: sessão de login, segurança CSRF, preferências de idioma. Não podem ser desativados.</p>
+          </div>
+        </div>
+
+        <div class="cookie-card cookie-card--optional">
+          <div class="cookie-card__header">
+            <span class="cookie-card__label">📊 Analíticos — opcionais</span>
+          </div>
+          <div class="cookie-card__body">
+            <p class="cookie-card__desc">Utilizados para entender como os visitantes interagem com o site (páginas acessadas, tempo de visita). Os dados são agregados e anônimos.</p>
+          </div>
+        </div>
+
+        <div class="cookie-card cookie-card--optional">
+          <div class="cookie-card__header">
+            <span class="cookie-card__label">🎯 Funcionais — opcionais</span>
+          </div>
+          <div class="cookie-card__body">
+            <p class="cookie-card__desc">Lembram suas preferências (ex: última seleção de serviço) para personalizar sua experiência em visitas futuras.</p>
+          </div>
+        </div>
+
+        <p class="priv-text--muted">Você pode gerenciar ou bloquear cookies nas configurações do seu navegador. Note que desativar alguns cookies pode afetar a funcionalidade do site.</p>
+      </div>
+
+      <!-- Tab Preferências -->
+      <div id="contentPref" class="priv-content">
+        <p class="priv-text">Escolha quais categorias de cookies você aceita. Cookies essenciais são sempre necessários e não podem ser desativados.</p>
+
+        <div class="pref-row pref-row--essential">
+          <div>
+            <p class="pref-row__name">Cookies Essenciais</p>
+            <p class="pref-row__desc">Sessão, segurança e funcionamento básico</p>
+          </div>
+          <span class="pref-row__badge">Sempre Ativo</span>
+        </div>
+
+        <div class="pref-row pref-row--optional">
+          <div>
+            <p class="pref-row__name">Cookies Analíticos</p>
+            <p class="pref-row__desc">Análise de tráfego e comportamento anônimo</p>
+          </div>
+          <label class="toggle-label">
+            <input type="checkbox" id="toggleAnaliticos" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+
+        <div class="pref-row pref-row--optional">
+          <div>
+            <p class="pref-row__name">Cookies Funcionais</p>
+            <p class="pref-row__desc">Preferências e personalização de experiência</p>
+          </div>
+          <label class="toggle-label">
+            <input type="checkbox" id="toggleFuncionais" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+
+        <button class="btn-salvar-prefs" onclick="salvarPreferencias()">Salvar Preferências</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script src="<?= BASE_URL?>public/assets/script/index.js"></script>
 <script src="<?= BASE_URL?>public/assets/script/contato-index.js"></script>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="<?= BASE_URL?>public/assets/script/mapa.js"></script>
+<script src="<?= BASE_URL?>public/assets/script/cookies.js"></script>
 
-<script>
-
-// 📍 Coordenadas fixas do seu local
-var local = [-16.690241108302864, -49.25239841959069];
-
-// Criar mapa já centralizado
-var map = L.map('map02').setView(local, 17);
-
-// Camada do mapa (OpenStreetMap)
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19
-}).addTo(map);
-
-// 🔴 Marcador fixo (principal)
-var markerFixo = L.marker(local).addTo(map)
-.bindPopup(`
-  <b>📍 Local do Projeto</b><br>
-  Endereço correto
-`)
-.openPopup();
-
-// Mostrar coordenadas fixas no topo
-document.getElementById("coords02").innerHTML =
-"📍 Local fixo: " + local[0] + " | " + local[1];
-
-// 🟡 Marcador temporário ao clicar (opcional)
-var markerTemp;
-
-map.on('click', function(e){
-
-  var lat = e.latlng.lat;
-  var lon = e.latlng.lng;
-
-  document.getElementById("coords02").innerHTML =
-  "📌 Clique: " + lat + " | " + lon;
-
-  if(markerTemp){
-    map.removeLayer(markerTemp);
-  }
-
-  markerTemp = L.marker([lat,lon]).addTo(map)
-  .bindPopup("Lat: "+lat+"<br>Lng: "+lon)
-  .openPopup();
-
-});
-</script>
-<script></script>
 </body>
 </html>

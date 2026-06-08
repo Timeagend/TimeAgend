@@ -115,7 +115,7 @@ h2 {
         margin-left: 16px;
         width: 62%;
         box-shadow: none;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     }
     .menu-principal {
         display: none; /* Escondido no mobile */

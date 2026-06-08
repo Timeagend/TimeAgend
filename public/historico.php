@@ -1,23 +1,31 @@
 <?php  
-
   include_once('../config/url.php');
   require_once '../models/agenda/perfil.php';
-
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico</title>
-    <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/perfil.css">
+    <title>Histórico — TimeAgend</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/logo.css">
+        <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/perfil.css">
+
     <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/historico.css">
+
 </head>
 <body>
 
 <header>
-    <img src="<?= BASE_URL?>img/SAVE_20241028_185834.jpg" alt="Logo TimeAgend">
+    <a href="<?= BASE_URL ?>/public/index.php" class="logo-link">
+        <div class="logo-icon"><i class="fa-solid fa-scissors"></i></div>
+        <div class="brand-logo">TimeAgend</div>
+    </a>
     <button class="menu-toggle" aria-label="Toggle menu">&#9776;</button>
     <nav class="menu-principal">
         <a href="<?= BASE_URL?>/public/index.php">Início</a>
@@ -29,17 +37,17 @@
 </header>
 
 <main>
-    <button class="button-1" onclick="window.location.href='<?= BASE_URL?>/public/perfil.php'">Voltar</button>
-    <h1>Olá, Cliente</h1>
-    <div class="separator"></div>
 
     <!-- Modal de Feedback -->
     <?php if (isset($_SESSION['feedback'])): ?>
     <div class="overlay active" id="feedbackOverlay">
         <div class="modal">
-            <div class="modal-icon success">&#10003;</div>
+            <span class="modal-icon success">&#10003;</span>
+            <h3>Pronto!</h3>
             <p><?= htmlspecialchars($_SESSION['feedback']) ?></p>
-            <button class="modal-btn" onclick="document.getElementById('feedbackOverlay').classList.remove('active')">OK</button>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="document.getElementById('feedbackOverlay').classList.remove('active')">OK</button>
+            </div>
         </div>
     </div>
     <?php unset($_SESSION['feedback']); ?>
@@ -48,7 +56,7 @@
     <!-- Modal de Confirmação -->
     <div class="overlay" id="confirmOverlay">
         <div class="modal">
-            <div class="modal-icon warning">&#9888;</div>
+            <span class="modal-icon warning">&#9888;</span>
             <h3>Cancelar agendamento?</h3>
             <p>Esta ação não pode ser desfeita.</p>
             <div class="modal-actions">
@@ -57,6 +65,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-text">
+            <p class="eyebrow"></p>
+            <h1 eyebrow>Seu histórico</h1>
+            <p>Veja todos os seus agendamentos por aqui.</p>
+        </div>
+        <a href="<?= BASE_URL?>/public/perfil.php" class="button-1">
+            <i class="fa-solid fa-arrow-left" style="font-size:.8rem"></i> Voltar
+        </a>
+    </div>
+
+    <div class="separator"></div>
 
     <!-- Filtro -->
     <div class="filter-bar">
@@ -80,28 +102,41 @@
                 $barbeiro      = nomeBarbeiro($agendamento['idbarbeiro']);
                 $dataFormatada = (new DateTime($agendamento['data']))->format('d/m');
                 $horaFormatada = (new DateTime($agendamento['horario']))->format('H:i');
-
-                $dataISO   = (new DateTime($agendamento['data']))->format('Y-m-d');
-                $hojeISO   = (new DateTime())->format('Y-m-d');
-                $isPassado = $dataISO < $hojeISO ? 'passado' : 'proximo';
+                $dataISO       = (new DateTime($agendamento['data']))->format('Y-m-d');
+                $hojeISO       = (new DateTime())->format('Y-m-d');
+                $isPassado     = $dataISO < $hojeISO ? 'passado' : 'proximo';
             ?>
-            <div class="appointment-card" data-periodo="<?= $isPassado ?>">
+            <div class="appointment-card <?= $isPassado ?>" data-periodo="<?= $isPassado ?>">
 
-                <?php if ($isPassado === 'passado'): ?>
-                    <span class="badge badge-passado">Passado</span>
-                <?php else: ?>
-                    <span class="badge badge-proximo">Próximo</span>
-                <?php endif; ?>
+                <span class="badge <?= $isPassado === 'passado' ? 'badge-passado' : 'badge-proximo' ?>">
+                    <?= $isPassado === 'passado' ? 'PASSADO' : 'PRÓXIMO' ?>
+                </span>
 
-                <div>
-                    <h2>MEUS AGENDAMENTOS</h2>
-                    <p>
-                        <strong><?= htmlspecialchars($servico['nome_servico'] ?? 'Serviço não encontrado') ?></strong><br>
-                        Barbeiro: <?= htmlspecialchars($barbeiro) ?><br>
-                        <?= $dataFormatada ?> &mdash; <?= $horaFormatada ?><br>
-                        <span class="price">R$ <?= number_format($servico['preco'] ?? 0, 2, ',', '.') ?></span>
+                <p class="card-section-label">Meus Agendamentos</p>
+
+                <h2 class="card-service-name">
+                    <?= strtoupper(htmlspecialchars($servico['nome_servico'] ?? 'Serviço não encontrado')) ?>
+                </h2>
+
+                <div class="card-meta">
+                    <div class="card-meta-row">
+                        <i class="fa-solid fa-scissors"></i>
+                        <span>Barbeiro: <?= htmlspecialchars($barbeiro) ?></span>
+                    </div>
+                    <div class="card-meta-row">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span><?= $dataFormatada ?> &mdash; <?= $horaFormatada ?></span>
+                    </div>
+                </div>
+
+                <p class="card-price">R$ <?= number_format($servico['preco'] ?? 0, 2, ',', '.') ?></p>
+
+                <div class="card-divider"></div>
+
+                <div class="card-location">
+                    <p class="card-location-label">
+                        <i class="fa-solid fa-location-dot"></i> Localização
                     </p>
-                    <h2>LOCALIZAÇÃO</h2>
                     <p>
                         <?= htmlspecialchars($dados[0]['local']  ?? 'Não informado') ?><br>
                         <?= htmlspecialchars($dados[0]['cidade'] ?? '') ?>

@@ -1,30 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'DM Sans', Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* ── Nav links mantidos ─────────────────────────────────── */
 nav a:hover, .selected {
     color: white;
     background-color: #D4AF37;
     border-radius: 20px;
     padding: 5px 15px;
-}
-/* Estilos gerais */
-body {
-    background-color: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-}
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background-color: #000;
-    border-bottom: none; box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.515);
-    margin-top: 12px;
-    width: 87%;
-    position: relative;
-    left: 49px;
-}
-header img {
-    width: 200px;
 }
 nav a {
     color: #fff;
@@ -32,283 +22,445 @@ nav a {
     text-decoration: none;
     font-size: 16px;
 }
-.container {
-    background-color: #fff;
-    color: #000;
-    width: 90%;
-    border-radius: 10px;
-    margin: -85px auto; /* Centraliza */
+
+/* ── Header mantido ─────────────────────────────────────── */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #000;
+    border-bottom: none;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.515);
+    width: 92%;
+    margin-left: 35px;
+    position: relative;
+   
+}
+
+/* ── Main ───────────────────────────────────────────────── */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+}
+
+/* ── Botão Voltar ───────────────────────────────────────── */
+.back-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-1 {
+    display: inline-flex;
     align-items: center;
-    height: 380px;
-   
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+.button-1:hover {
+    border-color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.05);
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Foto de perfil */
+.profile-image {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    flex-shrink: 0;
+}
+
+.profile-image img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(212,175,55,0.4);
+    display: block;
+}
+
+/* halo dourado atrás da foto */
+.profile-image::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* botão câmera */
+.upload-label {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #D4AF37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid #090909;
+    transition: background 0.2s;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+}
+.upload-label:hover { background: #c09e2e; }
+.upload-label img { width: 16px; height: 16px; }
+.upload-label i { font-size: 14px; color: #000; }
+
+/* Texto hero */
+.hero-text {
+    flex: 1;
+}
+.hero-text .eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    color: #D4AF37;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.hero-text h1 {
+    font-family: 'Syne', sans-serif;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin-bottom: 6px;
+}
+.hero-text p {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Card "Histórico" */
+.historico {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    min-width: 220px;
+    transition: border-color 0.2s, background 0.2s;
+    position: static;
+    left: unset;
+    top: unset;
+    width: auto;
+}
+.historico:hover {
+    border-color: rgba(212,175,55,0.35);
+    background: #1a1a1a;
+}
+.historico-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(212,175,55,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.historico-icon i { font-size: 18px; color: #D4AF37; }
+.historico-label { flex: 1; font-size: 0.92rem; font-weight: 500; line-height: 1.3; }
+.historico-arrow { color: #444; font-size: 14px; }
+
+/* ── Card de informações pessoais ───────────────────────── */
+.info-card {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
     overflow: hidden;
 }
 
-.info {
+.info-card-header {
     display: flex;
-    flex-direction: column;
-    
+    align-items: center;
+    gap: 16px;
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.info-card-header-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(212,175,55,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.info-card-header-icon i { font-size: 20px; color: #D4AF37; }
+.info-card-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.info-card-header p {
+    font-size: 0.82rem;
+    color: #555;
+}
+
+/* Rows de campo */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 1rem 1.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row:hover { background: rgba(255,255,255,0.02); }
+
+.info-row-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.info-row-icon i { font-size: 15px; color: #555; }
+
+.info-row-content {
+    flex: 1;
+}
+.info-row-content label {
+    display: block;
+    font-size: 0.75rem;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.info-row-content input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 0.97rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
     width: 100%;
-    position: relative;
-    left: 500px;
-   
-    max-width: 100%;
-    margin-top: 0px;
+    padding: 0;
 }
+.info-row-content input:focus { color: #D4AF37; }
 
-    .profile-image {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-        overflow: hidden;
-        
-        position: relative;
-        right: 0px;
-        left: 250px;
-        top: 80px;
-    }
-
-    .profile-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-     
-    
-
-    .info label {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .info input {
-        margin-bottom: 10px;
-    }
-
-    
-
-    .button {
-        background-color: #000000;
-        color: #fff;
-        padding: 6px 40px;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-       position: relative;
-       top: 10px;
-       left: -60px;
-    }
-
-    .button:hover {
-        background-color: #45a049;
-    }
-    /* .button-logout {
-        background-color: #D4AF37;
-        color: #fff;
-        padding: 6px 40px;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-       position: relative;
-       top: 10px;
-       left: -60px;
-    } */
-.botao-alterar{
-    position: relative;
-    right: 580px;
-    top: -40px;
-}
-input {
-    border: none; /* Remove as bordas */
-    background: transparent; /* Fundo transparente */
-    font-size: inherit; /* Mantém o tamanho da fonte do elemento pai */
-    color: inherit; /* Mantém a cor do texto do elemento pai */
-    padding: 0; /* Remove o preenchimento */
-    width: 100%; /* Faz o input ocupar toda a largura disponível */
-    outline: none; /* Remove o contorno ao focar no campo */
-}
-
-input:focus {
-    outline: none; /* Remove o contorno ao focar no campo */
-}
-.historico{
-    position: relative;
-    left: 1000px;
-    top: -70px;
-    background-color: #D4AF37;
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: white;
+.edit-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    width: 20%;
-    text-align: center;
+    color: #555;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    flex-shrink: 0;
 }
-.edit-icon{
-    display: none;
+.edit-btn:hover {
+    border-color: rgba(212,175,55,0.4);
+    color: #D4AF37;
+    background: rgba(212,175,55,0.06);
+}
+.edit-btn i { font-size: 13px; }
+
+/* ── Footer actions ─────────────────────────────────────── */
+.actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-/* Menu */
-.menu-principal {
-    
-    flex-direction: column; /* Organiza itens em coluna no modo responsivo */
+.button-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(220,50,50,0.35);
+    color: #e05252;
+    padding: 10px 22px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s, border-color 0.2s;
+    margin-left: 0;
+    margin-top: -22px;
 }
-
-.menu-principal.active {
-    display: flex; /* Exibe o menu quando 'active' está presente */
+.button-logout:hover {
+    background: rgba(220,50,50,0.1);
+    border-color: rgba(220,50,50,0.6);
 }
+.button-logout i { font-size: 14px; }
 
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #D4AF37;
+    border: none;
+    color: #000;
+    padding: 11px 28px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    transition: background 0.2s;
+    position: static;
+    left: unset;
+    top: unset;
+    margin: 0;
+}
+.button:hover { background: #c09e2e; }
+.button i { font-size: 14px; }
+
+/* ── Menu responsivo (mantido) ───────────────────────────── */
+.menu-principal { flex-direction: column; }
+.menu-principal.active { display: flex; }
 .menu-toggle {
-    display: none; /* Oculta o botão de menu em telas maiores */
+    display: none;
     font-size: 24px;
     background: none;
     border: none;
     cursor: pointer;
-    color: #000;
-}
-
-/* Responsividade geral */
-/* GERAL */
-@media (max-width: 768px) {
-  header {
-    left: 0;
-    width: 80%;
-    align-items: flex-start;
-  }
-  .container {
-    overflow: visible;
-
-  }
-
-  .menu-toggle {
-    display: block;
     color: #fff;
-  }
+}
 
-  .menu-principal {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    color: #000;
-    flex-direction: column;
-    padding: 10px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    border-radius: 5px;
-    text-align: center;
-  }
+/* ── Responsivo ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .hero { gap: 1.5rem; }
+    .historico { min-width: 180px; }
+}
 
-  .menu-principal.active {
-    display: flex;
-  }
+@media (max-width: 768px) {
+    header {
+        padding: 14px 20px;
+        margin-left: 15px;
+        left: 0;
+    }
+    .logo-link {
+        right: 12px;
+        }
 
-  nav a {
-    color: #000;
-    margin: 10px 0;
-  }
+    main { padding: 1.5rem 1rem 3rem; }
 
-  .profile-image {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 20px;
-    left: 0;
-    top: 40px;
-    position: relative;
-  }
+    .menu-toggle { display: block; }
+    .menu-principal {
+        top: 60px;
+        
+    }
+    .menu-principal.active { display: flex; }
+    nav a { color: #000000; margin: 8px 0; display: block; }
 
-  .info {
-    width: 80%;
-    left: 0;
-    margin-top: -40px;
-    position: relative;
-  }
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+    }
+    .profile-image { width: 100px; height: 100px; }
+    .profile-image img { width: 100px; height: 100px; }
+    .historico { width: 100%; }
 
-  .info input {
-    font-size: 14px;
-  }
+    .info-card-header { padding: 1.2rem; }
+    .info-row { padding: 0.9rem 1.2rem; }
 
-  .button,
-  .position-button {
-    width: 30%;
-    text-align: center;
-    margin-left: 80px;
+    .actions-row { flex-direction: column-reverse; align-items: stretch; }
+    .button{
+        width: 100%;
+        justify-content: center;
+    }
     
-  }
-
-  .historico {
-    width: 45%;
-    max-width: 300px;
-    margin: 20px auto;
-    font-size: 14px;
-    text-align: center;
-    left: 2px;
-    top: -45px;
-    margin-top: 100px;
-  }
-   label.upload-label{
-       margin-right: 0; /* substitui 'none' */
-       margin-left: 60px;
-       top: -80px;
-      height: 28px;
-
-    }
-    .upload-label img{
-        width: 30px;
-        height: 30px;
-    }
-
-    button.button-logout{
-        margin-right: 0;
-        margin-left: 220px;
-        position: relative;
-        top: 20px;
-        padding: 5px 8px;
-        font-size: 12px;
-        background-color: rgb(248, 28, 28);
-    }
+    .button-logout { width: 92%; justify-content: center; margin-top: 140px; }
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 1em;
-    color: #333;
-}
-
-  .edit-icon {
-    background-color: #D4AF37;
-    border-radius: 20px;
-    padding: 5px;
-    position: relative;
-    top: -20px;
-    right: 0;
-    margin: 0 auto;
-    display: block;
-  }
-
-
-/* TELAS MENORES QUE 480px */
 @media (max-width: 480px) {
-  .profile-image {
-    width: 100px;
-    height: 100px;
-  }
-
-  .button {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  .botao-alterar {
-    font-size: 12px;
-  }
+    .hero-text h1 { font-size: 1.7rem; }
+    .info-card-header h2 { font-size: 1rem; }
 }
+
+/* ── Modal de contato (mantido) ─────────────────────────── */
+.modal { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+.modal.active { display: flex; }
+.modal-content-1 {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 460px;
+    width: 90%;
+    color: #fff;
+    position: relative;
+}
+.close { position: absolute; top: 14px; right: 18px; font-size: 22px; cursor: pointer; color: #555; }
+.close:hover { color: #fff; }
+.fale-conosco { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 1.2rem; }
+.conosco { color: #D4AF37; }
+.form-email label { font-size: 0.82rem; color: #777; margin-bottom: 4px; display: block; }
+.form-email input, .form-email textarea {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    outline: none;
+}
+.form-email textarea { min-height: 100px; resize: vertical; }
+.form-email button[data-button] {
+    background: #D4AF37;
+    border: none;
+    color: #000;
+    padding: 10px 28px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.form-email button[data-button]:hover { background: #c09e2e; }
+
+/* esconde elements legados que não usamos mais */
+.container, .info, .botao-alterar, .edit-icon { display: none !important; }

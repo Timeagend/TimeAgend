@@ -1,74 +1,130 @@
-/* ── Botão Voltar ───────────────────────────────────────────── */
-.button-1 {
-    border: 1px solid white;
-    background-color: black;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 15px;
-    cursor: pointer;
-    display: block;
-    margin: 1rem 1rem 0 auto;
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap');
+
+body {
+    color: #fff;
+    font-family: 'DM Sans', Arial, sans-serif;
+    min-height: 100vh;
 }
 
-/* ── Main ────────────────────────────────────────────────────── */
+/* ── Header (mantido do projeto) ──────────────────────────── */
+
+
+/* ── Main ─────────────────────────────────────────────────── */
 main {
-    padding: 2rem;
-    text-align: center;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 3rem 2rem 4rem;
 }
 
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    text-align: left;
+/* ── Hero section ─────────────────────────────────────────── */
+.hero {
+    margin-bottom: 2.5rem;
     display: flex;
-    margin-left: 70px;
-    font-family: Arial, Helvetica, sans-serif;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
+.hero-text .eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    color: #D4AF37;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.hero-text h1 {
+    font-family: 'Syne', sans-serif;
+    
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -.02em;
+}
+
+.hero-text p {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 400;
+}
+
+/* ── Botão Voltar ─────────────────────────────────────────── */
+.button-1 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background-color: transparent;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+}
+
+.button-1:hover {
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.05);
+}
+
+/* ── Separador ────────────────────────────────────────────── */
 .separator {
-    width: calc(100% - 140px);
+    width: 100%;
     height: 1px;
-    background-color: #666;
-    margin: 1rem auto;
+    background: rgba(255,255,255,0.07);
+    margin: 0 0 2rem;
 }
 
-/* ── Filtro ──────────────────────────────────────────────────── */
+/* ── Filtro ───────────────────────────────────────────────── */
 .filter-bar {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
-    margin: 1.5rem auto;
-    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 100px;
+    padding: 5px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .filter-btn {
     background: transparent;
-    color: #aaa;
-    border: 1px solid #555;
-    padding: 6px 20px;
-    border-radius: 20px;
+    color: #666;
+    border: none;
+    padding: 8px 28px;
+    border-radius: 100px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+    font-family: 'DM Sans', sans-serif;
     transition: all 0.2s;
+    font-weight: 500;
 }
 
-.filter-btn:hover {
-    border-color: #aaa;
-    color: #fff;
-}
+.filter-btn:hover { color: #aaa; }
 
 .filter-btn.active {
     background-color: #fff;
     color: #000;
-    border-color: #fff;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-/* ── Empty State ─────────────────────────────────────────────── */
+/* ── Empty State ──────────────────────────────────────────── */
 .empty-state {
     text-align: center;
-    padding: 3rem 1rem;
-    color: #aaa;
+    padding: 5rem 1rem;
+    color: #444;
 }
 
 .empty-icon {
@@ -79,281 +135,328 @@ h1 {
 
 .button-new {
     display: inline-block;
-    margin-top: 1rem;
-    background: #fff;
+    margin-top: 1.5rem;
+    background: #D4AF37;
     color: #000;
-    padding: 8px 24px;
-    border-radius: 20px;
+    padding: 10px 28px;
+    border-radius: 100px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
     transition: background 0.2s;
 }
 
-.button-new:hover {
-    background: #ddd;
-}
+.button-new:hover { background: #c09e2e; }
 
-/* ── Cards ───────────────────────────────────────────────────── */
+/* ── Cards Grid ───────────────────────────────────────────── */
 .cards-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
 }
 
-.appointment-card.hidden {
-    display: none;
-}
+.appointment-card.hidden { display: none; }
 
+/* ── Card ─────────────────────────────────────────────────── */
 .appointment-card {
-    background-color: #1b1919;
-    color: #FFF;
-    padding: 2rem;
-    width: 300px;
-    min-height: 400px;
-    border-radius: 8px;
-    text-align: left;
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 1.4rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box;
+    gap: 0;
     position: relative;
+    transition: border-color 0.2s, transform 0.2s;
 }
 
-.appointment-card h2 {
-    font-size: 1rem;
-    color: #FFF;
-    border-bottom: 1px solid #666;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+.appointment-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
 }
 
-.appointment-card p {
-    margin: 1rem 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
+.appointment-card.proximo {
+    border-color: rgba(212,175,55,0.2);
 }
 
-.price {
-    color: #32CD32;
-    font-weight: bold;
-}
-
-/* ── Badge ───────────────────────────────────────────────────── */
+/* ── Badge ────────────────────────────────────────────────── */
 .badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 0.7rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    display: inline-block;
+    font-size: 0.65rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    letter-spacing: .1em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #888;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 1.1rem;
+    width: fit-content;
 }
 
 .badge-proximo {
-    background-color: #1a3a1a;
-    color: #32CD32;
-    border: 1px solid #32CD32;
+    background: rgba(212,175,55,0.1);
+    color: #D4AF37;
+    border-color: rgba(212,175,55,0.3);
 }
 
 .badge-passado {
-    background-color: #2a2a2a;
-    color: #888;
-    border: 1px solid #555;
+    background: rgba(255,255,255,0.04);
+    color: #555;
+    border-color: rgba(255,255,255,0.08);
 }
 
-/* ── Botão Cancelar ──────────────────────────────────────────── */
+/* ── Card: seção agendamento ──────────────────────────────── */
+.card-section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: #D4AF37;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.card-service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.01em;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.appointment-card.passado .card-service-name {
+    color: #aaa;
+}
+
+.card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 0.85rem;
+}
+
+.card-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #666;
+}
+
+.card-meta-row i {
+    font-size: 14px;
+    color: #444;
+    flex-shrink: 0;
+}
+
+.appointment-card.proximo .card-meta-row i {
+    color: #6a5820;
+}
+
+.card-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #D4AF37;
+    margin-bottom: 1rem;
+}
+
+.appointment-card.passado .card-price {
+    color: #444;
+}
+
+/* ── Card: divisor ────────────────────────────────────────── */
+.card-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-bottom: 0.85rem;
+}
+
+/* ── Card: localização ────────────────────────────────────── */
+.card-location {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 1rem;
+}
+
+.card-location-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: #444;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-location-label i { font-size: 13px; }
+
+.card-location p {
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* ── Botão Cancelar ───────────────────────────────────────── */
+.cancel-form { margin-top: auto; }
+
 .cancel-button {
-    background-color: #B22222;
-    color: #FFF;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
+    background: transparent;
+    color: #c0392b;
+    border: 1px solid rgba(192,57,43,0.35);
+    padding: 0.55rem 1rem;
+    font-size: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    letter-spacing: .06em;
+    border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    margin-top: 1rem;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .cancel-button:hover {
-    background-color: #FF6347;
+    background: rgba(192,57,43,0.12);
+    border-color: rgba(192,57,43,0.6);
 }
 
-/* ── Overlay / Modais ────────────────────────────────────────── */
+/* ── Overlay / Modais ─────────────────────────────────────── */
 .overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0,0,0,0.75);
     z-index: 1000;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(2px);
 }
 
-.overlay.active {
-    display: flex;
-}
+.overlay.active { display: flex; }
 
 .modal {
-    background: #1b1919;
+    background: #141414;
     color: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
     max-width: 380px;
-    width: 90%;
+    width: 100%;
     text-align: center;
-    border: 1px solid #444;
+    border: 1px solid rgba(255,255,255,0.1);
     animation: modalIn 0.2s ease;
 }
 
 @keyframes modalIn {
-    from { transform: scale(0.92); opacity: 0; }
+    from { transform: scale(0.94); opacity: 0; }
     to   { transform: scale(1);    opacity: 1; }
 }
 
-.modal h3 {
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
-}
-
-.modal p {
-    font-size: 0.95rem;
-    color: #bbb;
-    margin-bottom: 1.5rem;
-}
-
 .modal-icon {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 0.75rem;
     display: block;
 }
 
-.modal-icon.success { color: #32CD32; }
+.modal-icon.success { color: #D4AF37; }
 .modal-icon.warning { color: #f0a500; }
+
+.modal h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.modal p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
 
 .modal-actions {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
 }
 
 .modal-btn {
-    padding: 0.5rem 1.5rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
+    padding: 0.55rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
     cursor: pointer;
     border: none;
     transition: background 0.2s;
+    flex: 1;
 }
 
-.modal-btn.secondary {
-    background: #333;
-    color: #fff;
+.modal-btn.secondary { background: #1e1e1e; color: #aaa; }
+.modal-btn.secondary:hover { background: #252525; }
+.modal-btn.danger { background: #B22222; color: #fff; }
+.modal-btn.danger:hover { background: #cc2e2e; }
+.modal-btn:not(.secondary):not(.danger) { background: #D4AF37; color: #000; }
+.modal-btn:not(.secondary):not(.danger):hover { background: #c09e2e; }
+
+/* ── Responsivo ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .cards-wrapper {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
-.modal-btn.secondary:hover { background: #444; }
-
-.modal-btn.danger {
-    background: #B22222;
-    color: #fff;
-}
-
-.modal-btn.danger:hover { background: #FF6347; }
-
-.modal-btn:not(.secondary):not(.danger) {
-    background: #fff;
-    color: #000;
-}
-
-.modal-btn:not(.secondary):not(.danger):hover { background: #ddd; }
-
-/* ── Menu ────────────────────────────────────────────────────── */
-.menu-principal {
-    flex-direction: column;
-}
-
-.menu-principal.active {
-    display: flex;
-}
-
-.menu-toggle {
-    display: none;
-    font-size: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #000;
-}
-
-/* ── Responsivo ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .button-1 {
-        margin: 1rem auto 0;
-        display: block;
-        width: fit-content;
+    
+        
+    
+
+    main {
+        padding: 2rem 1rem 3rem;
     }
 
-    h1 {
-        margin-left: 20px;
-        font-size: 1.4rem;
-    }
+    .hero { flex-direction: column; gap: 1.2rem; }
 
-    .separator {
-        width: calc(100% - 40px);
-    }
+    .hero-text h1 { font-size: 2.2rem; }
 
-    .menu-toggle {
-        display: block;
-        color: #fff;
-    }
-
-    .menu-principal {
-        display: none;
-        background-color: #fff;
-        color: #000;
-        position: absolute;
-        top: 60px;
-        right: 16px;
-        left: auto;
-        width: clamp(160px, 50%, 240px);
-        padding: 10px 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 10;
-        text-align: center;
-        border-radius: 5px;
-    }
-
-    .menu-principal.active {
-        display: flex;
-    }
-
-    nav a {
-        color: #000;
-        margin-bottom: 20px;
-        transition: 0.5s;
-    }
-
-    .appointment-card {
-        width: 100%;
-        max-width: 360px;
-    }
+    
 
     .filter-bar {
-        gap: 8px;
+        padding: 4px;
+        width: 100%;
+        justify-content: stretch;
     }
 
     .filter-btn {
-        padding: 6px 14px;
+        flex: 1;
+        padding: 8px 10px;
         font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .cards-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .menu-toggle{
+        margin-left: 0;
     }
 }
 
-@media (max-width: 400px) {
-    .appointment-card {
-        padding: 1.2rem;
+@media (max-width: 520px) {
+    .cards-wrapper {
+        grid-template-columns: 1fr;
     }
+
+    .hero-text h1 { font-size: 1.8rem; }
+
+    .modal-actions { flex-direction: column; }
+    .modal-btn { width: 100%; }
 }

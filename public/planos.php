@@ -13,6 +13,8 @@ include_once('../config/url.php');
 <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/contact.css">
 <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/planos.css">
 <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/agendamento1.css">
+<link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/logo.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
 
@@ -37,8 +39,7 @@ justify-content:space-between;
 align-items:center;
 padding:20px 40px;
 flex-wrap:wrap;
-gap:20px;
-width:100%;
+width:92%;
 box-shadow:0px 1px 0 rgba(255,255,255,.4);
 }
 
@@ -231,17 +232,15 @@ font-size:14px;
     color: #fff;
     font-size: 28px;
     cursor: pointer;
-    padding: 5px;
 }
 
 nav {
     display: flex;
-    gap: 20px;
+    
     flex-wrap: wrap;
 }
 
 nav a {
-    color: #fff;
     text-decoration: none;
     font-size: 15px;
     padding: 6px 12px;
@@ -254,16 +253,26 @@ nav a {
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
+        position: relative;
+        left: 120px;
+        margin-top: -35px;
     }
-
+.logo-link {
+    right: 90px;
+ }
     nav {
         display: none;
-        flex-direction: column;
-        width: 100%;
-        background: #111;
-        border-radius: 10px;
-        padding: 10px 0;
-        gap: 0;
+    position: absolute;
+    top: 60px;
+    width: 80%;
+    background-color: #fff;
+    color: #000;
+    flex-direction: column;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    border-radius: 5px;
+    text-align: center;
     }
 
     nav.nav-aberto {
@@ -287,7 +296,13 @@ nav a {
 
 <header>
 
-<img src="<?= BASE_URL?>img/SAVE_20241028_185834.jpg" alt="Logo TimeAgend">
+<!-- Logo -->
+           <a href="<?= BASE_URL ?>/public/index.php" class="logo-link">
+    <div class="logo-icon">
+        <i class="fa-solid fa-scissors"></i>
+    </div>
+    <div class="brand-logo">TimeAgend</div>
+</a>
 <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal" style="margin-left: 30px;" >
     &#9776;
   </button>

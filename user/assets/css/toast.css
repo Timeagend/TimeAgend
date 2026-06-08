@@ -1,0 +1,61 @@
+ /* ── TOAST / NOTIFICAÇÃO FLUTUANTE ── */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            min-width: 280px;
+            max-width: 360px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        .toast.toast-error   { background: #fff0f0; border-left: 4px solid #ef4444; }
+        .toast.toast-success { background: #f0fff4; border-left: 4px solid #22c55e; }
+        .toast.toast-warning { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .toast-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+        .toast-error   .toast-icon { color: #ef4444; }
+        .toast-success .toast-icon { color: #22c55e; }
+        .toast-warning .toast-icon { color: #f59e0b; }
+        .toast-body { flex: 1; }
+        .toast-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .toast-error   .toast-title { color: #b91c1c; }
+        .toast-success .toast-title { color: #15803d; }
+        .toast-warning .toast-title { color: #92400e; }
+        .toast-text { font-size: 12px; color: #0f0101; line-height: 1.4; }
+        .toast-close {
+            background: none; border: none; cursor: pointer;
+            font-size: 16px; color: #999; padding: 0;
+            line-height: 1; width: auto; position: static;
+        }
+        .toast-close:hover { color: #333; }
+        .input-error { border: 1.5px solid #ef4444 !important; background-color: #fff5f5 !important; }
+        #loginButton:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .toast { top: auto; bottom: 24px; right: 12px; left: 12px; max-width: 100%; }
+        }
+        .toast p { position: static !important; top: unset !important; left: unset !important; margin: 0 !important; text-align: left !important; }
+
+        .opçoes {
+            width: 107.5%;
+            padding: 12px;
+            border-radius: 18px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background-color: #cecece;
+        }
+        .opçoes:hover { border-color: #007bff; }
+        

@@ -347,16 +347,15 @@ button:hover {
         bottom: 0; 
        height: 106%;
        width: 106%;
+       overflow: hidden; /* para evitar scroll causado pelo aumento de tamanho */
     }
+   
     .container {
         
         position: relative;
-        left: 10px;
+        left: 0px;
         top: 200px;
         margin: 0 auto;
-    
-        
-
     }
     .login-box {
        
@@ -425,7 +424,7 @@ button:hover {
     
     .modal-content {
         background-color: white;
-        margin: 40% auto; /* Centraliza verticalmente */
+        margin: 60% auto; /* Centraliza verticalmente */
         padding: 20px;
         border-radius: 10px;
         width: 300px;
@@ -453,6 +452,7 @@ top: -20px;
     }
     li{
         padding: 20px;
+        left: 35px;
         
     }
 
@@ -462,9 +462,12 @@ top: -20px;
         width: 100%;
        
     }
+    
 }
 .error-message {
     color: red;
     font-size: 12px;
     margin-top: 5px;
 }
+
+

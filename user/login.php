@@ -12,70 +12,12 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="<?= BASE_URL?>/user/assets/css/login.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/user/assets/css/loginn.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <style>
-         /* ── TOAST / NOTIFICAÇÃO FLUTUANTE ── */
-        .toast {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 9999;
-            min-width: 280px;
-            max-width: 360px;
-            padding: 14px 16px;
-            border-radius: 10px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-            opacity: 0;
-            transform: translateX(40px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
-        .toast.toast-error   { background: #fff0f0; border-left: 4px solid #ef4444; }
-        .toast.toast-success { background: #f0fff4; border-left: 4px solid #22c55e; }
-        .toast.toast-warning { background: #fffbeb; border-left: 4px solid #f59e0b; }
-        .toast-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-        .toast-error   .toast-icon { color: #ef4444; }
-        .toast-success .toast-icon { color: #22c55e; }
-        .toast-warning .toast-icon { color: #f59e0b; }
-        .toast-body { flex: 1; }
-        .toast-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-        .toast-error   .toast-title { color: #b91c1c; }
-        .toast-success .toast-title { color: #15803d; }
-        .toast-warning .toast-title { color: #92400e; }
-        .toast-text { font-size: 12px; color: #0f0101; line-height: 1.4; }
-        .toast-close {
-            background: none; border: none; cursor: pointer;
-            font-size: 16px; color: #999; padding: 0;
-            line-height: 1; width: auto; position: static;
-        }
-        .toast-close:hover { color: #333; }
-        .input-error { border: 1.5px solid #ef4444 !important; background-color: #fff5f5 !important; }
-        #loginButton:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        @media (max-width: 768px) {
-            .toast { top: auto; bottom: 24px; right: 12px; left: 12px; max-width: 100%; }
-        }
-        .toast p { position: static !important; top: unset !important; left: unset !important; margin: 0 !important; text-align: left !important; }
-
-        .opçoes {
-            width: 107.5%;
-            padding: 12px;
-            border-radius: 18px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            background-color: #cecece;
-        }
-        .opçoes:hover { border-color: #007bff; }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL?>/user/assets/css/toast.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/user/assets/css/sobre-nos.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/user/assets/css/ajuda.css">
+    
 </head>
 <body>
 
@@ -89,28 +31,14 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
     <button class="toast-close" onclick="closeToast()">&#x2715;</button>
 </div>
 
-   <style>
-        .opçoes {
-              width: 107.5%;
-                padding: 12px;
-                border-radius: 18px;
-                border: 1px solid #ddd;
-                font-size: 14px;
-                background-color: #cecece;
-        }
-        .opçoes:hover {
-            border-color: #007bff;
-        }
-    </style>
-
 
     <main>
         
       <div class="menu">
         <ul>
             <a href="<?= BASE_URL?>/public/index.php"><li>Início</li></a>
-            <a href="#"><li>Sobre-nós</li></a>
-            <a href="#"><li>Ajuda</li></a>
+            <a href="#" id="open-sobre"><li>Sobre-nós</li></a>
+            <a href="#" id="open-ajuda"><li>Ajuda</li></a>
             
          </ul>
       </div>
@@ -216,12 +144,93 @@ $dados = $dadosBarbearia->mostrarDadosBarbearia();
             </form>
         </div>
     </div>
+
+    <!-- Modal Sobre-nós -->
+    <div id="modal-sobre" class="modal">
+  <div class="modal-content modal-sobre-content">
+    <span class="close-sobre">&times;</span>
+
+    <span class="sobre-tag">Nossa história</span>
+    <h2 class="sobre-titulo">Mais do que um corte — uma tradição.</h2>
+    <p class="sobre-sub">Desde 2015, cuidando de você com arte e respeito.</p>
+
+    <hr class="sobre-divider">
+
+    <p class="sobre-texto">
+      Nascemos de uma paixão simples: <strong>transformar o momento do
+      cuidado masculino em uma experiência de verdade.</strong>
+      O que começou como uma barbearia de bairro cresceu graças à confiança
+      de cada cliente que passou pela nossa cadeira.
+      <br><br>
+      Hoje, combinamos técnicas tradicionais com um toque moderno — porque
+      acreditamos que um bom corte vai além da aparência.
+      É sobre como você <strong>sai daqui se sentindo.</strong>
+    </p>
+
+    <div class="sobre-valores">
+      <span class="valor-chip"><i class="bi bi-scissors"></i> Precisão</span>
+      <span class="valor-chip"><i class="bi bi-heart"></i> Cuidado</span>
+      <span class="valor-chip"><i class="bi bi-star"></i> Qualidade</span>
+    </div>
+
+    <a href="<?= BASE_URL?>/user/login.php" class="btn-agendar">
+      Voltar para o Login
+    </a>
+  </div>
+</div>
+
+<!-- Modal Ajuda -->
+<div id="modal-ajuda" class="modal">
+  <div class="modal-content modal-ajuda-content">
+    <span class="close-ajuda">&times;</span>
+
+    <span class="ajuda-tag">Central de ajuda</span>
+    <h2 class="ajuda-titulo">Dúvidas frequentes</h2>
+    <p class="ajuda-sub">Encontre respostas rápidas sobre o nosso sistema.</p>
+    <hr class="ajuda-divider">
+
+    <div class="faq-item">
+      <button class="faq-question">Como faço um agendamento? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Crie sua conta ou faça login, escolha o serviço, selecione o profissional e o horário disponível. Seu agendamento estará confirmado!</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Posso cancelar ou remarcar? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Sim! Com até <strong>2 horas de antecedência</strong>, direto na área "Meus Agendamentos".</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Como escolho o profissional? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Durante o agendamento você visualiza os profissionais disponíveis e escolhe conforme os horários livres de cada um.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Esqueci minha senha. E agora? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Na tela de login clique em <strong>"Esqueceu a senha?"</strong> e siga as instruções enviadas para o seu e-mail.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Qual a tolerância para atraso? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Aguardamos até <strong>10 minutos</strong>. Após esse prazo o agendamento poderá ser cancelado automaticamente.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Quais formas de pagamento? <span class="faq-icon">&#8964;</span></button>
+      <div class="faq-answer">Dinheiro, débito, crédito e Pix. O pagamento é realizado presencialmente no atendimento.</div>
+    </div>
+
+    <!-- <div class="ajuda-contatos">
+      <a href="https://wa.me/55SEU_NUMERO" class="btn-whats" target="_blank">WhatsApp</a>
+      <a href="mailto:SEU@EMAIL.com" class="btn-email">E-mail</a>
+    </div> -->
+  </div>
+</div>
 </main>
 
 <script src="<?= BASE_URL?>/user/assets/script/cadastro.js"></script>
-
 <script src="<?= BASE_URL?>/user/assets/script/login.js"></script>
-
+<script src="<?= BASE_URL?>/user/assets/script/sobre-nos.js"></script>
+<script src="<?= BASE_URL?>/user/assets/script/ajuda.js"></script>
 
 <?php
 // Exibe toasts vindos do backend (erro ou sucesso do login/cadastro)

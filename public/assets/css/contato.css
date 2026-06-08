@@ -223,6 +223,9 @@
   #contactFormModal .btn-enviar{
     width: 95%;
   }
+  .logo-link{
+    right: 40px;
+  }
 }
 
 

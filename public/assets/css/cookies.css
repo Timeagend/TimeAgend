@@ -1,0 +1,421 @@
+/* ============================================================
+   cookies.css — Banner de Cookies + Modal Privacidade/Cookies
+   TimeAgend
+   ============================================================ */
+
+/* ---- Banner de Cookies ---- */
+#cookieBanner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99998;
+    background: #111;
+    border-top: 1px solid #D4AF37;
+    padding: 20px 24px;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.4s;
+}
+
+.cookie-banner__inner {
+    max-width: 1152px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cookie-banner__text {
+    flex: 1;
+    min-width: 260px;
+}
+
+.cookie-banner__title {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #D4AF37;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.cookie-banner__desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #bbb;
+    line-height: 1.6;
+}
+
+.cookie-banner__desc a {
+    color: #D4AF37;
+    text-decoration: underline;
+}
+
+.cookie-banner__actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ---- Botões do banner ---- */
+.cookie-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+}
+
+.cookie-btn--outline-gray {
+    background: transparent;
+    border: 1px solid #555;
+    color: #bbb;
+}
+
+.cookie-btn--outline-gold {
+    background: transparent;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
+}
+
+.cookie-btn--gold {
+    padding: 10px 24px;
+    background: #D4AF37;
+    color: #000;
+    font-weight: 900;
+}
+
+.cookie-btn--outline-gray:hover { border-color: #888; color: #fff; }
+.cookie-btn--outline-gold:hover { background: #D4AF37; color: #000; }
+.cookie-btn--gold:hover          { background: #c9a42e; }
+
+/* ---- Modal overlay ---- */
+#modalPrivacidade {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+/* ---- Modal box ---- */
+.priv-modal {
+    background: #fff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popupEntrar 0.3s ease;
+}
+
+/* ---- Modal header (sticky) ---- */
+.priv-modal__header {
+    padding: 32px 36px 0;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+    border-radius: 20px 20px 0 0;
+}
+
+.priv-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+}
+
+.priv-modal__close:hover { color: #333; }
+
+.priv-modal__title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 4px;
+}
+
+.priv-modal__title span { color: #D4AF37; }
+
+.priv-modal__date {
+    color: #999;
+    font-size: 0.85rem;
+    margin: 0 0 20px;
+}
+
+.priv-modal__divider {
+    border: none;
+    border-top: 1.5px solid #e5e5e5;
+    margin-bottom: 0;
+}
+
+/* ---- Modal body ---- */
+.priv-modal__body {
+    padding: 24px 36px 36px;
+}
+
+/* ---- Tabs ---- */
+.priv-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.priv-tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: #fff;
+    color: #888;
+    transition: background 0.2s, color 0.2s;
+}
+
+.priv-tab.active,
+.priv-tab:hover {
+    background: #D4AF37;
+    color: #000;
+}
+
+/* ---- Conteúdo das tabs ---- */
+.priv-content { display: none; }
+.priv-content.active { display: block; }
+
+/* ---- Tipografia interna ---- */
+.priv-section-title {
+    font-size: 1rem;
+    font-weight: 900;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 10px;
+}
+
+.priv-text {
+    color: #555;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin: 0 0 16px;
+}
+
+.priv-text--muted {
+    color: #888;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ---- Cards de cookie (tab Cookies) ---- */
+.cookie-card {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.cookie-card--essential {
+    border: 1.5px solid #f0e9d0;
+}
+
+.cookie-card--optional {
+    border: 1.5px solid #e5e5e5;
+}
+
+.cookie-card__header {
+    padding: 12px 16px;
+    border-bottom: 1px solid;
+}
+
+.cookie-card--essential .cookie-card__header {
+    background: #fdf8ec;
+    border-color: #f0e9d0;
+}
+
+.cookie-card--optional .cookie-card__header {
+    background: #f8f8f8;
+    border-color: #e5e5e5;
+}
+
+.cookie-card__label {
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cookie-card--essential .cookie-card__label { color: #a07800; }
+.cookie-card--optional  .cookie-card__label { color: #555; }
+
+.cookie-card__body {
+    padding: 14px 16px;
+}
+
+.cookie-card__desc {
+    margin: 0;
+    color: #555;
+    font-size: 0.86rem;
+    line-height: 1.6;
+}
+
+/* ---- Preferências / toggles ---- */
+.pref-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.pref-row--essential {
+    border: 1.5px solid #f0e9d0;
+    background: #fdf8ec;
+}
+
+.pref-row--optional {
+    border: 1.5px solid #e5e5e5;
+}
+
+.pref-row__name {
+    margin: 0 0 4px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.pref-row__desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.pref-row__badge {
+    background: #D4AF37;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #000;
+    white-space: nowrap;
+}
+
+/* ---- Toggle switch ---- */
+.toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.toggle-label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-track {
+    position: absolute;
+    inset: 0;
+    background: #D4AF37;
+    border-radius: 24px;
+    transition: background 0.3s;
+}
+
+.toggle-label input:not(:checked) ~ .toggle-track {
+    background: #ccc;
+}
+
+.toggle-thumb {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+    display: block;
+}
+
+.toggle-label input:checked ~ .toggle-track .toggle-thumb {
+    transform: translateX(20px);
+}
+
+/* ---- Botão salvar preferências ---- */
+.btn-salvar-prefs {
+    width: 100%;
+    padding: 14px;
+    background: #D4AF37;
+    border: none;
+    border-radius: 50px;
+    color: #000;
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.btn-salvar-prefs:hover { background: #c9a42e; }
+
+/* ---- Links do rodapé ---- */
+.footer-legal {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.footer-legal a {
+    color: #6b7280;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.footer-legal a:hover { color: #D4AF37; }
+
+/* ---- Responsivo mobile ---- */
+@media (max-width: 600px) {
+    .priv-modal__header,
+    .priv-modal__body { padding-left: 20px; padding-right: 20px; }
+
+    .priv-modal__title { font-size: 1.25rem; }
+
+    .cookie-banner__actions { width: 100%; justify-content: stretch; }
+    .cookie-btn { flex: 1; text-align: center; }
+    
+    .cookie-btn.cookie-btn--outline-gray  {
+            font-size: 0.6rem;
+        }
+         
+            .cookie-btn.cookie-btn--outline-gold {
+                font-size: 0.6rem;
+            }
+}

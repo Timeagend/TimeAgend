@@ -1,0 +1,183 @@
+/* ===== MODAL AJUDA ===== */
+.modal-ajuda-content {
+    max-width: 600px;
+    border-radius: 16px;
+    padding: 2rem 2.25rem;
+    position: relative;
+    height: 520px;
+}
+
+.ajuda-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #E1F5EE;
+    color: #0F6E56;
+    padding: 3px 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.ajuda-titulo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 4px;
+    text-align: left;
+    position: static;
+    top: unset;
+}
+
+.ajuda-sub {
+    font-size: 13px;
+    color: #888;
+    margin: 0 0 16px;
+    text-align: left;
+    position: static;
+    top: unset;
+    color: #888;
+}
+
+.ajuda-divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0 0 14px;
+}
+
+/* ===== ACCORDION ===== */
+.faq-item {
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100% !important;
+    background: #f9f9f9 !important;
+    border: none !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    text-align: left !important;
+    border-radius: 0 !important;
+    position: static !important;
+    top: unset !important;
+    left: unset !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.faq-question:hover {
+    background: #f1f1f1 !important;
+}
+
+.faq-icon {
+    font-size: 18px !important;
+    color: #aaa !important;
+    display: inline-block !important;
+    transition: transform 0.2s !important;
+    position: static !important;
+    top: unset !important;
+    left: unset !important;
+}
+
+.faq-answer {
+    display: none !important;
+    padding: 10px 14px 14px !important;
+    font-size: 13px !important;
+    color: #555 !important;
+    line-height: 1.7 !important;
+    border-top: 1px solid #eee !important;
+    background: #fff !important;
+    text-align: left !important;
+    position: static !important;
+    top: unset !important;
+}
+
+.faq-item.open .faq-answer {
+    display: block !important;
+}
+
+.faq-item.open .faq-icon {
+    transform: rotate(180deg) !important;
+}
+
+/* ===== BOTÕES DE CONTATO ===== */
+.ajuda-contatos {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.btn-whats {
+    flex: 1 !important;
+    padding: 9px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    background: #1D9E75 !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: block !important;
+    position: static !important;
+    top: unset !important;
+    left: unset !important;
+    width: unset !important;
+}
+
+.btn-whats:hover {
+    background: #0F6E56 !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.btn-email {
+    flex: 1 !important;
+    padding: 9px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    background: #f5f5f5 !important;
+    border: 1px solid #ddd !important;
+    color: #555 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: block !important;
+    position: static !important;
+    top: unset !important;
+    left: unset !important;
+    width: unset !important;
+}
+
+.btn-email:hover {
+    background: #ebebeb !important;
+    color: #555 !important;
+    text-decoration: none !important;
+}
+
+.close-ajuda {
+    position: absolute !important;
+    top: 14px !important;
+    right: 18px !important;
+    font-size: 22px !important;
+    cursor: pointer !important;
+    color: #aaa !important;
+    background: none !important;
+    border: none !important;
+    width: auto !important;
+    padding: 0 !important;
+    left: unset !important;
+}
+
+.close-ajuda:hover {
+    color: #333 !important;
+    background: none !important;
+}
