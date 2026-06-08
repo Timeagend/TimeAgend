@@ -1,2 +1,5 @@
 /vendor
-.env
+.envgit add .gitignore
+git rebase --continue
+node_modules/
+cypress/

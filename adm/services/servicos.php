@@ -25,6 +25,46 @@ class Servicos {
         return $stmt->execute();
     }
 
+        public function deleteServico($idservico)
+{
+    // Verifica se existe agendamento usando esse serviço
+    $sqlCheck = "SELECT COUNT(*) AS total 
+                 FROM agendamento 
+                 WHERE idservico = ?";
+
+    $stmtCheck = $this->con->prepare($sqlCheck);
+    $stmtCheck->bind_param("i", $idservico);
+    $stmtCheck->execute();
+
+    $result = $stmtCheck->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row['total'] > 0) {
+        return [
+            'success' => false,
+            'message' => 'Este serviço não pode ser excluído porque possui agendamentos vinculados.'
+        ];
+    }
+
+    // Se não tiver agendamento, exclui
+    $sqlDelete = "DELETE FROM servico WHERE idservico = ?";
+
+    $stmtDelete = $this->con->prepare($sqlDelete);
+    $stmtDelete->bind_param("i", $idservico);
+
+    if ($stmtDelete->execute()) {
+        return [
+            'success' => true,
+            'message' => 'Serviço excluído com sucesso.'
+        ];
+    }
+
+    return [
+        'success' => false,
+        'message' => 'Erro ao excluir serviço.'
+    ];
+}
+
     public function getServicos() {
         $sql = "SELECT * FROM servico";
         $stmt = $this->con->prepare($sql);
@@ -32,6 +72,8 @@ class Servicos {
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+   
+   
 
     public function getNumberUser($countUser){
         $count = 0;
@@ -73,6 +115,7 @@ class Servicos {
 
     public function getAgendamentos(){
         $stmt = $this->con->prepare("
+        
         SELECT 
             a.*, 
             u.nome_user AS nome_cliente, 
@@ -83,7 +126,6 @@ class Servicos {
         JOIN servico s ON a.idservico = s.idservico
         ORDER BY a.data, a.horario
         LIMIT 10
-        
         ");
         $stmt->execute();
         $result = $stmt->get_result();

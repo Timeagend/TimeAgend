@@ -31,245 +31,35 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       1. MODAL — EDITAR SERVIÇO
-       Acionado pelo .edit-icon dentro dos cards de serviço
-       (cards que NÃO são .adm-team-card)
-    ═══════════════════════════════════════════════════════════ */
-    const serviceOverlay = createOverlay('modal-edit-service');
-    serviceOverlay.innerHTML = `
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-service-title">
-            <div class="modal-header">
-                <h3 id="modal-service-title">
-                    <i class='bx bx-edit'></i> Editar Serviço
-                </h3>
-                <button class="modal-close-btn" aria-label="Fechar">&times;</button>
-            </div>
-            <form id="form-edit-service"
-                  action="${getBaseUrl()}/adm/services/editService.php"
-                  method="POST">
-                <input type="hidden" name="service-id" id="edit-service-id">
-                <div class="modal-form-grid">
-                    <div class="full">
-                        <label>Nome do serviço</label>
-                        <input type="text" name="service-name" id="edit-service-name"
-                               placeholder="Ex: Hidratação" required>
-                    </div>
-                    <div>
-                        <label>Tipo</label>
-                        <input type="text" name="service-tipo" id="edit-service-tipo"
-                               placeholder="Ex: Cabelo" required>
-                    </div>
-                    <div>
-                        <label>Duração</label>
-                        <input type="text" name="service-duracao" id="edit-service-duracao"
-                               placeholder="Ex: 30 min" required>
-                    </div>
-                    <div>
-                        <label>Valor (R$)</label>
-                        <input type="number" name="service-valor" id="edit-service-valor"
-                               placeholder="0,00" step="0.01" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="modal-service-delete" class="modal-btn-cancel"
-                            style="margin-right:auto; color:#e74c3c; border-color:#f5c6c6;">
-                        <i class='bx bx-trash'></i> Excluir
-                    </button>
-                    <button type="button" class="modal-btn-cancel">Cancelar</button>
-                    <button type="submit" class="modal-btn-save">
-                        <i class='bx bx-save'></i> Salvar
-                    </button>
-                </div>
-            </form>
-        </div>`;
-
-    /* Fechar pelo × e pelo Cancelar */
-    serviceOverlay.querySelector('.modal-close-btn').addEventListener('click', () => closeModal(serviceOverlay));
-    serviceOverlay.querySelectorAll('.modal-btn-cancel').forEach(btn => {
-        btn.addEventListener('click', () => closeModal(serviceOverlay));
-    });
-
-    /* Botão Excluir — Serviço */
-    document.getElementById('modal-service-delete').addEventListener('click', function () {
-        const id   = document.getElementById('edit-service-id').value;
-        const nome = document.getElementById('edit-service-name').value;
-
-        if (!id) { alert('ID do serviço não encontrado.'); return; }
-
-        if (confirm(`Excluir o serviço "${nome}"? Esta ação não pode ser desfeita.`)) {
-            fetch(getBaseUrl() + '/adm/services/controlService.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `acao=excluir&id=${id}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    closeModal(serviceOverlay);
-                    location.reload();
-                } else {
-                    alert('Erro: ' + (data.message || 'Tente novamente.'));
-                }
-            });
-        }
-    });
-
-    /* Delegação: clique em .edit-icon dentro de um card de serviço */
-    document.addEventListener('click', function (e) {
-        const editIcon = e.target.closest('#meu-site-content .category .edit-icon');
-        if (!editIcon) return;
-
-        const card = editIcon.closest('.barber-card');
-        if (!card) return;
-
-        /* Lê os dados do card renderizado pelo PHP */
-        const nome     = card.querySelector('strong')?.textContent.trim() ?? '';
-        const tipo     = card.querySelector('.adm-chip-badge')?.textContent.trim() ?? '';
-        const duracao  = card.querySelector('.adm-chip-meta')?.textContent.replace(/\s+/g, ' ').trim().replace(/^[^\s]+\s/, '') ?? '';
-        const precoRaw = card.querySelector('.adm-chip-price')?.textContent.trim() ?? '';
-        const preco    = precoRaw.replace('R$', '').trim().replace(/\./g, '').replace(',', '.');
-
-        document.getElementById('edit-service-name').value    = nome;
-        document.getElementById('edit-service-tipo').value    = tipo;
-        document.getElementById('edit-service-duracao').value = duracao;
-        document.getElementById('edit-service-valor').value   = preco;
-        const id = card.dataset.id ?? '';
-        document.getElementById('edit-service-id').value = id;
-
-        openModal(serviceOverlay);
-    });
-
-    /* ═══════════════════════════════════════════════════════════
        2. MODAL — EDITAR PROFISSIONAL
        Acionado pelo .edit-icon dentro de .adm-team-card
     ═══════════════════════════════════════════════════════════ */
-    const teamOverlay = createOverlay('modal-edit-team');
-    teamOverlay.innerHTML = `
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-team-title">
-            <div class="modal-header">
-                <h3 id="modal-team-title">
-                    <i class='bx bx-user-circle'></i> Editar Profissional
-                </h3>
-                <button class="modal-close-btn" aria-label="Fechar">&times;</button>
-            </div>
-            <form id="form-edit-team"
-                  action="${getBaseUrl()}/adm/services/editBarber.php"
-                  method="POST"
-                  enctype="multipart/form-data">
-                <input type="hidden" name="barber-id" id="edit-barber-id">
-                <div class="modal-form-grid">
-                    <div class="full">
-                        <label>Nome do profissional</label>
-                        <input type="text" name="nome" id="edit-barber-nome"
-                               placeholder="Ex: João Pereira" required>
-                    </div>
-                    <div class="full">
-                        <label>Descrição</label>
-                        <input type="text" name="descricao" id="edit-barber-obs"
-                               placeholder="Especialidades, experiência...">
-                    </div>
-                    <div class="full">
-                        <label>Foto de perfil</label>
-                        <div class="modal-file-drop">
-                            <input type="file" name="foto" id="edit-barber-foto"
-                                   accept="image/*">
-                            <i class='bx bx-image-add'></i>
-                            <p>Clique ou arraste uma nova foto aqui</p>
-                            <img class="preview-thumb" id="edit-barber-thumb" alt="Pré-visualização">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="modal-barber-delete" class="modal-btn-cancel"
-                            style="margin-right:auto; color:#e74c3c; border-color:#f5c6c6;">
-                        <i class='bx bx-trash'></i> Excluir
-                    </button>
-                    <button type="button" class="modal-btn-cancel">Cancelar</button>
-                    <button type="submit" class="modal-btn-save">
-                        <i class='bx bx-save'></i> Salvar
-                    </button>
-                </div>
-            </form>
-        </div>`;
+     const modalTeam = document.getElementById('modal-edit-team');
 
-    /* Fechar pelo × e pelo Cancelar */
-    teamOverlay.querySelector('.modal-close-btn').addEventListener('click', () => closeModal(teamOverlay));
-    teamOverlay.querySelectorAll('.modal-btn-cancel').forEach(btn => {
-        btn.addEventListener('click', () => closeModal(teamOverlay));
-    });
+        document.addEventListener('click', function(e) {
+            const editIcon = e.target.closest('.adm-team-card .edit-icon');
+            if (!editIcon) return;
 
-    /* Preview de imagem antes de enviar */
-    document.getElementById('edit-barber-foto').addEventListener('change', function () {
-        const thumb = document.getElementById('edit-barber-thumb');
-        if (this.files && this.files[0]) {
-            thumb.src = URL.createObjectURL(this.files[0]);
-            thumb.style.display = 'block';
-        }
-    });
+            const card = editIcon.closest('.adm-team-card');
 
-    /* Botão Excluir — Profissional */
-    document.getElementById('modal-barber-delete').addEventListener('click', function () {
-        const id   = document.getElementById('edit-barber-id').value;
-        const nome = document.getElementById('edit-barber-nome').value;
+            const id = card.getAttribute('data-id');
+            const nome = card.getAttribute('data-nome');
+            const obs = card.getAttribute('data-obs');
 
-        if (!id) { alert('ID do profissional não encontrado.'); return; }
+            document.getElementById('edit-barber-id').value = id;
+            document.getElementById('edit-barber-nome').value = nome;
+            document.getElementById('edit-barber-obs').value = obs;
 
-        if (confirm(`Excluir "${nome}"? Esta ação não pode ser desfeita.`)) {
-            fetch(getBaseUrl() + '/adm/services/controlBarber.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `acao=excluir&id=${id}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    closeModal(teamOverlay);
-                    location.reload();
-                } else {
-                    alert('Erro: ' + (data.message || 'Tente novamente.'));
-                }
-            });
-        }
-    });
+            modalTeam.style.display = 'flex';
+        });
 
-    /* Delegação: clique em .edit-icon dentro de .adm-team-card */
-    document.addEventListener('click', function (e) {
-        const editIcon = e.target.closest('.adm-team-card .edit-icon');
-        if (!editIcon) return;
+        document.querySelector('.modal-close-btn').addEventListener('click', function() {
+            modalTeam.style.display = 'none';
+        });
 
-        const card = editIcon.closest('.adm-team-card');
-        if (!card) return;
-
-        /* Lê nome do input original do card */
-        const nomeInput = card.querySelector('.name input');
-        const nome = nomeInput?.value.trim() ?? '';
-
-        /* Lê descrição do data-obs (adicione data-obs="<?= $barbeiro['obs'] ?>" no .adm-team-card) */
-        const obs = card.dataset.obs ?? '';
-
-        /* ID via data-id (adicione data-id="<?= $barbeiro['id'] ?>" no .adm-team-card) */
-        const id = card.dataset.id ?? '';
-
-        document.getElementById('edit-barber-nome').value = nome;
-        document.getElementById('edit-barber-obs').value  = obs;
-        document.getElementById('edit-barber-id').value   = id;
-
-        /* Limpa preview anterior */
-        const thumb = document.getElementById('edit-barber-thumb');
-        thumb.src = '';
-        thumb.style.display = 'none';
-        document.getElementById('edit-barber-foto').value = '';
-
-        openModal(teamOverlay);
-    });
-
-    /* ── Fechar com ESC ──────────────────────────────────── */
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal(serviceOverlay);
-            closeModal(teamOverlay);
-        }
-    });
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            modalTeam.style.display = 'none';
+        });
 
     /* ── Helper: detecta BASE_URL do atributo já presente no DOM ─ */
     function getBaseUrl() {
