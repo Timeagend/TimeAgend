@@ -1,0 +1,18 @@
+.overlay.active { display: flex !important; }
+
+/* escopo dentro do overlay para não conflitar com contact.css */
+.overlay .modal {
+    background: #141414 !important;
+    color: #fff !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    max-width: 380px;
+    width: 100%;
+    height: 35%;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    animation: modalIn 0.2s ease;
+    position: relative;
+    z-index: 100000 !important;
+    display: block !important;
+}

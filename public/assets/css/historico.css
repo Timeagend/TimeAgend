@@ -4,13 +4,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap');
 
 body {
+    background-color: #080808;
     color: #fff;
     font-family: 'DM Sans', Arial, sans-serif;
     min-height: 100vh;
 }
 
 /* ── Header (mantido do projeto) ──────────────────────────── */
-
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #000;
+    border-bottom: none;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.515);
+    margin-top: 12px;
+    width: 87%;
+    margin-left: 50px;
+    position: relative;
+    left: 49px;
+}
 
 /* ── Main ─────────────────────────────────────────────────── */
 main {
@@ -41,7 +55,8 @@ main {
 
 .hero-text h1 {
     font-family: 'Syne', sans-serif;
-    
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
     color: #fff;
     line-height: 1.1;
     margin-bottom: 0.5rem;
@@ -333,25 +348,29 @@ main {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.75);
-    z-index: 1000;
+    z-index: 99999 !important;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     backdrop-filter: blur(2px);
 }
 
-.overlay.active { display: flex; }
+.overlay.active { display: flex !important; }
 
-.modal {
-    background: #141414;
-    color: #fff;
-    border-radius: 16px;
-    padding: 2rem;
+/* escopo dentro do overlay para não conflitar com contact.css */
+.overlay .modal {
+    background: #141414 !important;
+    color: #fff !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
     max-width: 380px;
     width: 100%;
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1) !important;
     animation: modalIn 0.2s ease;
+    position: relative;
+    z-index: 100000 !important;
+    display: block !important;
 }
 
 @keyframes modalIn {
@@ -414,9 +433,12 @@ main {
 }
 
 @media (max-width: 768px) {
-    
-        
-    
+    header {
+        padding: 14px 20px;
+        width: 90%;
+        margin-left: 16px;
+        left: 0;
+    }
 
     main {
         padding: 2rem 1rem 3rem;
@@ -426,7 +448,7 @@ main {
 
     .hero-text h1 { font-size: 2.2rem; }
 
-    
+    .button-1 { align-self: flex-end; }
 
     .filter-bar {
         padding: 4px;
@@ -444,9 +466,6 @@ main {
     .cards-wrapper {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-    }
-    .menu-toggle{
-        margin-left: 0;
     }
 }
 

@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay    = document.getElementById('confirmOverlay');
     const btnSim     = document.getElementById('btnSim');
     const btnNao     = document.getElementById('btnNao');
-    let   formPendente = null;   // guarda o form que será submetido
+    let   formPendente = null;
 
-    /* Intercepta todos os botões "CANCELAR" */
     document.querySelectorAll('.cancel-button').forEach(function (btn) {
         btn.addEventListener('click', function () {
             formPendente = btn.closest('.cancel-form');
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    /* Confirma → submete o form */
     btnSim.addEventListener('click', function () {
         overlay.classList.remove('active');
         if (formPendente) {
@@ -25,13 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* Cancela → fecha o modal */
     btnNao.addEventListener('click', function () {
         overlay.classList.remove('active');
         formPendente = null;
     });
 
-    /* Clique fora do modal também fecha */
     overlay.addEventListener('click', function (e) {
         if (e.target === overlay) {
             overlay.classList.remove('active');
@@ -46,14 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
     filterBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
 
-            /* atualiza botão ativo */
             filterBtns.forEach(function (b) { b.classList.remove('active'); });
             btn.classList.add('active');
 
-            const filtro = btn.dataset.filter; /* 'todos' | 'proximos' | 'passados' */
+            const filtro = btn.dataset.filter;
 
             cards.forEach(function (card) {
-                const periodo = card.dataset.periodo; /* 'proximo' | 'passado' */
+                const periodo = card.dataset.periodo;
 
                 if (
                     filtro === 'todos' ||
@@ -66,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            /* Mensagem de lista vazia após filtrar */
             const wrapper  = document.getElementById('cardsWrapper');
             const visiveis = wrapper ? wrapper.querySelectorAll('.appointment-card:not(.hidden)') : [];
             let   aviso    = document.getElementById('filtroVazio');

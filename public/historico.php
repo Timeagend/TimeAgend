@@ -17,7 +17,11 @@
         <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/perfil.css">
 
     <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/historico.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/public/assets/css/modal-historico.css">
 
+
+
+ 
 </head>
 <body>
 
