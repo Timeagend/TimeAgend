@@ -427,9 +427,9 @@ body.dark .form-row select{background:var(--light)}
 
 <!-- Sidebar -->
 <section id="sidebar">
-  <a href="#" class="brand">
-    <i class='bx bx-scissors bx'></i>
-    <span>TimeAgend</span>
+  <a href="index.php" class="brand">
+    <i class='bx bxs-smile'></i>
+        <span class="text">AdminHub</span>
   </a>
   <ul class="side-menu top">
     <li onclick="setActive(this)" class="active">
@@ -444,15 +444,10 @@ body.dark .form-row select{background:var(--light)}
         <span>Novo Produto</span>
       </a>
     </li>
-    <li>
-      <a href="index.php">
-        <i class='bx bx-home bx'></i>
-        <span>Início</span>
-      </a>
-    </li>
+    
     <li>
       <a href="pedidos.php">
-        <i class='bx bx-home bx'></i>
+        <i class='bx bx-cart-alt'></i>
         <span>Pedidos</span>
       </a>
     </li>

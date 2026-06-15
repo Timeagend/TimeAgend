@@ -25,6 +25,9 @@
     <!-- My CSS -->
     <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/modal.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/nav.css">
+    <link rel="stylesheet" href="<?= BASE_URL?>/adm/assets/css/servico.css">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>AdminHub</title>
@@ -182,25 +185,23 @@
 <section id="content">
     <!-- NAVBAR -->
     <nav>
-        <i class='bx bx-menu'></i>
-        <a href="#" class="nav-link">Categories</a>
-        <form action="#">
-            <div class="form-input">
-                <input type="search" placeholder="Pesquisar...">
-                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-            </div>
-        </form>
-        <input type="checkbox" id="switch-mode" hidden>
-        <label for="switch-mode" class="switch-mode"></label>
-        <a href="#" class="notification">
-            <i class='bx bxs-bell'></i>
-            <span class="num">8</span>
-        </a>
-        <a href="#" class="profile">
-            <img src="<?= BASE_URL?>/adm/img/people.png">
-        </a>
-    </nav>
+    <div class="nav-greeting">
+        <h2>Olá, Admin! <span class="wave">👋</span></h2>
+        <p id="nav-date"></p>
+    </div>
 
+    <div class="nav-right">
+        <div class="nav-pending">
+            <i class='bx bxs-time-five'></i>
+            <span><?= $numPendentes ?? 0 ?> pendente<?= ($numPendentes ?? 0) != 1 ? 's' : '' ?> hoje</span>
+        </div>
+
+        
+        <a href="#" class="profile">
+            <img src="<?= BASE_URL?>/adm/img/Captura de tela 2024-12-15 012952.png">
+        </a>
+    </div>
+</nav>
     <!-- MAIN -->
     <main>
 
@@ -281,7 +282,7 @@
                             <?php foreach ($agendamentos as $a): ?>
                             <tr>
                                 <td>
-                                    <img src="<?= BASE_URL?>/adm/img/people.png" alt="Foto do cliente">
+                                    <img src="<?= BASE_URL?>/adm/img/Captura de tela 2024-12-15 012952.png" alt="Foto do cliente">
                                     <p><?= htmlspecialchars($a['nome_cliente']); ?></p>
                                 </td>
                                 <td><?= htmlspecialchars($a['data']);?></td>
@@ -422,6 +423,7 @@
                                 </span>
                             </div>
                         </div>
+                        
 
                         <!-- MODAL DO SERVIÇO -->
                         <div id="modal-servico-<?= $s['idservico']; ?>" class="modal-overlay">
@@ -569,26 +571,6 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
-<div class="barber-cards">
-    <?php foreach ($barbeiroList as $barbeiro): ?>
-    <div class="barber-card adm-team-card"
-         data-id="<?= $barbeiro['idbarbeiro'] ?? '' ?>"
-         data-obs="<?= htmlspecialchars($barbeiro['descricao'] ?? '') ?>">
-        <div class="adm-team-img-wrap">
-            <img src="<?= $barbeiro['foto'] ?>"
-                 alt="Foto de <?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>">
-            <div class="adm-team-overlay"></div>
-            <div class="adm-team-status">Ativo</div>
-        </div>
-        <div class="edit-icon"><i class="fas fa-edit"></i></div>
-        <div class="name">
-            <input type="text" value="<?= htmlspecialchars($barbeiro['nome_barbeiro']) ?>" />
-        </div>
-    </div>
-    <?php endforeach; ?>
-</div>
-=======
                     <!-- ✔ classe original: barber-cards -->
 <!-- ✔ classe original: barber-cards -->
                 <div class="barber-cards">
@@ -612,7 +594,6 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
->>>>>>> 5f27645 (Atualização)
                 <div class="adm-form-footer">
                     <!-- ✔ classe original: button-barber -->
                     <button class="button-barber">
@@ -719,6 +700,6 @@
 <!-- ── STATUS CHANGE SCRIPT (added) ── -->
 <script src="<?= BASE_URL?>/adm/assets/script/status.js"></script>
 <!-- ── /STATUS CHANGE SCRIPT ── -->
-
+<style></style>
 </body>
 </html>

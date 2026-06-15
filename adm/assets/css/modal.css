@@ -184,3 +184,107 @@
 .edit-icon {
     cursor: pointer;
 }
+
+
+/* ═══ MODAL DE SERVIÇOS — correção ═══ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-box {
+    background: var(--light, #fff);
+    padding: 24px 28px;
+    border-radius: 14px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: admFadeUp .25s ease both;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--grey);
+}
+
+.modal-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.modal-header button {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--dark-grey);
+    cursor: pointer;
+    padding: 0;
+}
+.modal-header button:hover { color: var(--red); background: transparent; }
+
+.modal-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.modal-box form label {
+    font-size: .74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--dark-grey);
+}
+
+.modal-box form input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--grey);
+    border-radius: 10px;
+    font-family: var(--lato);
+    font-size: .93rem;
+    color: var(--dark);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.modal-box form input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(60,145,230,.13);
+}
+
+.modal-box form button[type="submit"] {
+    
+    background-color: var(--blue);
+    color: var(--light);
+}
+.modal-box form button[type="submit"]:hover {
+    background-color: #2e76c1;
+}
+
+/* Botão de excluir destacado em vermelho */
+.modal-box form:last-of-type button[type="submit"] {
+    background-color: var(--red);
+    align-self: stretch;
+    margin-top: 4px;
+}
+.modal-box form:last-of-type button[type="submit"]:hover {
+    background-color: #c1413a;
+}
