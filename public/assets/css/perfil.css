@@ -410,7 +410,7 @@ main {
         justify-content: center;
     }
     
-    .button-logout { width: 92%; justify-content: center; margin-top: 140px; }
+    .button-logout { width: 92%; justify-content: center; margin-top: 170px; }
 }
 
 @media (max-width: 480px) {
